@@ -19,10 +19,13 @@
     "no-return-await": "error",
     "no-throw-literal": "error"
   },
-  "ignorePatterns": [
-    "node_modules/",
-    "client/",
-    "coverage/",
-    "server/prisma/migrations/"
+  "ignorePatterns": ["node_modules/", "client/", "coverage/", "server/prisma/migrations/"],
+  "overrides": [
+    {
+      "files": ["server/tests/**/*.js"],
+      "parserOptions": {
+        "sourceType": "module"
+      }
+    }
   ]
 }
