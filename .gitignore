@@ -29,6 +29,14 @@ coverage/
 server/prisma/*.db
 server/prisma/*.db-journal
 
+# local data / dumps
+*.db
+*.sqlite
+*.sqlite3
+*.dump
+dump*.sql
+uploads/
+
 # os
 .DS_Store
 Thumbs.db
