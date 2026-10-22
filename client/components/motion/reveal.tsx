@@ -29,7 +29,13 @@ const offsets: Record<NonNullable<RevealProps['direction']>, { x?: number; y?: n
 };
 
 /** Fades content in when it scrolls into the viewport. */
-export function Reveal({ children, className, delay = 0, direction = 'up', once = true }: RevealProps) {
+export function Reveal({
+  children,
+  className,
+  delay = 0,
+  direction = 'up',
+  once = true,
+}: RevealProps) {
   return (
     <motion.div
       variants={{
@@ -89,7 +95,13 @@ export function Stagger({
   );
 }
 
-export function StaggerItem({ children, className }: { children: React.ReactNode; className?: string }) {
+export function StaggerItem({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
     <motion.div variants={staggerItem} className={cn(className)}>
       {children}

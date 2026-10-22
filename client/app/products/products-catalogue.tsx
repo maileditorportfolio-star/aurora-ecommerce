@@ -58,7 +58,9 @@ export function ProductsCatalogue() {
         transition={{ duration: 0.5 }}
         className="max-w-2xl"
       >
-        <h1 className="text-4xl font-bold tracking-tight text-ink-900 sm:text-5xl">The catalogue</h1>
+        <h1 className="text-4xl font-bold tracking-tight text-ink-900 sm:text-5xl">
+          The catalogue
+        </h1>
         <p className="mt-3 text-base text-ink-500">
           {loading ? 'Loading products…' : `${products.length} products ready to ship`}
           {activeCategory ? ` in ${activeCategory}` : ''}.

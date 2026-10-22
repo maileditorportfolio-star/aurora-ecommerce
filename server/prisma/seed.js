@@ -6,7 +6,11 @@ const prisma = new PrismaClient();
 
 const categories = [
   { name: 'Laptops', slug: 'laptops', description: 'Business and creator laptops.' },
-  { name: 'Accessories', slug: 'accessories', description: 'Everyday gear that upgrades your desk.' },
+  {
+    name: 'Accessories',
+    slug: 'accessories',
+    description: 'Everyday gear that upgrades your desk.',
+  },
   { name: 'Audio', slug: 'audio', description: 'Headphones, earbuds and studio sound.' },
   { name: 'Displays', slug: 'displays', description: 'Monitors and panels for every desk size.' },
   { name: 'Networking', slug: 'networking', description: 'Routers, switches and connectivity.' },
@@ -178,7 +182,10 @@ const main = async () => {
 
   for (const product of products) {
     const { category, ...data } = product;
-    const slug = data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const slug = data.name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '');
     // eslint-disable-next-line no-await-in-loop
     await prisma.product.upsert({
       where: { slug },

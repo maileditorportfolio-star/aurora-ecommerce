@@ -153,8 +153,8 @@ export function ChatWidget() {
             <div ref={listRef} className="flex-1 space-y-3 overflow-y-auto bg-ink-50/60 px-4 py-4">
               {messages.length === 0 && (
                 <div className="rounded-2xl bg-white p-4 text-sm text-ink-500 shadow-soft">
-                  Hi{user ? ` ${user.name.split(' ')[0]}` : ''}! Ask us anything about stock, delivery
-                  or warranty — we usually reply within a few minutes.
+                  Hi{user ? ` ${user.name.split(' ')[0]}` : ''}! Ask us anything about stock,
+                  delivery or warranty — we usually reply within a few minutes.
                 </div>
               )}
 
@@ -190,7 +190,11 @@ export function ChatWidget() {
               })}
 
               {typing && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex justify-start"
+                >
                   <div className="flex gap-1 rounded-2xl rounded-bl-md bg-white px-4 py-3 shadow-soft">
                     {[0, 1, 2].map((index) => (
                       <motion.span

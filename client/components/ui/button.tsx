@@ -38,7 +38,16 @@ const baseClasses =
   'inline-flex select-none items-center justify-center rounded-full font-medium tracking-tight transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2';
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { className, variant = 'primary', size = 'md', href, loading = false, children, disabled, ...props },
+  {
+    className,
+    variant = 'primary',
+    size = 'md',
+    href,
+    loading = false,
+    children,
+    disabled,
+    ...props
+  },
   ref,
 ) {
   const classes = cn(baseClasses, variants[variant], sizes[size], className);

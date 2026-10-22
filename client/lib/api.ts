@@ -1,11 +1,4 @@
-import type {
-  ChatMessage,
-  Order,
-  Pagination,
-  Product,
-  ProductListResponse,
-  User,
-} from '@/types';
+import type { ChatMessage, Order, Pagination, Product, ProductListResponse, User } from '@/types';
 
 export interface AdminStats {
   totals: {
@@ -43,7 +36,11 @@ export class ApiError extends Error {
   status: number;
   details?: Array<{ field: string; message: string }>;
 
-  constructor(status: number, message: string, details?: Array<{ field: string; message: string }>) {
+  constructor(
+    status: number,
+    message: string,
+    details?: Array<{ field: string; message: string }>,
+  ) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
@@ -109,11 +106,18 @@ export const api = {
   products: {
     list: (params: Record<string, string | number | boolean | undefined | null> = {}) =>
       request<ProductListResponse>(`/products${query(params)}`),
-    detail: (slug: string) => request<{ product: Product; related: Product[] }>(`/products/${slug}`),
-    create: (payload: Partial<Product>) => request<{ product: Product }>('/products', { method: 'POST', body: payload, auth: true }),
+    detail: (slug: string) =>
+      request<{ product: Product; related: Product[] }>(`/products/${slug}`),
+    create: (payload: Partial<Product>) =>
+      request<{ product: Product }>('/products', { method: 'POST', body: payload, auth: true }),
     update: (id: string, payload: Partial<Product>) =>
-      request<{ product: Product }>(`/products/${id}`, { method: 'PATCH', body: payload, auth: true }),
-    remove: (id: string) => request<{ product: Product }>(`/products/${id}`, { method: 'DELETE', auth: true }),
+      request<{ product: Product }>(`/products/${id}`, {
+        method: 'PATCH',
+        body: payload,
+        auth: true,
+      }),
+    remove: (id: string) =>
+      request<{ product: Product }>(`/products/${id}`, { method: 'DELETE', auth: true }),
   },
   auth: {
     register: (payload: { name: string; email: string; password: string; phone?: string }) =>
@@ -121,19 +125,29 @@ export const api = {
     login: (payload: { email: string; password: string }) =>
       request<{ user: User; token: string }>('/auth/login', { method: 'POST', body: payload }),
     me: () => request<{ user: User }>('/auth/me', { auth: true }),
-    updateProfile: (payload: Partial<User>) => request<{ user: User }>('/auth/me', { method: 'PATCH', body: payload, auth: true }),
+    updateProfile: (payload: Partial<User>) =>
+      request<{ user: User }>('/auth/me', { method: 'PATCH', body: payload, auth: true }),
   },
   orders: {
-    create: (payload: unknown) => request<{ order: Order }>('/orders', { method: 'POST', body: payload, auth: true }),
+    create: (payload: unknown) =>
+      request<{ order: Order }>('/orders', { method: 'POST', body: payload, auth: true }),
     mine: () => request<{ orders: Order[] }>('/orders', { auth: true }),
-    detail: (orderNumber: string) => request<{ order: Order }>(`/orders/${orderNumber}`, { auth: true }),
+    detail: (orderNumber: string) =>
+      request<{ order: Order }>(`/orders/${orderNumber}`, { auth: true }),
     all: (params: Record<string, string | number | undefined> = {}) =>
-      request<{ orders: Order[]; pagination: Pagination }>(`/orders/admin/all${query(params)}`, { auth: true }),
+      request<{ orders: Order[]; pagination: Pagination }>(`/orders/admin/all${query(params)}`, {
+        auth: true,
+      }),
     updateStatus: (orderNumber: string, status: string) =>
-      request<{ order: Order }>(`/orders/${orderNumber}/status`, { method: 'PATCH', body: { status }, auth: true }),
+      request<{ order: Order }>(`/orders/${orderNumber}/status`, {
+        method: 'PATCH',
+        body: { status },
+        auth: true,
+      }),
   },
   chat: {
-    history: (conversationId: string) => request<{ messages: ChatMessage[] }>(`/chat/${conversationId}`),
+    history: (conversationId: string) =>
+      request<{ messages: ChatMessage[] }>(`/chat/${conversationId}`),
     send: (payload: { conversationId: string; content: string }) =>
       request<{ message: ChatMessage }>('/chat', { method: 'POST', body: payload, auth: true }),
   },

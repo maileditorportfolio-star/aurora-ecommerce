@@ -128,7 +128,10 @@ export default function HomePage() {
         <div className="container-page">
           <Reveal>
             <div className="relative overflow-hidden rounded-[2.5rem] bg-ink-950 px-8 py-14 text-center text-white sm:px-16">
-              <div aria-hidden className="pointer-events-none absolute inset-0 bg-aurora opacity-60" />
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 bg-aurora opacity-60"
+              />
               <div className="relative">
                 <h2 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">
                   Ready to upgrade your setup?

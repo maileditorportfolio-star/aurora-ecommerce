@@ -27,10 +27,7 @@ const env = {
   },
 
   clientUrl: process.env.CLIENT_URL || 'http://localhost:3000',
-  corsOrigins: toList(process.env.CORS_ORIGINS, [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
-  ]),
+  corsOrigins: toList(process.env.CORS_ORIGINS, ['http://localhost:3000', 'http://127.0.0.1:3000']),
 
   shipping: {
     flatRate: Number(process.env.SHIPPING_FLAT_RATE || 60),

@@ -47,7 +47,10 @@ export default function AdminAnalyticsPage() {
         <h2 className="text-lg font-semibold tracking-tight text-ink-900">Monthly revenue</h2>
         <div className="mt-6 h-80">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={stats?.revenueByMonth ?? []} margin={{ top: 8, right: 8, left: -14, bottom: 0 }}>
+            <AreaChart
+              data={stats?.revenueByMonth ?? []}
+              margin={{ top: 8, right: 8, left: -14, bottom: 0 }}
+            >
               <defs>
                 <linearGradient id="analyticsFill" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="#4f46e5" stopOpacity={0.35} />
@@ -55,7 +58,13 @@ export default function AdminAnalyticsPage() {
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="4 4" stroke="#e2e8f0" vertical={false} />
-              <XAxis dataKey="month" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+              <XAxis
+                dataKey="month"
+                stroke="#94a3b8"
+                fontSize={12}
+                tickLine={false}
+                axisLine={false}
+              />
               <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
               <Tooltip
                 contentStyle={{ borderRadius: 16, border: '1px solid #e2e8f0', fontSize: 12 }}
@@ -84,10 +93,25 @@ export default function AdminAnalyticsPage() {
           <h2 className="text-lg font-semibold tracking-tight text-ink-900">Orders per month</h2>
           <div className="mt-6 h-64">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={stats?.revenueByMonth ?? []} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
+              <BarChart
+                data={stats?.revenueByMonth ?? []}
+                margin={{ top: 8, right: 8, left: -20, bottom: 0 }}
+              >
                 <CartesianGrid strokeDasharray="4 4" stroke="#e2e8f0" vertical={false} />
-                <XAxis dataKey="month" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} />
+                <XAxis
+                  dataKey="month"
+                  stroke="#94a3b8"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis
+                  stroke="#94a3b8"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                  allowDecimals={false}
+                />
                 <Tooltip
                   cursor={{ fill: 'rgb(99 102 241 / 0.06)' }}
                   contentStyle={{ borderRadius: 16, border: '1px solid #e2e8f0', fontSize: 12 }}
@@ -117,7 +141,14 @@ export default function AdminAnalyticsPage() {
                 margin={{ top: 0, right: 16, left: 8, bottom: 0 }}
               >
                 <CartesianGrid strokeDasharray="4 4" stroke="#e2e8f0" horizontal={false} />
-                <XAxis type="number" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} />
+                <XAxis
+                  type="number"
+                  stroke="#94a3b8"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                  allowDecimals={false}
+                />
                 <YAxis
                   type="category"
                   dataKey="name"

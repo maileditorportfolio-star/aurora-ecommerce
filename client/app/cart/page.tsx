@@ -69,7 +69,11 @@ export default function CartPage() {
                 >
                   {item.imageUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={item.imageUrl} alt={item.name} className="h-full w-full object-cover" />
+                    <img
+                      src={item.imageUrl}
+                      alt={item.name}
+                      className="h-full w-full object-cover"
+                    />
                   ) : (
                     <div className="h-full w-full bg-gradient-to-br from-indigo-200 to-sky-300" />
                   )}

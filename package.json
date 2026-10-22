@@ -19,6 +19,8 @@
     "start:client": "npm run start --workspace client",
     "lint": "npm run lint --workspace client",
     "typecheck": "npm run typecheck --workspace client",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,css}\"",
     "prisma:generate": "npm run prisma:generate --workspace server",
     "prisma:migrate": "npm run prisma:migrate --workspace server",
     "prisma:push": "npm run prisma:push --workspace server",
@@ -26,7 +28,9 @@
     "seed": "npm run seed --workspace server"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "eslint-config-prettier": "^9.1.2",
+    "prettier": "^3.9.10"
   },
   "engines": {
     "node": ">=18.17.0"

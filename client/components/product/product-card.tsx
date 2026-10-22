@@ -22,7 +22,10 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
       whileHover={{ y: -8 }}
       className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-ink-100 bg-white shadow-soft transition-shadow duration-300 hover:shadow-card"
     >
-      <Link href={`/products/${product.slug}`} className="relative block aspect-[4/3] overflow-hidden bg-ink-100">
+      <Link
+        href={`/products/${product.slug}`}
+        className="relative block aspect-[4/3] overflow-hidden bg-ink-100"
+      >
         {product.imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <motion.img
@@ -64,7 +67,9 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
           <span>({product.reviewCount} reviews)</span>
         </div>
 
-        <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-ink-500">{product.description}</p>
+        <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-ink-500">
+          {product.description}
+        </p>
 
         <div className="mt-auto flex items-end justify-between gap-3 pt-5">
           <div>

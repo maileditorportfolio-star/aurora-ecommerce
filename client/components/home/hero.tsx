@@ -45,8 +45,7 @@ export function Hero() {
             transition={{ duration: 0.75, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
             className="mt-6 text-balance text-4xl font-bold leading-[1.05] tracking-tight text-ink-900 sm:text-5xl lg:text-6xl"
           >
-            Tech that feels{' '}
-            <span className="text-gradient animate-gradient-pan">effortless</span>.
+            Tech that feels <span className="text-gradient animate-gradient-pan">effortless</span>.
           </motion.h1>
 
           <motion.p
@@ -107,7 +106,9 @@ export function Hero() {
                 />
                 <div className="absolute inset-0 grid place-items-center text-center text-white">
                   <p className="text-5xl font-bold tracking-tight">24h</p>
-                  <p className="mt-1 text-xs uppercase tracking-[0.25em] text-indigo-100">Dispatch</p>
+                  <p className="mt-1 text-xs uppercase tracking-[0.25em] text-indigo-100">
+                    Dispatch
+                  </p>
                 </div>
               </div>
             </div>

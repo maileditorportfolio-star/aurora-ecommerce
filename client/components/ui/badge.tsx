@@ -20,7 +20,13 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   children?: React.ReactNode;
 }
 
-export function Badge({ className, variant = 'default', pulse = false, children, ...props }: BadgeProps) {
+export function Badge({
+  className,
+  variant = 'default',
+  pulse = false,
+  children,
+  ...props
+}: BadgeProps) {
   return (
     <motion.span
       initial={{ opacity: 0, scale: 0.85 }}

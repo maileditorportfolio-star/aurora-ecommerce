@@ -11,7 +11,12 @@ interface AuthState {
   isLoading: boolean;
   error: string | null;
   login: (email: string, password: string) => Promise<void>;
-  register: (payload: { name: string; email: string; password: string; phone?: string }) => Promise<void>;
+  register: (payload: {
+    name: string;
+    email: string;
+    password: string;
+    phone?: string;
+  }) => Promise<void>;
   logout: () => void;
   hydrate: () => Promise<void>;
   setUser: (user: User | null) => void;

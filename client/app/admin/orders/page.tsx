@@ -47,7 +47,9 @@ export default function AdminOrdersPage() {
     try {
       const { order: updated } = await api.orders.updateStatus(order.orderNumber, next);
       setOrders((current) =>
-        current.map((item) => (item.orderNumber === updated.orderNumber ? { ...item, status: updated.status } : item)),
+        current.map((item) =>
+          item.orderNumber === updated.orderNumber ? { ...item, status: updated.status } : item,
+        ),
       );
     } catch {
       /* keep the previous state when the API rejects the change */
@@ -128,7 +130,9 @@ export default function AdminOrdersPage() {
             >
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <p className="text-sm font-bold tracking-tight text-ink-900">{order.orderNumber}</p>
+                  <p className="text-sm font-bold tracking-tight text-ink-900">
+                    {order.orderNumber}
+                  </p>
                   <p className="mt-1 text-xs text-ink-400">
                     {formatDate(order.createdAt)} · {order.shippingName} · {order.shippingPhone}
                   </p>
@@ -136,8 +140,12 @@ export default function AdminOrdersPage() {
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <Badge className={cn('px-3 py-1', statusStyles[order.status])}>{order.status}</Badge>
-                  <span className="text-lg font-bold text-ink-900">{formatCurrency(order.total)}</span>
+                  <Badge className={cn('px-3 py-1', statusStyles[order.status])}>
+                    {order.status}
+                  </Badge>
+                  <span className="text-lg font-bold text-ink-900">
+                    {formatCurrency(order.total)}
+                  </span>
                 </div>
               </div>
 

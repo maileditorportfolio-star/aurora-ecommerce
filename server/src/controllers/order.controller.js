@@ -14,7 +14,12 @@ const calculateTotals = (items) => {
   const subtotal = items.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
   const shipping = subtotal >= env.shipping.freeThreshold ? 0 : env.shipping.flatRate;
   const tax = Number((subtotal * env.shipping.taxRate).toFixed(2));
-  return { subtotal: Number(subtotal.toFixed(2)), shipping, tax, total: Number((subtotal + shipping + tax).toFixed(2)) };
+  return {
+    subtotal: Number(subtotal.toFixed(2)),
+    shipping,
+    tax,
+    total: Number((subtotal + shipping + tax).toFixed(2)),
+  };
 };
 
 /** POST /api/orders — checkout. Requires authentication. */
@@ -166,7 +171,12 @@ const all = asyncHandler(async (req, res) => {
     success: true,
     data: {
       orders,
-      pagination: { page: pageNumber, limit: pageSize, total, pages: Math.max(1, Math.ceil(total / pageSize)) },
+      pagination: {
+        page: pageNumber,
+        limit: pageSize,
+        total,
+        pages: Math.max(1, Math.ceil(total / pageSize)),
+      },
     },
   });
 });

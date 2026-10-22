@@ -12,10 +12,20 @@ export interface CardProps extends HTMLMotionProps<'div'> {
 const baseClasses =
   'relative overflow-hidden rounded-3xl border border-ink-100 bg-white shadow-soft transition-colors duration-300';
 
-export function Card({ className, interactive = false, glow = false, children, ...props }: CardProps) {
+export function Card({
+  className,
+  interactive = false,
+  glow = false,
+  children,
+  ...props
+}: CardProps) {
   return (
     <motion.div
-      className={cn(baseClasses, interactive && 'hover:border-indigo-200 hover:shadow-card', className)}
+      className={cn(
+        baseClasses,
+        interactive && 'hover:border-indigo-200 hover:shadow-card',
+        className,
+      )}
       whileHover={interactive ? { y: -6 } : undefined}
       transition={{ type: 'spring', stiffness: 260, damping: 22 }}
       {...props}

@@ -172,7 +172,11 @@ export default function AdminProductsPage() {
                 <div className="h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-ink-100">
                   {product.imageUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={product.imageUrl} alt={product.name} className="h-full w-full object-cover" />
+                    <img
+                      src={product.imageUrl}
+                      alt={product.name}
+                      className="h-full w-full object-cover"
+                    />
                   ) : (
                     <div className="h-full w-full bg-gradient-to-br from-indigo-200 to-sky-300" />
                   )}
@@ -185,7 +189,9 @@ export default function AdminProductsPage() {
                   </p>
                   <div className="mt-2 flex flex-wrap items-center gap-1.5">
                     <Badge
-                      variant={product.stock > 5 ? 'success' : product.stock > 0 ? 'warning' : 'danger'}
+                      variant={
+                        product.stock > 5 ? 'success' : product.stock > 0 ? 'warning' : 'danger'
+                      }
                     >
                       {product.stock} in stock
                     </Badge>
@@ -195,7 +201,9 @@ export default function AdminProductsPage() {
               </div>
 
               <div className="flex items-center justify-between border-t border-ink-100 px-4 py-3">
-                <span className="text-xs text-ink-400">{product.category?.name ?? 'Uncategorised'}</span>
+                <span className="text-xs text-ink-400">
+                  {product.category?.name ?? 'Uncategorised'}
+                </span>
                 <Button variant="ghost" size="sm" onClick={() => openEdit(product)}>
                   <Pencil className="h-3.5 w-3.5" />
                   Edit

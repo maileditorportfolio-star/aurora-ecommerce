@@ -51,7 +51,9 @@ export default function RegisterPage() {
             <span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-indigo-600 text-white shadow-soft">
               <UserPlus className="h-5 w-5" />
             </span>
-            <h1 className="mt-5 text-2xl font-bold tracking-tight text-ink-900">Create your account</h1>
+            <h1 className="mt-5 text-2xl font-bold tracking-tight text-ink-900">
+              Create your account
+            </h1>
             <p className="mt-2 text-sm text-ink-500">
               One account for faster checkout, order tracking and support chat.
             </p>

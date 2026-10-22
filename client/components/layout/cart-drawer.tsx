@@ -80,7 +80,11 @@ export function CartDrawer() {
                         <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-ink-100">
                           {item.imageUrl ? (
                             // eslint-disable-next-line @next/next/no-img-element
-                            <img src={item.imageUrl} alt={item.name} className="h-full w-full object-cover" />
+                            <img
+                              src={item.imageUrl}
+                              alt={item.name}
+                              className="h-full w-full object-cover"
+                            />
                           ) : (
                             <div className="h-full w-full animate-pulse bg-gradient-to-br from-indigo-200 to-indigo-400" />
                           )}

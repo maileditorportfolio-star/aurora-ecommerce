@@ -8,6 +8,11 @@
     "dev": "nodemon src/index.js",
     "build": "prisma generate",
     "start": "node src/index.js",
+    "lint": "eslint src tests --ext .js",
+    "lint:fix": "eslint src tests --ext .js --fix",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:deploy": "prisma migrate deploy",
@@ -32,8 +37,11 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "eslint": "^8.57.1",
     "nodemon": "^3.1.9",
-    "prisma": "^6.2.1"
+    "prisma": "^6.2.1",
+    "supertest": "^7.3.1",
+    "vitest": "^3.2.7"
   },
   "engines": {
     "node": ">=18.17.0"

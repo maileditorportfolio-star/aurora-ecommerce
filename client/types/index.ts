@@ -61,12 +61,7 @@ export interface CartItem {
 }
 
 export type OrderStatus =
-  | 'PENDING'
-  | 'CONFIRMED'
-  | 'PROCESSING'
-  | 'SHIPPED'
-  | 'DELIVERED'
-  | 'CANCELLED';
+  'PENDING' | 'CONFIRMED' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
 
 export interface OrderItem {
   id: string;

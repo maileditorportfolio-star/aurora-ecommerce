@@ -39,10 +39,28 @@ interface Stats {
 const PIE_COLORS = ['#6366f1', '#38bdf8', '#a855f7', '#10b981', '#f59e0b', '#f43f5e'];
 
 const cards = [
-  { key: 'revenue', label: 'Revenue', icon: DollarSign, accent: 'text-indigo-600', bg: 'bg-indigo-50' },
+  {
+    key: 'revenue',
+    label: 'Revenue',
+    icon: DollarSign,
+    accent: 'text-indigo-600',
+    bg: 'bg-indigo-50',
+  },
   { key: 'orders', label: 'Orders', icon: ShoppingCart, accent: 'text-sky-600', bg: 'bg-sky-50' },
-  { key: 'products', label: 'Products', icon: Boxes, accent: 'text-violet-600', bg: 'bg-violet-50' },
-  { key: 'customers', label: 'Customers', icon: Users, accent: 'text-emerald-600', bg: 'bg-emerald-50' },
+  {
+    key: 'products',
+    label: 'Products',
+    icon: Boxes,
+    accent: 'text-violet-600',
+    bg: 'bg-violet-50',
+  },
+  {
+    key: 'customers',
+    label: 'Customers',
+    icon: Users,
+    accent: 'text-emerald-600',
+    bg: 'bg-emerald-50',
+  },
 ] as const;
 
 export default function AdminDashboardPage() {
@@ -66,7 +84,9 @@ export default function AdminDashboardPage() {
       >
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-ink-900">Dashboard</h1>
-          <p className="mt-1.5 text-sm text-ink-500">Live performance across the last six months.</p>
+          <p className="mt-1.5 text-sm text-ink-500">
+            Live performance across the last six months.
+          </p>
         </div>
         {stats && (
           <p className="rounded-full bg-white px-4 py-2 text-xs font-medium text-ink-600 shadow-soft">
@@ -90,7 +110,9 @@ export default function AdminDashboardPage() {
               className="rounded-3xl border border-ink-100 bg-white p-6 shadow-soft"
             >
               <div className="flex items-start justify-between">
-                <span className={`grid h-11 w-11 place-items-center rounded-2xl ${card.bg} ${card.accent}`}>
+                <span
+                  className={`grid h-11 w-11 place-items-center rounded-2xl ${card.bg} ${card.accent}`}
+                >
                   <Icon className="h-5 w-5" />
                 </span>
                 {card.key === 'revenue' && stats && (
@@ -120,7 +142,10 @@ export default function AdminDashboardPage() {
 
           <div className="mt-6 h-72">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={stats?.revenueByMonth ?? []} margin={{ top: 8, right: 8, left: -18, bottom: 0 }}>
+              <AreaChart
+                data={stats?.revenueByMonth ?? []}
+                margin={{ top: 8, right: 8, left: -18, bottom: 0 }}
+              >
                 <defs>
                   <linearGradient id="revenueFill" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="#6366f1" stopOpacity={0.4} />
@@ -128,7 +153,13 @@ export default function AdminDashboardPage() {
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="4 4" stroke="#e2e8f0" vertical={false} />
-                <XAxis dataKey="month" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                <XAxis
+                  dataKey="month"
+                  stroke="#94a3b8"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
                 <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
                 <Tooltip
                   contentStyle={{
@@ -207,7 +238,14 @@ export default function AdminDashboardPage() {
                 margin={{ top: 0, right: 16, left: 8, bottom: 0 }}
               >
                 <CartesianGrid strokeDasharray="4 4" stroke="#e2e8f0" horizontal={false} />
-                <XAxis type="number" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} />
+                <XAxis
+                  type="number"
+                  stroke="#94a3b8"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                  allowDecimals={false}
+                />
                 <YAxis
                   type="category"
                   dataKey="name"

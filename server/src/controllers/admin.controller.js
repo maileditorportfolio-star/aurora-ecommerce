@@ -1,7 +1,20 @@
 const prisma = require('../config/prisma');
 const asyncHandler = require('../utils/asyncHandler');
 
-const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const MONTH_LABELS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
 
 /** GET /api/admin/stats — dashboard metrics for the admin console. */
 const stats = asyncHandler(async (_req, res) => {
@@ -32,7 +45,9 @@ const stats = asyncHandler(async (_req, res) => {
     const total = delivered
       .filter((order) => {
         const created = new Date(order.createdAt);
-        return created.getFullYear() === date.getFullYear() && created.getMonth() === date.getMonth();
+        return (
+          created.getFullYear() === date.getFullYear() && created.getMonth() === date.getMonth()
+        );
       })
       .reduce((sum, order) => sum + order.total, 0);
 
@@ -41,17 +56,24 @@ const stats = asyncHandler(async (_req, res) => {
       revenue: Math.round(total),
       orders: delivered.filter((order) => {
         const created = new Date(order.createdAt);
-        return created.getFullYear() === date.getFullYear() && created.getMonth() === date.getMonth();
+        return (
+          created.getFullYear() === date.getFullYear() && created.getMonth() === date.getMonth()
+        );
       }).length,
     };
   });
 
-  const statusCounts = ['PENDING', 'CONFIRMED', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED'].map(
-    (status) => ({
-      status,
-      count: orders.filter((order) => order.status === status).length,
-    }),
-  );
+  const statusCounts = [
+    'PENDING',
+    'CONFIRMED',
+    'PROCESSING',
+    'SHIPPED',
+    'DELIVERED',
+    'CANCELLED',
+  ].map((status) => ({
+    status,
+    count: orders.filter((order) => order.status === status).length,
+  }));
 
   const soldByProduct = new Map();
   orders.forEach((order) => {
@@ -146,7 +168,12 @@ const customers = asyncHandler(async (req, res) => {
     success: true,
     data: {
       customers: withTotals,
-      pagination: { page: pageNumber, limit: pageSize, total, pages: Math.max(1, Math.ceil(total / pageSize)) },
+      pagination: {
+        page: pageNumber,
+        limit: pageSize,
+        total,
+        pages: Math.max(1, Math.ceil(total / pageSize)),
+      },
     },
   });
 });

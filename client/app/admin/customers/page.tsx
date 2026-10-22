@@ -27,10 +27,7 @@ export default function AdminCustomersPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <motion.header
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
+      <motion.header initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-3xl font-bold tracking-tight text-ink-900">Customers</h1>
         <p className="mt-1.5 text-sm text-ink-500">
           {loading ? 'Loading customers…' : `${customers.length} registered customer(s)`}
@@ -88,9 +85,7 @@ export default function AdminCustomersPage() {
                 </span>
               </div>
 
-              <span className="truncate text-sm text-ink-500">
-                {customer.phone || '—'}
-              </span>
+              <span className="truncate text-sm text-ink-500">{customer.phone || '—'}</span>
 
               <span className="text-sm font-semibold text-ink-900">{customer.orderCount}</span>
 

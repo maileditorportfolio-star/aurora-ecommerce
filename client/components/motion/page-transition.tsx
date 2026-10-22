@@ -20,7 +20,13 @@ const pageVariants: Variants = {
 };
 
 /** Wraps every route in a soft enter/exit transition. Mounted from `app/template.tsx`. */
-export function PageTransition({ children, className }: { children: React.ReactNode; className?: string }) {
+export function PageTransition({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
     <motion.div
       variants={pageVariants}

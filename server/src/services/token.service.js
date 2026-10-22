@@ -3,11 +3,9 @@ const env = require('../config/env');
 const ApiError = require('../utils/ApiError');
 
 const signToken = (user) =>
-  jwt.sign(
-    { sub: user.id, email: user.email, role: user.role },
-    env.jwt.secret,
-    { expiresIn: env.jwt.expiresIn }
-  );
+  jwt.sign({ sub: user.id, email: user.email, role: user.role }, env.jwt.secret, {
+    expiresIn: env.jwt.expiresIn,
+  });
 
 const verifyToken = (token) => {
   try {

@@ -53,7 +53,7 @@ module.exports = {
       backgroundImage: {
         'grid-indigo':
           'linear-gradient(to right, rgb(99 102 241 / 0.08) 1px, transparent 1px), linear-gradient(to bottom, rgb(99 102 241 / 0.08) 1px, transparent 1px)',
-        'aurora':
+        aurora:
           'radial-gradient(60% 60% at 15% 10%, rgb(99 102 241 / 0.35) 0%, transparent 60%), radial-gradient(50% 50% at 85% 0%, rgb(56 189 248 / 0.28) 0%, transparent 60%), radial-gradient(60% 60% at 50% 100%, rgb(168 85 247 / 0.22) 0%, transparent 60%)',
       },
       backgroundSize: {

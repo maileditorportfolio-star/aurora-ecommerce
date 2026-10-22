@@ -38,8 +38,10 @@ export default function CheckoutPage() {
 
   const shipping = subtotal() >= 5000 ? 0 : 60;
 
-  const update = (key: keyof typeof form) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-    setForm((current) => ({ ...current, [key]: event.target.value }));
+  const update =
+    (key: keyof typeof form) =>
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+      setForm((current) => ({ ...current, [key]: event.target.value }));
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -81,9 +83,8 @@ export default function CheckoutPage() {
         </span>
         <h1 className="text-3xl font-bold tracking-tight text-ink-900">Order confirmed</h1>
         <p className="text-sm text-ink-500">
-          Your order number is{' '}
-          <span className="font-semibold text-ink-900">{orderNumber}</span>. We will call you to
-          confirm delivery details.
+          Your order number is <span className="font-semibold text-ink-900">{orderNumber}</span>. We
+          will call you to confirm delivery details.
         </p>
         <div className="flex gap-3">
           <Button href="/account">Track my order</Button>
@@ -213,9 +214,7 @@ export default function CheckoutPage() {
                   <span
                     className={cn(
                       'grid h-10 w-10 place-items-center rounded-xl transition-colors',
-                      paymentMethod === id
-                        ? 'bg-indigo-600 text-white'
-                        : 'bg-ink-100 text-ink-500',
+                      paymentMethod === id ? 'bg-indigo-600 text-white' : 'bg-ink-100 text-ink-500',
                     )}
                   >
                     <Icon className="h-5 w-5" />
@@ -232,7 +231,8 @@ export default function CheckoutPage() {
                 className="mt-5 flex items-start gap-2 rounded-2xl bg-amber-50 p-4 text-xs text-amber-800"
               >
                 <Landmark className="mt-0.5 h-4 w-4 shrink-0" />
-                Pay the delivery agent in cash when your order arrives. We will call to confirm first.
+                Pay the delivery agent in cash when your order arrives. We will call to confirm
+                first.
               </motion.p>
             )}
           </section>
@@ -244,10 +244,12 @@ export default function CheckoutPage() {
 
             <ul className="mt-5 flex flex-col gap-3">
               {items.map((item) => (
-                <li key={item.productId} className="flex items-center justify-between gap-3 text-sm">
+                <li
+                  key={item.productId}
+                  className="flex items-center justify-between gap-3 text-sm"
+                >
                   <span className="min-w-0 truncate text-ink-600">
-                    {item.name}{' '}
-                    <span className="text-ink-400">× {item.quantity}</span>
+                    {item.name} <span className="text-ink-400">× {item.quantity}</span>
                   </span>
                   <span className="shrink-0 font-semibold text-ink-900">
                     {formatCurrency(item.price * item.quantity)}

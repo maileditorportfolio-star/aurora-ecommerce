@@ -34,7 +34,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         transition={{ duration: 0.2 }}
         className={cn(
           'relative flex items-center rounded-2xl border bg-white transition-colors duration-200',
-          error ? 'border-rose-300' : focused ? 'border-indigo-400' : 'border-ink-200 hover:border-ink-300',
+          error
+            ? 'border-rose-300'
+            : focused
+              ? 'border-indigo-400'
+              : 'border-ink-200 hover:border-ink-300',
         )}
       >
         {icon && <span className="absolute left-4 text-ink-400">{icon}</span>}
