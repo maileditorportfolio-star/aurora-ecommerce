@@ -3,14 +3,14 @@
 # Build from the repository root so the npm workspace lockfile is available:
 #   docker build -f client/Dockerfile -t aurora-storefront .
 
-FROM node:20-alpine AS deps
+FROM node:25-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
 COPY client/package.json ./client/package.json
 COPY server/package.json ./server/package.json
 RUN npm ci --workspace client --include-workspace-root
 
-FROM node:20-alpine AS build
+FROM node:25-alpine AS build
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 
@@ -25,7 +25,7 @@ ENV NEXT_PUBLIC_SOCKET_URL=$NEXT_PUBLIC_SOCKET_URL
 
 RUN npm run build --workspace client
 
-FROM node:20-alpine AS runner
+FROM node:25-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
