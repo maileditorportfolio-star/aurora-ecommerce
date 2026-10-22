@@ -6,13 +6,29 @@ updates:
       interval: weekly
       day: monday
       time: '06:00'
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 4
     groups:
       minor-and-patch:
         applies-to: version-updates
         update-types:
           - minor
           - patch
+    ignore:
+      # These majors require a coordinated migration and are handled by hand.
+      - dependency-name: next
+        update-types: ['version-update:semver-major']
+      - dependency-name: react
+        update-types: ['version-update:semver-major']
+      - dependency-name: react-dom
+        update-types: ['version-update:semver-major']
+      - dependency-name: prisma
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@prisma/client'
+        update-types: ['version-update:semver-major']
+      - dependency-name: tailwindcss
+        update-types: ['version-update:semver-major']
+      - dependency-name: eslint
+        update-types: ['version-update:semver-major']
     labels:
       - dependencies
     commit-message:
@@ -25,22 +41,10 @@ updates:
       interval: weekly
       day: monday
       time: '06:00'
+    open-pull-requests-limit: 3
     labels:
       - dependencies
       - ci
-
-  - package-ecosystem: docker
-    directory: /server
-    schedule:
-      interval: monthly
-    labels:
-      - dependencies
-      - docker
-
-  - package-ecosystem: docker
-    directory: /client
-    schedule:
-      interval: monthly
-    labels:
-      - dependencies
-      - docker
+    commit-message:
+      prefix: ci
+      include: scope
