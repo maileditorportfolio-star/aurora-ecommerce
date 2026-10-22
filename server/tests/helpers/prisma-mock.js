@@ -82,6 +82,19 @@ export const resetPrisma = (prisma) => {
   prisma.$queryRaw.mockResolvedValue([{ 1: 1 }]);
   prisma.$connect.mockResolvedValue(undefined);
   prisma.$disconnect.mockResolvedValue(undefined);
+
+  // Interactive transactions receive a transaction client that shares the
+  // same model mocks, so a spec can assert on the writes it performs.
+  prisma.$transaction.mockImplementation(async (callback) => {
+    if (typeof callback !== 'function') return callback;
+    return callback({
+      user: prisma.user,
+      product: prisma.product,
+      order: prisma.order,
+      category: prisma.category,
+      message: prisma.message,
+    });
+  });
 };
 
 export { nodeRequire };
