@@ -6,9 +6,26 @@ All notable changes to Aurora Commerce are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- The storefront now runs on Next.js 16.4 and React 19, with `@types/react` 19
+  and ESLint 9 serving the new flat config.
+- `npm run lint` in the storefront uses the ESLint CLI because `next lint` was
+  removed in Next.js 16.
+
+### Fixed
+
+- The mobile navigation closes from the link handler instead of an effect that
+  set state on every route change.
+- The product detail page tracks the slug it has loaded, so navigating between
+  products no longer issues a synchronous state update before fetching and can
+  no longer apply a stale response.
+
+## [0.2.1] - 2026-10-22
+
 ### Added
 
-- Vitest test suites for the API (77 specs) and the storefront (20 specs), and
+- Vitest test suites for the API (82 specs) and the storefront (20 specs), and
   root `test`, `test:server`, `test:client` and `test:coverage` scripts.
 - Structured Pino logging with request logging, status-based severity and
   redaction of credentials, cookies and tokens.
@@ -39,7 +56,7 @@ All notable changes to Aurora Commerce are documented here. The format follows
 - The product catalogue is split into a server page and a client component so
   it builds with the App Router.
 
-## [0.1.0]
+## [0.1.0] - 2025-01-01
 
 ### Added
 

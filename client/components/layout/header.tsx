@@ -35,10 +35,6 @@ export function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [pathname]);
-
   return (
     <header
       className={cn(
@@ -155,6 +151,7 @@ export function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
+                  onClick={() => setMenuOpen(false)}
                   className="rounded-xl px-4 py-3 text-sm font-medium text-ink-700 transition-colors hover:bg-indigo-50 hover:text-indigo-700"
                 >
                   {link.label}

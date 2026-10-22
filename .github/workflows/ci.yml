@@ -42,9 +42,9 @@ jobs:
       - name: Test
         run: npm test
 
-      # The remaining advisories are transitive findings inside Next.js 14 and
-      # prisma that can only be resolved by a major framework upgrade, so this
-      # is reported without blocking the build.
+      # The remaining advisories sit in the Prisma CLI toolchain and in dev-only
+      # test/build tooling; clearing them needs a Prisma 8 / Vitest 5 major. They
+      # are reported for visibility without blocking the build.
       - name: Dependency audit
         run: npm audit --audit-level=high --omit=dev
         continue-on-error: true
