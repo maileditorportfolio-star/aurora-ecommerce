@@ -22,26 +22,36 @@ const highlights = [
 
 export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
-  const [product, setProduct] = useState<Product | null>(null);
-  const [related, setRelated] = useState<Product[]>([]);
   const [quantity, setQuantity] = useState(1);
-  const [loading, setLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
   const [added, setAdded] = useState(false);
+  const [result, setResult] = useState<{
+    slug: string;
+    product: Product | null;
+    related: Product[];
+    notFound: boolean;
+  }>({ slug: '', product: null, related: [], notFound: false });
+
+  const loading = result.slug !== slug;
+  const product = result.product;
+  const related = result.related;
+  const notFound = result.notFound;
 
   const addItem = useCartStore((state) => state.addItem);
 
   useEffect(() => {
     if (!slug) return;
-    setLoading(true);
+    let active = true;
     api.products
       .detail(slug)
       .then(({ product: found, related: relatedProducts }) => {
-        setProduct(found);
-        setRelated(relatedProducts);
+        if (active) setResult({ slug, product: found, related: relatedProducts, notFound: false });
       })
-      .catch(() => setNotFound(true))
-      .finally(() => setLoading(false));
+      .catch(() => {
+        if (active) setResult({ slug, product: null, related: [], notFound: true });
+      });
+    return () => {
+      active = false;
+    };
   }, [slug]);
 
   if (loading) {
@@ -102,7 +112,6 @@ export default function ProductDetailPage() {
           className="relative aspect-square overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-indigo-100 via-white to-sky-100 shadow-soft"
         >
           {product.imageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
             <motion.img
               src={product.imageUrl}
               alt={product.name}

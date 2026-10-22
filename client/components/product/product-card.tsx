@@ -27,7 +27,6 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
         className="relative block aspect-[4/3] overflow-hidden bg-ink-100"
       >
         {product.imageUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
           <motion.img
             src={product.imageUrl}
             alt={product.name}

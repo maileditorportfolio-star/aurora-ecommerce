@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/maileditorportfolio-star/aurora-ecommerce/actions/workflows/ci.yml/badge.svg)](https://github.com/maileditorportfolio-star/aurora-ecommerce/actions/workflows/ci.yml)
 
-A production-ready, full-stack e-commerce platform: a **Next.js 14** storefront paired with an **Express + Prisma + MySQL** API, complete with JWT auth, role-based admin controls, live chat, and a seeded demo catalogue. The API is covered by **82 Vitest specs** and the storefront by **20 React Testing Library specs**, all runnable without a database.
+A production-ready, full-stack e-commerce platform: a **Next.js 16** storefront paired with an **Express + Prisma + MySQL** API, complete with JWT auth, role-based admin controls, live chat, and a seeded demo catalogue. The API is covered by **82 Vitest specs** and the storefront by **20 React Testing Library specs**, all runnable without a database.
 
 This repository contains **source code only**. No database, no credentials, and no runtime data are committed — you create your own environment from the provided `.env.example` files.
 
@@ -28,7 +28,7 @@ This repository contains **source code only**. No database, no credentials, and 
 
 ## Features
 
-### Storefront (Next.js 14 App Router)
+### Storefront (Next.js 16 App Router)
 
 - **Home** — hero, animated aurora gradient, feature grid, product highlights
 - **Catalogue** (`/products`) — search, category filter, price/rating sorting, responsive grid
@@ -56,7 +56,7 @@ This repository contains **source code only**. No database, no credentials, and 
 
 | Layer     | Technology                                             |
 | --------- | ------------------------------------------------------ |
-| Frontend  | Next.js 14.2 (App Router), React 18, TypeScript        |
+| Frontend  | Next.js 16.4 (App Router), React 19, TypeScript        |
 | Styling   | Tailwind CSS, Framer Motion, Lucide icons               |
 | State     | Zustand (cart + auth, persisted to `localStorage`)      |
 | Backend   | Node.js, Express 4, Socket.IO                           |
@@ -69,7 +69,7 @@ This repository contains **source code only**. No database, no credentials, and 
 
 ## Requirements
 
-- **Node.js 18.17+** (developed on 20/24)
+- **Node.js 20.9+** (developed on 20/24)
 - **npm 9+**
 - **MySQL 8+** or **MariaDB 10.6+** running locally
 - A MySQL user with permission to create databases (or an existing empty database)
@@ -225,8 +225,8 @@ npm run dev
 aurora-ecommerce/
 ├── .github/
 │   ├── workflows/ci.yml        # Format, lint, typecheck, test, build, Docker
-│   └── dependabot.yml          # Weekly npm / actions / Docker updates
-├── client/                     # Next.js 14 storefront
+│   └── dependabot.yml          # Weekly npm / actions updates
+├── client/                     # Next.js 16 storefront
 │   ├── app/                    # App Router routes
 │   │   ├── page.tsx            # Home
 │   │   ├── products/           # Catalogue + product detail
@@ -286,7 +286,7 @@ Run from the repository root unless noted.
 | `npm run dev:client`     | Storefront only, on `:3000`                                   |
 | `npm run build`          | Prisma generate + production build of both workspaces         |
 | `npm start`              | Runs the built API and the built storefront                   |
-| `npm run lint`           | ESLint for the API and `next lint` for the storefront          |
+| `npm run lint`           | ESLint for the API and the storefront                         |
 | `npm run format`         | Rewrites every file with Prettier                             |
 | `npm run format:check`   | Fails if any file is not Prettier-formatted                   |
 | `npm run typecheck`      | `tsc --noEmit` for the client                                 |
