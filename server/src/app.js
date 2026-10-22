@@ -29,7 +29,11 @@ app.use(
 
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true }));
-app.use(morgan(env.isProduction ? 'combined' : 'dev'));
+app.use(
+  morgan(env.isProduction ? 'combined' : 'dev', {
+    skip: () => env.nodeEnv === 'test',
+  }),
+);
 
 app.get('/', (_req, res) => {
   res.json({
