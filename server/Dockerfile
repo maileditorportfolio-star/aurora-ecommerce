@@ -3,7 +3,7 @@
 # Build from the repository root so the npm workspace lockfile is available:
 #   docker build -f server/Dockerfile -t aurora-api .
 
-FROM node:20-alpine AS base
+FROM node:25-alpine AS base
 WORKDIR /app
 RUN apk add --no-cache openssl
 
