@@ -1,6 +1,8 @@
 # Aurora Commerce
 
-A production-ready, full-stack e-commerce platform: a **Next.js 14** storefront paired with an **Express + Prisma + MySQL** API, complete with JWT auth, role-based admin controls, live chat, and a seeded demo catalogue.
+[![CI](https://github.com/maileditorportfolio-star/aurora-ecommerce/actions/workflows/ci.yml/badge.svg)](https://github.com/maileditorportfolio-star/aurora-ecommerce/actions/workflows/ci.yml)
+
+A production-ready, full-stack e-commerce platform: a **Next.js 14** storefront paired with an **Express + Prisma + MySQL** API, complete with JWT auth, role-based admin controls, live chat, and a seeded demo catalogue. The API is covered by **77 Vitest specs** and the storefront by **20 React Testing Library specs**, all runnable without a database.
 
 This repository contains **source code only**. No database, no credentials, and no runtime data are committed — you create your own environment from the provided `.env.example` files.
 
@@ -15,10 +17,12 @@ This repository contains **source code only**. No database, no credentials, and 
 5. [Local setup](#local-setup)
 6. [Project structure](#project-structure)
 7. [Available scripts](#available-scripts)
-8. [Customizing the project](#customizing-the-project)
-9. [API reference](#api-reference)
-10. [Deployment](#deployment)
-11. [Troubleshooting](#troubleshooting)
+8. [Testing](#testing)
+9. [Customizing the project](#customizing-the-project)
+10. [API reference](#api-reference)
+11. [Deployment](#deployment)
+12. [Docker](#docker)
+13. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -151,6 +155,10 @@ DATABASE_URL="mysql://root:yourpassword@localhost:3306/aurora_commerce"
 JWT_SECRET="change-me-to-a-long-random-string"
 JWT_EXPIRES_IN="7d"
 
+# Security
+BCRYPT_ROUNDS=12
+AUTH_RATE_LIMIT=20
+
 # Client
 CLIENT_URL="http://localhost:3000"
 CORS_ORIGINS="http://localhost:3000,http://127.0.0.1:3000"
@@ -159,6 +167,9 @@ CORS_ORIGINS="http://localhost:3000,http://127.0.0.1:3000"
 SHIPPING_FLAT_RATE=60
 SHIPPING_FREE_THRESHOLD=5000
 TAX_RATE=0
+
+# Logging (trace, debug, info, warn, error, fatal)
+LOG_LEVEL=debug
 ```
 
 **Client** — copy `client/.env.example` to `client/.env.local`:
@@ -212,6 +223,9 @@ npm run dev
 
 ```
 aurora-ecommerce/
+├── .github/
+│   ├── workflows/ci.yml        # Format, lint, typecheck, test, build, Docker
+│   └── dependabot.yml          # Weekly npm / actions / Docker updates
 ├── client/                     # Next.js 14 storefront
 │   ├── app/                    # App Router routes
 │   │   ├── page.tsx            # Home
@@ -225,8 +239,11 @@ aurora-ecommerce/
 │   │   ├── admin/  chat/  home/  layout/  motion/  product/  ui/
 │   ├── lib/                    # api.ts (typed API client), utils.ts (currency, dates)
 │   ├── store/                  # Zustand stores: auth.ts, cart.ts
+│   ├── tests/                  # Vitest setup + React Testing Library specs
 │   ├── types/                  # Shared TypeScript types
 │   ├── tailwind.config.js      # Theme tokens (colors, fonts, shadows, animations)
+│   ├── vitest.config.ts
+│   ├── Dockerfile
 │   └── next.config.js
 │
 ├── server/                     # Express + Prisma API
@@ -237,7 +254,7 @@ aurora-ecommerce/
 │   ├── src/
 │   │   ├── index.js            # Entry point
 │   │   ├── app.js              # Express app, middleware, CORS
-│   │   ├── config/             # env.js (config), prisma.js (client)
+│   │   ├── config/             # env.js, prisma.js, logger.js (Pino)
 │   │   ├── controllers/        # auth, product, order, admin, chat
 │   │   ├── middleware/         # auth.js (guards), error.js
 │   │   ├── routes/             # Route definitions
@@ -245,8 +262,13 @@ aurora-ecommerce/
 │   │   ├── socket/             # Socket.IO chat
 │   │   ├── utils/              # ApiError, asyncHandler
 │   │   └── validation/         # schemas.js (Zod)
+│   ├── tests/                  # Vitest specs + Prisma mock harness
+│   ├── vitest.config.js
+│   ├── Dockerfile
 │   └── .env.example
 │
+├── docker-compose.yml          # MySQL 8 + API + storefront
+├── .prettierrc                 # Shared formatting rules
 ├── package.json                # npm workspaces root + shared scripts
 └── .gitignore
 ```
@@ -257,19 +279,55 @@ aurora-ecommerce/
 
 Run from the repository root unless noted.
 
-| Command                | What it does                                              |
-| ---------------------- | --------------------------------------------------------- |
-| `npm run dev`          | Runs API (nodemon) and storefront (`next dev`) together    |
-| `npm run dev:server`   | API only, on `:4000`                                        |
-| `npm run dev:client`   | Storefront only, on `:3000`                                 |
-| `npm run build`        | Prisma generate + production build of the storefront        |
-| `npm start`            | Runs the built API and the built storefront                 |
-| `npm run lint`         | ESLint via `next lint`                                      |
-| `npm run typecheck`    | `tsc --noEmit` for the client                              |
-| `npm run prisma:migrate` | Create/apply a development migration                    |
-| `npm run prisma:deploy`  | Apply migrations in production (no prompts)              |
-| `npm run prisma:studio`  | Browse your database in a GUI                           |
-| `npm run seed`         | Insert demo data (safe to re-run)                           |
+| Command                  | What it does                                                |
+| ------------------------ | ----------------------------------------------------------- |
+| `npm run dev`            | Runs API (nodemon) and storefront (`next dev`) together      |
+| `npm run dev:server`     | API only, on `:4000`                                          |
+| `npm run dev:client`     | Storefront only, on `:3000`                                   |
+| `npm run build`          | Prisma generate + production build of both workspaces         |
+| `npm start`              | Runs the built API and the built storefront                   |
+| `npm run lint`           | ESLint for the API and `next lint` for the storefront          |
+| `npm run format`         | Rewrites every file with Prettier                             |
+| `npm run format:check`   | Fails if any file is not Prettier-formatted                   |
+| `npm run typecheck`      | `tsc --noEmit` for the client                                 |
+| `npm test`               | Runs the API and storefront suites                            |
+| `npm run test:server`    | API specs only (Vitest + Supertest)                          |
+| `npm run test:client`    | Storefront specs only (Vitest + Testing Library)             |
+| `npm run test:coverage`  | Both suites with an HTML coverage report                     |
+| `npm run audit`          | `npm audit --audit-level=high --omit=dev`                    |
+| `npm run prisma:migrate` | Create/apply a development migration                         |
+| `npm run prisma:deploy`  | Apply migrations in production (no prompts)                  |
+| `npm run prisma:studio`  | Browse your database in a GUI                                |
+| `npm run seed`           | Insert demo data (safe to re-run)                            |
+| `npm run docker:up`      | Builds and starts MySQL, the API and the storefront          |
+| `npm run docker:down`    | Stops the Docker Compose stack                               |
+
+---
+
+## Testing
+
+The repository ships with two independent Vitest suites. Neither needs MySQL,
+so `npm test` works on a clean checkout.
+
+```bash
+npm test                # everything
+npm run test:server     # 77 API specs
+npm run test:client     # 20 storefront specs
+npm run test:coverage   # + coverage reports
+```
+
+| Suite      | Tooling                                | What it covers                                                                 |
+| ---------- | -------------------------------------- | ------------------------------------------------------------------------------ |
+| API        | Vitest, Supertest, mocked Prisma client | Auth, checkout and orders, products, admin metrics, chat, structured logging   |
+| Storefront | Vitest, jsdom, React Testing Library    | Checkout flow (validation, totals, submission, errors) and the product catalogue |
+
+The API is CommonJS, so the Prisma mock is injected into `require.cache` before
+the app is loaded. That keeps the HTTP layer, middleware and validation fully
+exercised without touching a real database.
+
+CI (`.github/workflows/ci.yml`) runs formatting, linting, typechecking, both
+test suites, an audit, both production builds and both Docker image builds on
+every push and pull request.
 
 ---
 
@@ -475,6 +533,42 @@ npm run seed
 ```
 
 Then sign in and change the seeded passwords immediately.
+
+---
+
+## Docker
+
+The whole stack — MySQL 8, the API and the storefront — runs with one command.
+Prisma migrations are applied automatically on API startup.
+
+```bash
+cp .env.example .env        # optional: override defaults
+npm run docker:up           # builds and starts everything
+```
+
+| Service      | URL                             |
+| ------------ | ------------------------------- |
+| Storefront   | <http://localhost:3000>         |
+| API          | <http://localhost:4000/api/health> |
+| MySQL        | `localhost:3306`                |
+
+Seed the demo catalogue inside the running API container:
+
+```bash
+docker compose exec server npm run seed
+```
+
+Useful commands:
+
+```bash
+npm run docker:logs         # follow all container logs
+npm run docker:down         # stop the stack
+docker compose down -v      # stop and delete the database volume
+```
+
+Both images are multi-stage and run as the unprivileged `node` user with a
+container health check. They are also built in CI to catch Dockerfile
+regressions.
 
 ---
 
