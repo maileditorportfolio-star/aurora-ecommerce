@@ -14,20 +14,9 @@ updates:
           - minor
           - patch
     ignore:
-      # These majors require a coordinated migration and are handled by hand.
-      - dependency-name: next
-        update-types: ['version-update:semver-major']
-      - dependency-name: react
-        update-types: ['version-update:semver-major']
-      - dependency-name: react-dom
-        update-types: ['version-update:semver-major']
-      - dependency-name: prisma
-        update-types: ['version-update:semver-major']
-      - dependency-name: '@prisma/client'
-        update-types: ['version-update:semver-major']
-      - dependency-name: tailwindcss
-        update-types: ['version-update:semver-major']
-      - dependency-name: eslint
+      # Major upgrades are coordinated by hand: they need migration work and
+      # a full review, so Dependabot only proposes minor and patch updates.
+      - dependency-name: '*'
         update-types: ['version-update:semver-major']
     labels:
       - dependencies
