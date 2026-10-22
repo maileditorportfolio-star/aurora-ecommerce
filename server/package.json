@@ -1,6 +1,6 @@
 {
   "name": "@aurora/server",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "description": "Aurora Commerce API — Express + Socket.io + Prisma (MySQL)",
   "main": "src/index.js",
@@ -38,12 +38,13 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^5.0.5",
     "eslint": "^8.57.1",
     "nodemon": "^3.1.9",
     "pino-pretty": "^13.2.0",
     "prisma": "^6.2.1",
     "supertest": "^7.3.1",
-    "vitest": "^3.2.7"
+    "vitest": "^5.0.5"
   },
   "engines": {
     "node": ">=18.17.0"

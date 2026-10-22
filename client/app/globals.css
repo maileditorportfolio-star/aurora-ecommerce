@@ -1,6 +1,21 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+/* Design tokens (colors, fonts, shadows, animations) live in the legacy
+   JavaScript config so they stay in one place. */
+@config '../tailwind.config.js';
+
+/* Tailwind v4 scans sources automatically, but the legacy config's `content`
+   list is ignored, so the scan roots are declared explicitly. */
+@source '../app/**/*.{ts,tsx}';
+@source '../components/**/*.{ts,tsx}';
+@source '../lib/**/*.{ts,tsx}';
+@source '../store/**/*.{ts,tsx}';
+
+/* Tailwind v4 has no theme namespace for background sizes, so the grid
+   background size is declared as a first-class utility. */
+@utility bg-grid {
+  background-size: 44px 44px;
+}
 
 @layer base {
   :root {
@@ -80,9 +95,5 @@
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
-  }
-
-  .text-balance {
-    text-wrap: balance;
   }
 }

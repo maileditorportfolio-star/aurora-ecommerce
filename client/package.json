@@ -1,6 +1,6 @@
 {
   "name": "@aurora/client",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "description": "Aurora Commerce storefront — Next.js 16 App Router",
   "scripts": {
@@ -25,6 +25,7 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.8",
@@ -32,13 +33,13 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^4.7.0",
-    "autoprefixer": "^10.4.20",
+    "@vitest/coverage-v8": "^5.0.5",
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.4.2",
     "jsdom": "^26.1.0",
     "postcss": "^8.4.49",
-    "tailwindcss": "^3.4.17",
+    "tailwindcss": "^4.3.3",
     "typescript": "^5.7.2",
-    "vitest": "^3.2.7"
+    "vitest": "^5.0.5"
   }
 }

@@ -57,7 +57,7 @@ This repository contains **source code only**. No database, no credentials, and 
 | Layer     | Technology                                             |
 | --------- | ------------------------------------------------------ |
 | Frontend  | Next.js 16.4 (App Router), React 19, TypeScript        |
-| Styling   | Tailwind CSS, Framer Motion, Lucide icons               |
+| Styling   | Tailwind CSS 4, Framer Motion, Lucide icons             |
 | State     | Zustand (cart + auth, persisted to `localStorage`)      |
 | Backend   | Node.js, Express 4, Socket.IO                           |
 | Database  | MySQL 8 / MariaDB via Prisma 6                          |

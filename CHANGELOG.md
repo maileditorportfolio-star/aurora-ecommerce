@@ -6,7 +6,17 @@ All notable changes to Aurora Commerce are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- `@vitest/coverage-v8` in both workspaces so `npm run test:coverage` runs server-side and client-side coverage.
+
 ### Changed
+
+- The storefront now runs on Tailwind CSS 4 (`@tailwindcss/postcss`, `@config`/`@source` in `globals.css`, legacy `tailwind.config.js` tokens kept via `@config`), upgrading from Tailwind 3.
+- Both workspaces run Vitest 5 (server specs + client specs), bumped from Vitest 3.
+- All packages bumped to `0.3.0`; root package description updated to Next.js 16.
+
+### Fixed
 
 - The storefront now runs on Next.js 16.4 and React 19, with `@types/react` 19
   and ESLint 9 serving the new flat config.

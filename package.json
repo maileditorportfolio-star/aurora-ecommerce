@@ -1,8 +1,8 @@
 {
   "name": "aurora-ecommerce",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
-  "description": "Aurora Commerce — Next.js 14 + Express + Prisma + MySQL e-commerce platform for Aurora Cyber",
+  "description": "Aurora Commerce — Next.js 16 + Express + Prisma + MySQL e-commerce platform for Aurora Cyber",
   "workspaces": [
     "client",
     "server"
