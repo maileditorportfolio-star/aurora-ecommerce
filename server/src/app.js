@@ -1,8 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const morgan = require('morgan');
+const pinoHttp = require('pino-http');
 const env = require('./config/env');
+const logger = require('./config/logger');
 const routes = require('./routes');
 const { notFound, errorHandler } = require('./middleware/error');
 
@@ -30,8 +31,16 @@ app.use(
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(
-  morgan(env.isProduction ? 'combined' : 'dev', {
-    skip: () => env.nodeEnv === 'test',
+  pinoHttp({
+    logger,
+    autoLogging: {
+      ignore: (req) => req.url === '/api/health',
+    },
+    customLogLevel: (_req, res, error) => {
+      if (error || res.statusCode >= 500) return 'error';
+      if (res.statusCode >= 400) return 'warn';
+      return 'info';
+    },
   }),
 );
 

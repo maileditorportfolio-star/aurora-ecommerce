@@ -1,6 +1,7 @@
 const { Server } = require('socket.io');
 const prisma = require('../config/prisma');
 const env = require('../config/env');
+const logger = require('../config/logger');
 const { verifyToken } = require('../services/token.service');
 
 const ADMIN_ROOM = 'admins';
@@ -90,7 +91,7 @@ const initChat = (httpServer) => {
     });
 
     socket.on('disconnect', () => {
-      console.log(`[chat] socket disconnected: ${socket.id}`);
+      logger.debug({ socketId: socket.id }, 'chat socket disconnected');
     });
   });
 

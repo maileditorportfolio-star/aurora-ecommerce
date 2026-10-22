@@ -1,5 +1,6 @@
 const ApiError = require('../utils/ApiError');
 const env = require('../config/env');
+const logger = require('../config/logger');
 
 const notFound = (req, _res, next) => {
   next(ApiError.notFound(`Route not found: ${req.method} ${req.originalUrl}`));
@@ -11,7 +12,15 @@ const errorHandler = (error, req, res, _next) => {
   const statusCode = isKnown ? error.statusCode : error.status || 500;
 
   if (!isKnown || statusCode >= 500) {
-    console.error('[error]', req.method, req.originalUrl, error);
+    logger.error(
+      {
+        err: error,
+        method: req.method,
+        url: req.originalUrl,
+        userId: req.user?.id,
+      },
+      'request failed',
+    );
   }
 
   res.status(statusCode).json({
