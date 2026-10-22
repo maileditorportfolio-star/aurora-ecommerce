@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const prisma = require('../config/prisma');
+const env = require('../config/env');
 const ApiError = require('../utils/ApiError');
 const asyncHandler = require('../utils/asyncHandler');
 const { signToken } = require('../services/token.service');
@@ -21,7 +22,7 @@ const register = asyncHandler(async (req, res) => {
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) throw ApiError.conflict('An account with this email already exists');
 
-  const passwordHash = await bcrypt.hash(password, 12);
+  const passwordHash = await bcrypt.hash(password, env.security.bcryptRounds);
   const user = await prisma.user.create({
     data: { name, email, passwordHash, phone: phone || null },
   });
@@ -81,7 +82,7 @@ const changePassword = asyncHandler(async (req, res) => {
   const matches = await bcrypt.compare(currentPassword, user.passwordHash);
   if (!matches) throw ApiError.badRequest('Current password is incorrect');
 
-  const passwordHash = await bcrypt.hash(newPassword, 12);
+  const passwordHash = await bcrypt.hash(newPassword, env.security.bcryptRounds);
   await prisma.user.update({ where: { id: user.id }, data: { passwordHash } });
 
   res.json({ success: true, message: 'Password updated' });

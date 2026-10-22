@@ -1,5 +1,6 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
+const env = require('../config/env');
 const authController = require('../controllers/auth.controller');
 const { requireAuth } = require('../middleware/auth');
 
@@ -7,7 +8,7 @@ const router = express.Router();
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 20,
+  max: env.security.authRateLimit,
   standardHeaders: true,
   legacyHeaders: false,
   message: { success: false, message: 'Too many attempts, please try again later' },

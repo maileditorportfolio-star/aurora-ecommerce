@@ -3,11 +3,6 @@ const dotenv = require('dotenv');
 
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
-const toBool = (value, fallback = false) => {
-  if (value === undefined || value === '') return fallback;
-  return ['1', 'true', 'yes', 'on'].includes(String(value).toLowerCase());
-};
-
 const toList = (value, fallback = []) => {
   if (!value) return fallback;
   return String(value)
@@ -28,6 +23,11 @@ const env = {
 
   clientUrl: process.env.CLIENT_URL || 'http://localhost:3000',
   corsOrigins: toList(process.env.CORS_ORIGINS, ['http://localhost:3000', 'http://127.0.0.1:3000']),
+
+  security: {
+    bcryptRounds: Number(process.env.BCRYPT_ROUNDS || 12),
+    authRateLimit: Number(process.env.AUTH_RATE_LIMIT || 20),
+  },
 
   shipping: {
     flatRate: Number(process.env.SHIPPING_FLAT_RATE || 60),
