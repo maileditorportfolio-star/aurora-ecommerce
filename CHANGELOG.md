@@ -8,13 +8,20 @@ All notable changes to Aurora Commerce are documented here. The format follows
 
 ### Added
 
+- Structured error tracking via an optional Sentry adapter (`server/src/config/error-tracker.js`). It stays disabled when `SENTRY_DSN` is empty, reports unhandled rejections and 5xx responses, and flushes on shutdown.
 - `@vitest/coverage-v8` in both workspaces so `npm run test:coverage` runs server-side and client-side coverage.
+- Enforced coverage gates: the API must keep 95% statements/lines/functions and 78% branches; the storefront 78% statements, 75% branches/functions and 79% lines.
+- Server specs for error tracking, the error middleware and the token service, plus storefront specs for the admin console (dashboard, analytics, orders, products, customers), both Zustand stores, `lib/api` and `lib/utils`, and the shared layout, cart drawer, product and auth components.
+- A MySQL-backed CI integration job that applies migrations, seeds the database and waits for `/api/health`.
+- Root `prisma:deploy` script and `SENTRY_*` entries in both `.env.example` files and `docker-compose.yml`.
 
 ### Changed
 
+- CI now runs `npm run test:coverage` instead of `npm test`, and the production-dependency audit is blocking.
 - The storefront now runs on Tailwind CSS 4 (`@tailwindcss/postcss`, `@config`/`@source` in `globals.css`, legacy `tailwind.config.js` tokens kept via `@config`), upgrading from Tailwind 3.
 - Both workspaces run Vitest 5 (server specs + client specs), bumped from Vitest 3.
-- All packages bumped to `0.3.0`; root package description updated to Next.js 16.
+- `deepmerge-ts` is pinned forward through a root npm `overrides` entry, clearing the remaining high-severity advisory in the production dependency tree.
+- All packages bumped to `0.4.0`; root package description updated to Next.js 16.
 
 ### Fixed
 
@@ -22,9 +29,6 @@ All notable changes to Aurora Commerce are documented here. The format follows
   and ESLint 9 serving the new flat config.
 - `npm run lint` in the storefront uses the ESLint CLI because `next lint` was
   removed in Next.js 16.
-
-### Fixed
-
 - The mobile navigation closes from the link handler instead of an effect that
   set state on every route change.
 - The product detail page tracks the slug it has loaded, so navigating between

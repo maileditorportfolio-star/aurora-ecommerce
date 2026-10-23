@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/maileditorportfolio-star/aurora-ecommerce/actions/workflows/ci.yml/badge.svg)](https://github.com/maileditorportfolio-star/aurora-ecommerce/actions/workflows/ci.yml)
 
-A production-ready, full-stack e-commerce platform: a **Next.js 16** storefront paired with an **Express + Prisma + MySQL** API, complete with JWT auth, role-based admin controls, live chat, and a seeded demo catalogue. The API is covered by **82 Vitest specs** and the storefront by **20 React Testing Library specs**, all runnable without a database.
+A production-ready, full-stack e-commerce platform: a **Next.js 16** storefront paired with an **Express + Prisma + MySQL** API, complete with JWT auth, role-based admin controls, live chat, and a seeded demo catalogue. The API is covered by **109 Vitest specs** and the storefront by **154 React Testing Library specs**, all runnable without a database.
 
 This repository contains **source code only**. No database, no credentials, and no runtime data are committed — you create your own environment from the provided `.env.example` files.
 
@@ -48,6 +48,7 @@ This repository contains **source code only**. No database, no credentials, and 
 - **Prisma + MySQL** — typed data layer with migrations and idempotent seed data
 - **Socket.IO** — real-time chat messages
 - **Security** — Helmet, CORS allow-list, rate limiting on auth endpoints, bcrypt password hashing
+- **Error tracking** — optional Sentry integration that reports unhandled rejections and 5xx responses
 - **Consistent responses** — `{ success, data | message, details }` envelope across every endpoint
 
 ---
@@ -170,6 +171,12 @@ TAX_RATE=0
 
 # Logging (trace, debug, info, warn, error, fatal)
 LOG_LEVEL=debug
+
+# Error tracking (optional — leave SENTRY_DSN empty to disable)
+SENTRY_DSN=
+SENTRY_ENVIRONMENT=development
+SENTRY_RELEASE=
+SENTRY_TRACES_SAMPLE_RATE=0
 ```
 
 **Client** — copy `client/.env.example` to `client/.env.local`:
@@ -311,23 +318,29 @@ so `npm test` works on a clean checkout.
 
 ```bash
 npm test                # everything
-npm run test:server     # 82 API specs
-npm run test:client     # 20 storefront specs
-npm run test:coverage   # + coverage reports
+npm run test:server     # 109 API specs
+npm run test:client     # 154 storefront specs
+npm run test:coverage   # + coverage reports, gated by thresholds
 ```
 
-| Suite      | Tooling                                | What it covers                                                                 |
-| ---------- | -------------------------------------- | ------------------------------------------------------------------------------ |
-| API        | Vitest, Supertest, mocked Prisma client | Auth, checkout and orders, products, admin metrics, chat, structured logging   |
-| Storefront | Vitest, jsdom, React Testing Library    | Checkout flow (validation, totals, submission, errors) and the product catalogue |
+| Suite      | Tooling                                 | What it covers                                                                                                     |
+| ---------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| API        | Vitest, Supertest, mocked Prisma client | Auth, checkout and orders, products, admin metrics, chat, error tracking, structured logging                       |
+| Storefront | Vitest, jsdom, React Testing Library    | Checkout, catalogue, product detail, cart, auth, account and the full admin console (dashboard, orders, products, customers, analytics) |
+
+Coverage is enforced: the API must stay above **95% statements/lines/functions
+and 78% branches**, the storefront above **78% statements, 75% branches and
+functions, 79% lines**. `npm run test:coverage` fails the build when a threshold
+regresses.
 
 The API is CommonJS, so the Prisma mock is injected into `require.cache` before
 the app is loaded. That keeps the HTTP layer, middleware and validation fully
 exercised without touching a real database.
 
 CI (`.github/workflows/ci.yml`) runs formatting, linting, typechecking, both
-test suites, an audit, both production builds and both Docker image builds on
-every push and pull request.
+test suites with coverage gates, a blocking production-dependency audit, both
+production builds, both Docker image builds, and a MySQL-backed integration job
+that applies migrations, seeds the database and waits for `/api/health`.
 
 ---
 

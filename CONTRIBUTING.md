@@ -25,7 +25,8 @@ Run the same checks as CI:
 npm run format:check
 npm run lint
 npm run typecheck
-npm test
+npm run test:coverage
+npm run audit
 ```
 
 Or fix formatting in place with `npm run format`.
@@ -38,6 +39,11 @@ Or fix formatting in place with `npm run format`.
 - Every behaviour change should come with a spec that fails without the change.
 - New API endpoints need at least a happy-path spec and a validation or
   authorisation spec.
+- `npm run test:coverage` enforces the coverage gates in `server/vitest.config.js`
+  and `client/vitest.config.ts`. Add real tests rather than lowering a threshold;
+  if a threshold genuinely must move, explain why in the pull request.
+- Pair new features with their specs in the same commit so history stays
+  reviewable.
 
 The API is CommonJS, so tests inject a Prisma stand-in through `require.cache`
 (see `server/tests/helpers/prisma-mock.js`) instead of `vi.mock`.
