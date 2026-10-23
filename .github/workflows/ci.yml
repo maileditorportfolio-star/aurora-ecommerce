@@ -39,15 +39,13 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
-      - name: Test
-        run: npm test
+      - name: Test with coverage gates
+        run: npm run test:coverage
 
-      # The remaining advisories sit in the Prisma CLI toolchain and in dev-only
-      # test/build tooling; clearing them needs a Prisma 8 / Vitest 5 major. They
-      # are reported for visibility without blocking the build.
+      # The deepmerge-ts advisory is pinned forward via the root `overrides`
+      # block, so production dependencies must stay clean. This step is blocking.
       - name: Dependency audit
-        run: npm audit --audit-level=high --omit=dev
-        continue-on-error: true
+        run: npm run audit
 
   build:
     name: Build API and storefront
@@ -68,6 +66,65 @@ jobs:
 
       - name: Build
         run: npm run build
+
+  integration:
+    name: Database integration smoke test
+    runs-on: ubuntu-latest
+    needs: build
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: aurora_commerce
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    env:
+      NODE_ENV: test
+      PORT: 4000
+      DATABASE_URL: mysql://root:root@127.0.0.1:3306/aurora_commerce
+      JWT_SECRET: ci-only-secret-ci-only-secret-ci-only-secret
+      CLIENT_URL: http://localhost:3000
+      CORS_ORIGINS: http://localhost:3000
+      LOG_LEVEL: warn
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate the Prisma client
+        run: npm run prisma:generate
+
+      - name: Apply migrations
+        run: npm run prisma:deploy
+
+      - name: Seed the database
+        run: npm run seed
+
+      - name: Boot the API and wait for health
+        run: |
+          npm run start:server &
+          for attempt in {1..30}; do
+            if curl -fsS http://localhost:4000/api/health; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "API did not become healthy in time" >&2
+          exit 1
 
   docker:
     name: Build container images
