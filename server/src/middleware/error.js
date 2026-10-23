@@ -1,6 +1,7 @@
 const ApiError = require('../utils/ApiError');
 const env = require('../config/env');
 const logger = require('../config/logger');
+const { captureException } = require('../config/error-tracker');
 
 const notFound = (req, _res, next) => {
   next(ApiError.notFound(`Route not found: ${req.method} ${req.originalUrl}`));
@@ -21,6 +22,13 @@ const errorHandler = (error, req, res, _next) => {
       },
       'request failed',
     );
+
+    captureException(error, {
+      method: req.method,
+      url: req.originalUrl,
+      userId: req.user?.id,
+      statusCode,
+    });
   }
 
   res.status(statusCode).json({
