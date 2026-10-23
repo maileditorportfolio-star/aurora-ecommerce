@@ -15,6 +15,7 @@ const env = {
   nodeEnv: process.env.NODE_ENV || 'development',
   port: Number(process.env.PORT || 4000),
   databaseUrl: process.env.DATABASE_URL || 'mysql://root:@localhost:3306/aurora_commerce',
+  logLevel: process.env.LOG_LEVEL || undefined,
 
   jwt: {
     secret: process.env.JWT_SECRET || 'aurora-dev-secret-change-me',
@@ -33,6 +34,13 @@ const env = {
     flatRate: Number(process.env.SHIPPING_FLAT_RATE || 60),
     freeThreshold: Number(process.env.SHIPPING_FREE_THRESHOLD || 5000),
     taxRate: Number(process.env.TAX_RATE || 0),
+  },
+
+  sentry: {
+    dsn: process.env.SENTRY_DSN || '',
+    environment: process.env.SENTRY_ENVIRONMENT || process.env.NODE_ENV || 'development',
+    release: process.env.SENTRY_RELEASE || '',
+    tracesSampleRate: Number(process.env.SENTRY_TRACES_SAMPLE_RATE || 0),
   },
 };
 

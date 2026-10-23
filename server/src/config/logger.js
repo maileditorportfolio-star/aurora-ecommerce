@@ -9,10 +9,7 @@ const usePrettyTransport = !env.isProduction && env.nodeEnv !== 'test';
  * a log collector can index. Tests run silent to keep the output clean.
  */
 const options = {
-  level:
-    env.nodeEnv === 'test'
-      ? 'silent'
-      : process.env.LOG_LEVEL || (env.isProduction ? 'info' : 'debug'),
+  level: env.nodeEnv === 'test' ? 'silent' : env.logLevel || (env.isProduction ? 'info' : 'debug'),
   base: { service: 'aurora-commerce-api', env: env.nodeEnv },
   timestamp: pino.stdTimeFunctions.isoTime,
   redact: {
