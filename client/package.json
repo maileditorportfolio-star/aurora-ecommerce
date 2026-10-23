@@ -1,6 +1,6 @@
 {
   "name": "@aurora/client",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "description": "Aurora Commerce storefront — Next.js 16 App Router",
   "scripts": {
@@ -25,6 +25,10 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "zod-validation-error": "^4.0.0",
+    "hermes-parser": "^0.25.1",
+    "@typescript-eslint/eslint-plugin": "^8.72.0",
+    "@next/eslint-plugin-next": "^16.4.2",
     "@tailwindcss/postcss": "^4.3.3",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.3",
@@ -36,6 +40,12 @@
     "@vitest/coverage-v8": "^5.0.5",
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.4.2",
+    "eslint-import-resolver-node": "^0.3.6",
+    "eslint-import-resolver-typescript": "^3.5.2",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsx-a11y": "^6.10.0",
+    "eslint-plugin-react": "^7.37.0",
+    "eslint-plugin-react-hooks": "^7.1.0",
     "jsdom": "^26.1.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^4.3.3",
