@@ -11,6 +11,12 @@ module.exports = defineConfig({
       reporter: ['text', 'html'],
       include: ['src/**/*.js'],
       exclude: ['src/index.js', 'src/socket/**'],
+      thresholds: {
+        statements: 95,
+        branches: 78,
+        functions: 95,
+        lines: 95,
+      },
     },
   },
 });
