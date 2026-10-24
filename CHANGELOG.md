@@ -6,6 +6,22 @@ All notable changes to Aurora Commerce are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-10-24
+
+### Added
+
+- An unauthenticated `GET /api/metrics` observability endpoint that returns the process uptime, RSS/heap usage, the live Node version, a small catalogue snapshot (users, active products, orders, categories) and an ISO timestamp, plus the matching server specs.
+
+### Changed
+
+- Bumped `zod` to `^4.6.7` in the API workspace to close the GHSA-mrhx-c7xc-m3w5 advisory (oversized constrained collections could exhaust memory during validation).
+
+### Fixed
+
+- Restored the README test counts (112 API specs, 224 storefront specs) and documented the `/api/health` and `/api/metrics` observability endpoints.
+
+## [0.4.0] - 2026-10-23
+
 ### Added
 
 - Structured error tracking via an optional Sentry adapter (`server/src/config/error-tracker.js`). It stays disabled when `SENTRY_DSN` is empty, reports unhandled rejections and 5xx responses, and flushes on shutdown.
@@ -14,7 +30,6 @@ All notable changes to Aurora Commerce are documented here. The format follows
 - Server specs for error tracking, the error middleware and the token service, plus storefront specs for the admin console (dashboard, analytics, orders, products, customers), both Zustand stores, `lib/api` and `lib/utils`, and the shared layout, cart drawer, product and auth components.
 - A MySQL-backed CI integration job that applies migrations, seeds the database and waits for `/api/health`.
 - Root `prisma:deploy` script and `SENTRY_*` entries in both `.env.example` files and `docker-compose.yml`.
-- An unauthenticated `GET /api/metrics` observability endpoint that returns the process uptime, RSS/heap usage, the live Node version, a small catalogue snapshot (users, active products, orders, categories) and an ISO timestamp, plus the matching server specs.
 
 ### Changed
 
