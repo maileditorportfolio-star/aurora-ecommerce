@@ -6,6 +6,7 @@ const productRoutes = require('./product.routes');
 const orderRoutes = require('./order.routes');
 const chatRoutes = require('./chat.routes');
 const adminRoutes = require('./admin.routes');
+const metricsRoutes = require('./metrics.routes');
 
 const router = express.Router();
 
@@ -38,5 +39,6 @@ router.use('/products', productRoutes);
 router.use('/orders', orderRoutes);
 router.use('/chat', chatRoutes);
 router.use('/admin', adminRoutes);
+router.use('/metrics', metricsRoutes);
 
 module.exports = router;
