@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/maileditorportfolio-star/aurora-ecommerce/actions/workflows/ci.yml/badge.svg)](https://github.com/maileditorportfolio-star/aurora-ecommerce/actions/workflows/ci.yml)
 
-A production-ready, full-stack e-commerce platform: a **Next.js 16** storefront paired with an **Express + Prisma + MySQL** API, complete with JWT auth, role-based admin controls, live chat, and a seeded demo catalogue. The API is covered by **109 Vitest specs** and the storefront by **154 React Testing Library specs**, all runnable without a database.
+A production-ready, full-stack e-commerce platform: a **Next.js 16** storefront paired with an **Express + Prisma + MySQL** API, complete with JWT auth, role-based admin controls, live chat, and a seeded demo catalogue. The API is covered by **112 Vitest specs** and the storefront by **224 React Testing Library specs**, all runnable without a database.
 
 This repository contains **source code only**. No database, no credentials, and no runtime data are committed — you create your own environment from the provided `.env.example` files.
 
@@ -318,8 +318,8 @@ so `npm test` works on a clean checkout.
 
 ```bash
 npm test                # everything
-npm run test:server     # 109 API specs
-npm run test:client     # 154 storefront specs
+npm run test:server     # 112 API specs
+npm run test:client     # 224 storefront specs
 npm run test:coverage   # + coverage reports, gated by thresholds
 ```
 
@@ -500,6 +500,18 @@ Statuses: `PENDING`, `CONFIRMED`, `PROCESSING`, `SHIPPED`, `DELIVERED`, `CANCELL
 | GET    | `/admin/customers`   | admin | Customers with order count and lifetime value |
 | GET    | `/chat/:conversationId` | —  | Chat history                        |
 | POST   | `/chat`              | optional | Send a message                 |
+
+### Observability
+
+| Method | Endpoint       | Auth | Description                                                |
+| ------ | -------------- | ---- | ---------------------------------------------------------- |
+| GET    | `/api/health`  | —    | Liveness + database reachability (503 when degraded)        |
+| GET    | `/api/metrics` | —    | Process uptime, memory, and catalogue counts for monitoring |
+
+`/api/metrics` is unauthenticated on purpose — it is meant for load balancers,
+container orchestrators, and uptime probes. It returns the current process
+uptime, RSS/heap usage, the live Node version, and a small catalogue snapshot
+(users, active products, orders, categories) plus an ISO timestamp.
 
 ---
 

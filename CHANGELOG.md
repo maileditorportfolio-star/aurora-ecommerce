@@ -14,6 +14,7 @@ All notable changes to Aurora Commerce are documented here. The format follows
 - Server specs for error tracking, the error middleware and the token service, plus storefront specs for the admin console (dashboard, analytics, orders, products, customers), both Zustand stores, `lib/api` and `lib/utils`, and the shared layout, cart drawer, product and auth components.
 - A MySQL-backed CI integration job that applies migrations, seeds the database and waits for `/api/health`.
 - Root `prisma:deploy` script and `SENTRY_*` entries in both `.env.example` files and `docker-compose.yml`.
+- An unauthenticated `GET /api/metrics` observability endpoint that returns the process uptime, RSS/heap usage, the live Node version, a small catalogue snapshot (users, active products, orders, categories) and an ISO timestamp, plus the matching server specs.
 
 ### Changed
 
