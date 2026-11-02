@@ -4,10 +4,22 @@ All notable changes to Aurora Commerce are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.5.0] - 2026-11-02
 
 ### Added
 
+- A real MySQL integration suite (`server/tests/integration/`) with eight Supertest specs
+  covering health, product reads, registration/login, auth guards, request validation and
+  a checkout that decrements stock. `npm run test:integration` uses a dedicated Vitest
+  config, and the CI integration job runs it after migrations and seeding.
+- `ProductForm` (`client/components/admin/product-form.tsx`) extracted from the admin
+  products page, with pure draft/payload helpers and matching specs.
+- `RevenueTrendChart`, `OrdersByStatusChart` and `TopProductsChart`
+  (`client/components/admin/dashboard-charts.tsx`) extracted from the admin dashboard,
+  with specs for populated and empty data.
+- A Dependency Review workflow for pull requests, a CI step that verifies
+  `package-lock.json` did not change after `npm ci`, and `npm run deps:check`
+  (`npm outdated --workspaces`).
 - `npm run check:env`, a dependency-free script that fails when a `process.env` variable
   used by either workspace is missing from its `.env.example`, plus specs for it and a
   blocking CI step.
@@ -22,6 +34,11 @@ All notable changes to Aurora Commerce are documented here. The format follows
 
 ### Changed
 
+- The root `.env.example` now mirrors every server runtime variable (database, ports,
+  bcrypt/rate-limit, shipping and tax) so a root `.env` is self-contained for
+  `npm run dev` and `npm start`.
+- Admin pages now delegate the product form and dashboard charts to reusable components
+  instead of mixing data fetching, form state and chart rendering in one file.
 - Documented where per-workspace runtime dependencies live (`server/package.json` and
   `client/package.json`); the root manifest only contains workspace tooling.
 - Moved `concurrently` to the root `dependencies` block because the production `npm start`

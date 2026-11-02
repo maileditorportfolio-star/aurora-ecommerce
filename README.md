@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/maileditorportfolio-star/aurora-ecommerce/actions/workflows/ci.yml/badge.svg)](https://github.com/maileditorportfolio-star/aurora-ecommerce/actions/workflows/ci.yml)
 
-A production-ready, full-stack e-commerce platform: a **Next.js 16** storefront paired with an **Express + Prisma + MySQL** API, complete with JWT auth, role-based admin controls, live chat, and a seeded demo catalogue. The API is covered by **122 Vitest specs** and the storefront by **226 React Testing Library specs**, all runnable without a database.
+A production-ready, full-stack e-commerce platform: a **Next.js 16** storefront paired with an **Express + Prisma + MySQL** API, complete with JWT auth, role-based admin controls, live chat, and a seeded demo catalogue. The API is covered by **122 Vitest specs** and the storefront by **235 React Testing Library specs**, all runnable without a database, plus **8 integration specs** that exercise the API against a real MySQL instance.
 
 This repository contains **source code only**. No database, no credentials, and no runtime data are committed — you create your own environment from the provided `.env.example` files.
 
@@ -73,9 +73,11 @@ Runtime dependencies live with the workspace that uses them:
 - **API** — `server/package.json` (`express`, `@prisma/client`, `zod`, `pino`, …)
 - **Storefront** — `client/package.json` (`next`, `react`, `zustand`, `framer-motion`, …)
 
-The root `package.json` only holds workspace tooling (`concurrently`, `prettier`) and the
-shared scripts that fan out to both workspaces. A single `package-lock.json` at the root
-pins the whole tree, so `npm ci` installs both apps reproducibly.
+The root `package.json` holds the workspace scripts, `concurrently` (invoked by the
+production `npm start` script) and Prettier. A single `package-lock.json` at the root pins
+the whole tree, so `npm ci` installs both apps reproducibly; CI verifies the lockfile does
+not change after install. Run `npm run deps:check` (`npm outdated --workspaces`) to review
+freshness across both manifests, and Dependabot proposes weekly minor and patch updates.
 
 ---
 
@@ -312,8 +314,10 @@ Run from the repository root unless noted.
 | `npm run test:server`    | API specs only (Vitest + Supertest)                          |
 | `npm run test:client`    | Storefront specs only (Vitest + Testing Library)             |
 | `npm run test:coverage`  | Both suites with an HTML coverage report                     |
+| `npm run test:integration` | API specs against a live MySQL (migrate + seed first)      |
 | `npm run audit`          | `npm audit --audit-level=high --omit=dev`                    |
 | `npm run check:env`      | Fails if a `process.env` variable is missing from an example |
+| `npm run deps:check`     | `npm outdated --workspaces` for both workspaces              |
 | `npm run prisma:migrate` | Create/apply a development migration                         |
 | `npm run prisma:deploy`  | Apply migrations in production (no prompts)                  |
 | `npm run prisma:studio`  | Browse your database in a GUI                                |
@@ -325,34 +329,47 @@ Run from the repository root unless noted.
 
 ## Testing
 
-The repository ships with two independent Vitest suites. Neither needs MySQL,
-so `npm test` works on a clean checkout.
+The repository ships with two database-free Vitest suites plus a separate
+integration suite. `npm test` works on a clean checkout without MySQL.
 
 ```bash
-npm test                # everything
-npm run test:server     # 122 API specs
-npm run test:client     # 226 storefront specs
-npm run test:coverage   # + coverage reports, gated by thresholds
+npm test                  # API + storefront unit suites
+npm run test:server       # 122 API specs
+npm run test:client       # 235 storefront specs
+npm run test:coverage     # + coverage reports, gated by thresholds
+npm run test:integration  # 8 API specs against a live MySQL instance
 ```
 
-| Suite      | Tooling                                 | What it covers                                                                                                     |
-| ---------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| API        | Vitest, Supertest, mocked Prisma client | Auth, checkout and orders, products, admin metrics, chat, error tracking, structured logging                       |
-| Storefront | Vitest, jsdom, React Testing Library    | Checkout, catalogue, product detail, cart, auth, account and the full admin console (dashboard, orders, products, customers, analytics) |
+The integration suite needs a migrated and seeded database. Locally:
+
+```bash
+npm run prisma:deploy
+npm run seed
+npm run test:integration
+```
+
+| Suite       | Tooling                                 | What it covers                                                                                                     |
+| ----------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| API         | Vitest, Supertest, mocked Prisma client | Auth, checkout and orders, products, admin metrics, chat, error tracking, structured logging                       |
+| Storefront  | Vitest, jsdom, React Testing Library    | Checkout, catalogue, product detail, cart, auth, account and the full admin console (dashboard, orders, products, customers, analytics) |
+| Integration | Vitest, Supertest, real MySQL           | Health, product reads, registration/login, auth guards, validation and a full checkout that decrements stock       |
 
 Coverage is enforced: the API must stay above **95% statements/lines/functions
 and 78% branches**, the storefront above **78% statements, 75% branches and
 functions, 79% lines**. `npm run test:coverage` fails the build when a threshold
 regresses.
 
-The API is CommonJS, so the Prisma mock is injected into `require.cache` before
-the app is loaded. That keeps the HTTP layer, middleware and validation fully
-exercised without touching a real database.
+The API is CommonJS, so the unit specs inject a Prisma stand-in into
+`require.cache` before the app is loaded. That keeps the HTTP layer, middleware
+and validation fully exercised without touching a real database. The
+integration specs deliberately skip the mock and load the real Prisma client.
 
-CI (`.github/workflows/ci.yml`) runs formatting, linting, typechecking, both
-test suites with coverage gates, a blocking production-dependency audit, both
-production builds, both Docker image builds, and a MySQL-backed integration job
-that applies migrations, seeds the database and waits for `/api/health`.
+CI (`.github/workflows/ci.yml`) runs formatting, linting, typechecking, both unit suites
+with coverage gates, a blocking production-dependency audit and lockfile check, both
+production builds, both Docker image builds, and a MySQL-backed job that applies
+migrations, seeds the database, runs the integration specs and waits for `/api/health`.
+Dependency Review runs on pull requests and CodeQL scans the source on pushes, pull
+requests and a weekly schedule.
 
 ---
 

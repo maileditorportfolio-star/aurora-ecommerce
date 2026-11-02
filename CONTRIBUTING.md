@@ -28,6 +28,19 @@ npm run typecheck
 npm run test:coverage
 npm run audit
 npm run check:env
+npm run deps:check
+```
+
+`npm run deps:check` lists outdated workspace packages; it exits non-zero when updates
+are available, so treat it as a report rather than a gate.
+
+Changes that touch the Prisma schema, controllers or auth flow should also run the
+integration suite against a migrated and seeded MySQL:
+
+```bash
+npm run prisma:deploy
+npm run seed
+npm run test:integration
 ```
 
 Or fix formatting in place with `npm run format`.
