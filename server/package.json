@@ -1,6 +1,6 @@
 {
   "name": "@aurora/server",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "private": true,
   "description": "Aurora Commerce API — Express + Socket.io + Prisma (MySQL)",
   "main": "src/index.js",
@@ -13,6 +13,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "test:integration": "vitest run --config vitest.integration.config.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:deploy": "prisma migrate deploy",

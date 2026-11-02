@@ -4,6 +4,7 @@ module.exports = defineConfig({
   test: {
     environment: 'node',
     include: ['tests/**/*.test.js'],
+    exclude: ['tests/integration/**'],
     clearMocks: true,
     restoreMocks: false,
     coverage: {

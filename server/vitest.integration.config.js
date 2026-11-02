@@ -1,0 +1,15 @@
+const { defineConfig } = require('vitest/config');
+
+/**
+ * Runs the specs that need a live MySQL instance. Apply `prisma migrate deploy`
+ * and `npm run seed` first; `npm test` never loads this config.
+ */
+module.exports = defineConfig({
+  test: {
+    environment: 'node',
+    include: ['tests/integration/**/*.test.js'],
+    fileParallelism: false,
+    testTimeout: 30000,
+    hookTimeout: 30000,
+  },
+});
