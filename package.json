@@ -3,6 +3,7 @@
   "version": "0.5.0",
   "private": true,
   "description": "Aurora Commerce — Next.js 16 + Express + Prisma + MySQL e-commerce platform for Aurora Cyber",
+  "packageManager": "npm@10.9.0",
   "workspaces": [
     "client",
     "server"
@@ -22,11 +23,14 @@
     "lint:client": "npm run lint --workspace client",
     "lint:fix": "npm run lint:fix --workspace server && npm run lint:fix --workspace client",
     "typecheck": "npm run typecheck --workspace client",
-    "test": "npm run test:server && npm run test:client",
+    "test": "npm run test:unit",
+    "test:unit": "npm run test:server && npm run test:client",
     "test:server": "npm run test --workspace server",
     "test:client": "npm run test --workspace client",
     "test:coverage": "npm run test:coverage --workspace server && npm run test:coverage --workspace client",
     "test:integration": "npm run test:integration --workspace server",
+    "verify": "npm run format:check && npm run lint && npm run typecheck && npm run check:env && npm run test:coverage",
+    "verify:full": "npm run verify && npm run audit && npm run build",
     "audit": "npm audit --audit-level=high --omit=dev",
     "check:env": "node scripts/check-env-example.js",
     "deps:check": "npm outdated --workspaces",
