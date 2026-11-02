@@ -25,7 +25,7 @@ const WORKSPACES = [
   },
 ];
 
-/** Collects and de-duplicates every `process.env.NAME` reference below a directory. */
+/** Collects and de-duplicates every environment reference below a directory. */
 const collectReferencedEnv = (directories, extensions) => {
   const names = new Set();
 
