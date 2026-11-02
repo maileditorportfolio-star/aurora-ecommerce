@@ -6,6 +6,8 @@ A production-ready, full-stack e-commerce platform: a **Next.js 16** storefront 
 
 This repository contains **source code only**. No database, no credentials, and no runtime data are committed — you create your own environment from the provided `.env.example` files.
 
+Installation, build and the unit suites are reproducible from the committed lockfile: `npm ci && npm run test:unit && npm run build`. The unit suites need no database or network; the MySQL integration suite is opt-in. [`docs/verification.md`](docs/verification.md) records the exact commands, the isolation matrix and the last verified results.
+
 ---
 
 ## Table of contents
@@ -18,11 +20,12 @@ This repository contains **source code only**. No database, no credentials, and 
 6. [Project structure](#project-structure)
 7. [Available scripts](#available-scripts)
 8. [Testing](#testing)
-9. [Customizing the project](#customizing-the-project)
-10. [API reference](#api-reference)
-11. [Deployment](#deployment)
-12. [Docker](#docker)
-13. [Troubleshooting](#troubleshooting)
+9. [Verification](#verification)
+10. [Customizing the project](#customizing-the-project)
+11. [API reference](#api-reference)
+12. [Deployment](#deployment)
+13. [Docker](#docker)
+14. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -244,7 +247,8 @@ npm run dev
 ```
 aurora-ecommerce/
 ├── .github/
-│   ├── workflows/ci.yml        # Format, lint, typecheck, test, build, Docker
+│   ├── workflows/              # ci, release, codeql, dependency-review
+│   ├── pull_request_template.md
 │   └── dependabot.yml          # Weekly npm / actions updates
 ├── client/                     # Next.js 16 storefront
 │   ├── app/                    # App Router routes
@@ -282,12 +286,17 @@ aurora-ecommerce/
 │   │   ├── socket/             # Socket.IO chat
 │   │   ├── utils/              # ApiError, asyncHandler
 │   │   └── validation/         # schemas.js (Zod)
-│   ├── tests/                  # Vitest specs + Prisma mock harness
+│   ├── tests/                  # Unit specs + Prisma mock harness; integration/ for MySQL
 │   ├── vitest.config.js
 │   ├── Dockerfile
 │   └── .env.example
 │
 ├── docker-compose.yml          # MySQL 8 + API + storefront
+├── docs/
+│   ├── verification.md         # Commands, isolation matrix, last verified results
+│   └── adr/                    # Architecture decision records
+├── scripts/                    # check-env-example.js
+├── .nvmrc                      # Node 20 for nvm
 ├── .prettierrc                 # Shared formatting rules
 ├── package.json                # npm workspaces root + shared scripts
 └── .gitignore
@@ -310,11 +319,14 @@ Run from the repository root unless noted.
 | `npm run format`         | Rewrites every file with Prettier                             |
 | `npm run format:check`   | Fails if any file is not Prettier-formatted                   |
 | `npm run typecheck`      | `tsc --noEmit` for the client                                 |
-| `npm test`               | Runs the API and storefront suites                            |
+| `npm test`               | Runs the API and storefront unit suites                       |
+| `npm run test:unit`      | Both unit suites, no database or network                     |
 | `npm run test:server`    | API specs only (Vitest + Supertest)                          |
 | `npm run test:client`    | Storefront specs only (Vitest + Testing Library)             |
 | `npm run test:coverage`  | Both suites with an HTML coverage report                     |
 | `npm run test:integration` | API specs against a live MySQL (migrate + seed first)      |
+| `npm run verify`         | Format, lint, typecheck, env docs and coverage gates         |
+| `npm run verify:full`    | `verify` plus the dependency audit and both builds           |
 | `npm run audit`          | `npm audit --audit-level=high --omit=dev`                    |
 | `npm run check:env`      | Fails if a `process.env` variable is missing from an example |
 | `npm run deps:check`     | `npm outdated --workspaces` for both workspaces              |
@@ -370,6 +382,37 @@ production builds, both Docker image builds, and a MySQL-backed job that applies
 migrations, seeds the database, runs the integration specs and waits for `/api/health`.
 Dependency Review runs on pull requests and CodeQL scans the source on pushes, pull
 requests and a weekly schedule.
+
+---
+
+## Verification
+
+Everything below is reproducible from a fresh clone. [`docs/verification.md`](docs/verification.md)
+records the exact commands, the isolation matrix, the last verified results and the CI job
+mapping.
+
+```bash
+npm ci
+npm run test:unit   # 122 + 235 specs, no database
+npm run build       # Prisma generate + Next production build
+npm run verify      # format, lint, typecheck, env docs, coverage
+```
+
+### Isolation
+
+| Target | Command | Needs MySQL |
+| ------ | ------- | ----------- |
+| API unit specs | `npm run test:server` | No — Prisma is injected through `require.cache` |
+| Storefront unit specs | `npm run test:client` | No — jsdom and local fixtures |
+| Both unit suites | `npm run test:unit` | No |
+| Coverage gates | `npm run test:coverage` | No |
+| Database integration | `npm run test:integration` | Yes — migrate and seed first |
+| Production build | `npm run build` | No |
+
+Only the integration suite loads the real Prisma client; CI runs it in a separate job with
+a `mysql:8` service. Architecture decisions are recorded in [`docs/adr/`](docs/adr/), and
+every pull request carries the test-evidence checklist in
+`.github/pull_request_template.md`.
 
 ---
 

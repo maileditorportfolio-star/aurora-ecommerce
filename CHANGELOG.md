@@ -4,6 +4,22 @@ All notable changes to Aurora Commerce are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- `docs/verification.md` with the fresh-clone path, the isolation matrix, the last verified
+  results and the CI job mapping, plus four architecture decision records under `docs/adr/`.
+- `.nvmrc` and `package.json#packageManager` pin the Node and npm versions used by CI.
+- `npm run test:unit`, `npm run verify` and `npm run verify:full` make the database-free and
+  full verification paths explicit.
+- A pull request template with the test-evidence checklist and the feature-plus-spec rule.
+
+### Changed
+
+- CI job names now state what needs a database (`Unit gates … no database`, `Integration —
+  real MySQL specs and API smoke test`) and the test step is labelled accordingly.
+
 ## [0.5.0] - 2026-11-02
 
 ### Added

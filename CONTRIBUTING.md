@@ -22,14 +22,15 @@ demo accounts.
 Run the same checks as CI:
 
 ```bash
-npm run format:check
-npm run lint
-npm run typecheck
-npm run test:coverage
+npm run verify      # format, lint, typecheck, env docs, coverage
 npm run audit
-npm run check:env
 npm run deps:check
 ```
+
+`npm run verify:full` adds the dependency audit and both production builds. The exact
+commands, the isolation matrix and the last verified results live in
+[`docs/verification.md`](docs/verification.md); architecture decisions are recorded in
+[`docs/adr/`](docs/adr/).
 
 `npm run deps:check` lists outdated workspace packages; it exits non-zero when updates
 are available, so treat it as a report rather than a gate.
@@ -48,6 +49,8 @@ Or fix formatting in place with `npm run format`.
 ## Tests
 
 - API specs live in `server/tests/` and use Vitest with Supertest.
+- Real-database specs live in `server/tests/integration/` and are opt-in via
+  `npm run test:integration`; the default `npm test` stays database-free.
 - Storefront specs live in `client/tests/` and use Vitest with React Testing
   Library.
 - Every behaviour change should come with a spec that fails without the change.
@@ -57,7 +60,7 @@ Or fix formatting in place with `npm run format`.
   and `client/vitest.config.ts`. Add real tests rather than lowering a threshold;
   if a threshold genuinely must move, explain why in the pull request.
 - Pair new features with their specs in the same commit so history stays
-  reviewable.
+  reviewable. The pull request template asks for the commands you ran.
 
 The API is CommonJS, so tests inject a Prisma stand-in through `require.cache`
 (see `server/tests/helpers/prisma-mock.js`) instead of `vi.mock`.
