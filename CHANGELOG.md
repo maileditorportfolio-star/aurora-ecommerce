@@ -6,6 +6,11 @@ All notable changes to Aurora Commerce are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- Refreshed the fresh-clone verification for `v0.5.2`: `npm ci`, `npm run test:unit`,
+  `npm run build` and `npm run verify` all exited 0 in an empty clone.
+
 ## [0.5.2] - 2026-11-02
 
 ### Added

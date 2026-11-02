@@ -6,7 +6,8 @@ to be readable without running anything: every claim points at a committed scrip
 or workflow.
 
 Last verified: **2026-11-02** on tag **`v0.5.2`**. The fresh-clone check below was run
-against `cc3621d` (v0.5.1); the JUnit/lcov report change was re-verified locally at v0.5.2.
+against commit `c32ade0` in an empty directory with no reused `node_modules`, no
+`server/.env` and no `client/.env.local`.
 
 ## Toolchain
 
@@ -45,17 +46,20 @@ npm run seed
 npm run test:integration
 ```
 
-### Fresh-clone check (2026-11-02)
+### Fresh-clone check (2026-11-02, v0.5.2)
 
-Cloned `cc3621d` into an empty directory and ran the documented commands with no reused
-`node_modules`, no `server/.env` and no `client/.env.local`:
+Cloned `c32ade0` (tag `v0.5.2`) into an empty directory and ran the documented commands with
+no reused `node_modules`, no `server/.env` and no `client/.env.local`:
 
 | Command | Result |
 | ------- | ------ |
-| `npm ci` | 748 packages installed, exit 0 |
+| `npm ci` | 748 packages installed in 48s, exit 0 |
 | `npm run test:unit` | 122 API + 235 storefront specs, exit 0 |
 | `npm run build` | Prisma generate + Next.js 16.4.4 build, 14 routes, exit 0 |
 | `npm run verify` | format, lint, typecheck, env docs and coverage, exit 0 |
+
+The clean clone wrote `server/junit.xml`, `client/junit.xml`,
+`server/coverage/lcov.info` and both `coverage-summary.json` files.
 
 Coverage in the clean clone: API 97.47% statements / 83.33% branches / 96.29% functions /
 97.54% lines; storefront 92.95% / 87.08% / 89.29% / 94.42%.
@@ -89,7 +93,7 @@ Both unit suites emit JUnit XML (`server/junit.xml`, `client/junit.xml`) and cov
 | ----- | ------ |
 | `npm run test:unit` | 122 API specs (13 files) + 235 storefront specs (29 files) = 357 passing |
 | `npm run test:integration` | 8 passing against MariaDB 10.4.32 |
-| API coverage | 98.1% statements, 81% branches, 97.53% functions, 98.21% lines (local run) |
+| API coverage | 97.47% statements, 83.33% branches, 96.29% functions, 97.54% lines (clean clone v0.5.2) |
 | Storefront coverage | 92.95% statements, 87.08% branches, 89.29% functions, 94.42% lines |
 | `npm run build` | Next.js 16.4.4 production build, 14 routes (13 static, 1 dynamic) |
 | `npm run format:check` | Clean |
