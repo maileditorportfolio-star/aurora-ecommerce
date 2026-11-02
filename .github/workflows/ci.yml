@@ -30,6 +30,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Verify the lockfile is in sync
+        run: git diff --exit-code -- package-lock.json
+
       - name: Check environment variable documentation
         run: npm run check:env
 
@@ -126,6 +129,9 @@ jobs:
 
       - name: Seed the database
         run: npm run seed
+
+      - name: Run the database integration specs
+        run: npm run test:integration
 
       - name: Boot the API and wait for health
         run: |
