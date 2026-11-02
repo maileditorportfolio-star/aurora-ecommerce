@@ -6,8 +6,21 @@ All notable changes to Aurora Commerce are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-11-02
+
+### Added
+
+- An Aurora Cyber design system: Sora display type, Inter body type, an ink/indigo/plasma/signal palette, aurora depth backgrounds and a dark glass header with a utility bar.
+- A product-led hero that spotlights the featured product, shows live store stats and runs a slow category marquee.
+- A category rail, editorial "why Aurora" section, a full-shelf grid tile and a working newsletter form.
+- A split login/register shell with brand benefits and a dark aurora panel.
+- A scroll progress line and shared motion primitives that respect `prefers-reduced-motion`.
+- Ten local SVG product illustrations committed under `client/public/products/` and seeded into the catalogue.
+
 ### Changed
 
+- Redesigned the product cards and grid, the catalogue filter rail, the product detail layout, the cart/checkout calls to action and the footer.
+- Page transitions now animate transform and opacity only, with a snappier exit and reduced-motion support.
 - Moved the product create/update API call into `saveProduct` in
   `client/components/admin/product-form.tsx`, so the component owns the draft, payload and
   save path; added three specs for the create, update and failure branches.
@@ -18,6 +31,12 @@ All notable changes to Aurora Commerce are documented here. The format follows
   workflow states that each job is a fresh-checkout + `npm ci` check.
 - Refreshed the fresh-clone verification for `v0.5.2`: `npm ci`, `npm run test:unit`,
   `npm run build` and `npm run verify` all exited 0 in an empty clone.
+
+### Fixed
+
+- Removed the hydration mismatch caused by branching on `useReducedMotion()` during the first render.
+- Hid the "Shop now" header CTA below `sm` with a responsive wrapper so it no longer wraps on phones.
+- Hid the support chat launcher on cart and checkout so it cannot cover the primary conversion actions.
 
 ## [0.5.2] - 2026-11-02
 

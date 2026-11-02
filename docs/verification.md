@@ -5,9 +5,8 @@ run without external services, and the results of the last local verification. I
 to be readable without running anything: every claim points at a committed script, config
 or workflow.
 
-Last verified: **2026-11-02** on tag **`v0.5.2`**. The fresh-clone check below was run
-against commit `c32ade0` in an empty directory with no reused `node_modules`, no
-`server/.env` and no `client/.env.local`.
+Last verified: **2026-11-02** on tag **`v0.6.0`**. The fresh-clone check below was run
+against `c32ade0` (v0.5.2); the storefront refresh was verified locally at v0.6.0.
 
 ## Toolchain
 
@@ -93,8 +92,8 @@ Both unit suites emit JUnit XML (`server/junit.xml`, `client/junit.xml`) and cov
 | ----- | ------ |
 | `npm run test:unit` | 122 API specs (13 files) + 238 storefront specs (29 files) = 360 passing |
 | `npm run test:integration` | 9 passing across 4 per-module files (health, products, auth, orders) against MariaDB 10.4.32 |
-| API coverage | 97.47% statements, 83.33% branches, 96.29% functions, 97.54% lines (clean clone v0.5.2) |
-| Storefront coverage | 93% statements, 87.08% branches, 89.32% functions, 94.46% lines |
+| API coverage | 98.1% statements, 81% branches, 97.53% functions, 98.21% lines (local v0.6.0 run) |
+| Storefront coverage | 92.69% statements, 87.55% branches, 89.05% functions, 94.07% lines (local v0.6.0 run) |
 | `npm run build` | Next.js 16.4.4 production build, 14 routes (13 static, 1 dynamic) |
 | `npm run format:check` | Clean |
 | `npm run lint` | Clean for both workspaces |
