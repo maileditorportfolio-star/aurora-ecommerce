@@ -118,6 +118,10 @@ and 79% lines.
 | `dependency-review.yml` | Rejects high-severity dependency changes in pull requests | lockfile diff |
 | `release.yml` | Publishes both images to GHCR on `v*` tags | Dockerfiles |
 
+Every CI job starts from a fresh checkout and runs `npm ci`; the **Unit gates** and
+**Build** jobs together are the fresh-clone install + test + build proof. The workflow
+triggers on every branch push (`branches: ['**']`) and on pull requests to `main`.
+
 ## Engineering history conventions
 
 History is intended to be mineable as self-contained tasks:

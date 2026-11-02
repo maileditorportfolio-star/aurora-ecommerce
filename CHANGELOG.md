@@ -8,6 +8,8 @@ All notable changes to Aurora Commerce are documented here. The format follows
 
 ### Changed
 
+- CI now runs on every branch push (`branches: ['**']`) instead of only `main`, and the
+  workflow states that each job is a fresh-checkout + `npm ci` check.
 - Refreshed the fresh-clone verification for `v0.5.2`: `npm ci`, `npm run test:unit`,
   `npm run build` and `npm run verify` all exited 0 in an empty clone.
 
