@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/maileditorportfolio-star/aurora-ecommerce/actions/workflows/ci.yml/badge.svg)](https://github.com/maileditorportfolio-star/aurora-ecommerce/actions/workflows/ci.yml)
 
-A production-ready, full-stack e-commerce platform: a **Next.js 16** storefront paired with an **Express + Prisma + MySQL** API, complete with JWT auth, role-based admin controls, live chat, and a seeded demo catalogue. The API is covered by **122 Vitest specs** and the storefront by **235 React Testing Library specs**, all runnable without a database, plus **9 integration specs** that exercise the API against a real MySQL instance.
+A production-ready, full-stack e-commerce platform: a **Next.js 16** storefront paired with an **Express + Prisma + MySQL** API, complete with JWT auth, role-based admin controls, live chat, and a seeded demo catalogue. The API is covered by **122 Vitest specs** and the storefront by **238 React Testing Library specs**, all runnable without a database, plus **9 integration specs** that exercise the API against a real MySQL instance.
 
 This repository contains **source code only**. No database, no credentials, and no runtime data are committed — you create your own environment from the provided `.env.example` files.
 
@@ -347,7 +347,7 @@ integration suite. `npm test` works on a clean checkout without MySQL.
 ```bash
 npm test                  # API + storefront unit suites
 npm run test:server       # 122 API specs
-npm run test:client       # 235 storefront specs
+npm run test:client       # 238 storefront specs
 npm run test:coverage     # + coverage reports, gated by thresholds
 npm run test:integration  # 9 API specs against a live MySQL instance
 ```

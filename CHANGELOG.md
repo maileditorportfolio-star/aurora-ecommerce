@@ -8,6 +8,9 @@ All notable changes to Aurora Commerce are documented here. The format follows
 
 ### Changed
 
+- Moved the product create/update API call into `saveProduct` in
+  `client/components/admin/product-form.tsx`, so the component owns the draft, payload and
+  save path; added three specs for the create, update and failure branches.
 - Split the real-database integration suite into per-module specs (health, products, auth
   and orders) with shared live-DB helpers. The suite now covers 9 specs across 4 files
   instead of one combined file.

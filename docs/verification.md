@@ -91,10 +91,10 @@ Both unit suites emit JUnit XML (`server/junit.xml`, `client/junit.xml`) and cov
 
 | Check | Result |
 | ----- | ------ |
-| `npm run test:unit` | 122 API specs (13 files) + 235 storefront specs (29 files) = 357 passing |
+| `npm run test:unit` | 122 API specs (13 files) + 238 storefront specs (29 files) = 360 passing |
 | `npm run test:integration` | 9 passing across 4 per-module files (health, products, auth, orders) against MariaDB 10.4.32 |
 | API coverage | 97.47% statements, 83.33% branches, 96.29% functions, 97.54% lines (clean clone v0.5.2) |
-| Storefront coverage | 92.95% statements, 87.08% branches, 89.29% functions, 94.42% lines |
+| Storefront coverage | 93% statements, 87.08% branches, 89.32% functions, 94.46% lines |
 | `npm run build` | Next.js 16.4.4 production build, 14 routes (13 static, 1 dynamic) |
 | `npm run format:check` | Clean |
 | `npm run lint` | Clean for both workspaces |
