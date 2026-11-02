@@ -5,8 +5,8 @@ run without external services, and the results of the last local verification. I
 to be readable without running anything: every claim points at a committed script, config
 or workflow.
 
-Last verified: **2026-11-02** on tag **`v0.5.1`**. The fresh-clone check below was run
-against commit `cc3621d` in an empty directory with no reused `node_modules`.
+Last verified: **2026-11-02** on tag **`v0.5.2`**. The fresh-clone check below was run
+against `cc3621d` (v0.5.1); the JUnit/lcov report change was re-verified locally at v0.5.2.
 
 ## Toolchain
 
@@ -76,13 +76,20 @@ The unit suites are deliberately dependency-free: they exercise the Express app,
 validation and controllers without a live database, and the storefront without a live API.
 Only the integration suite loads the real Prisma client and requires seeded data.
 
+### Machine-readable test reports
+
+Both unit suites emit JUnit XML (`server/junit.xml`, `client/junit.xml`) and coverage in
+`text`, `html`, `json-summary` and `lcov` formats. The integration config emits
+`server/junit-integration.xml`. CI uploads these as the `unit-test-reports` and
+`integration-test-report` artifacts, so a completed run is auditable without re-executing it.
+
 ## Last verified results
 
 | Check | Result |
 | ----- | ------ |
 | `npm run test:unit` | 122 API specs (13 files) + 235 storefront specs (29 files) = 357 passing |
 | `npm run test:integration` | 8 passing against MariaDB 10.4.32 |
-| API coverage | 97.47% statements, 83.33% branches, 96.29% functions, 97.54% lines (clean clone) |
+| API coverage | 98.1% statements, 81% branches, 97.53% functions, 98.21% lines (local run) |
 | Storefront coverage | 92.95% statements, 87.08% branches, 89.29% functions, 94.42% lines |
 | `npm run build` | Next.js 16.4.4 production build, 14 routes (13 static, 1 dynamic) |
 | `npm run format:check` | Clean |
@@ -99,9 +106,9 @@ and 79% lines.
 
 | Workflow / job | What it proves | Reads |
 | -------------- | -------------- | ----- |
-| `ci.yml` → **Unit gates** | Installs with `npm ci`, verifies the lockfile, formats, lints, typechecks, validates env docs, runs both unit suites with coverage gates | `package-lock.json`, both Vitest configs, `scripts/check-env-example.js` |
+| `ci.yml` → **Unit gates** | Installs with `npm ci`, verifies the lockfile, formats, lints, typechecks, validates env docs, runs both unit suites with coverage gates | `package-lock.json`, both Vitest configs, `scripts/check-env-example.js`; uploads `unit-test-reports` |
 | `ci.yml` → **Build** | Both production builds succeed | Prisma schema, Next config |
-| `ci.yml` → **Integration** | Migrations, seed, the real-database specs and a booted `/api/health` against a `mysql:8` service | `server/tests/integration/`, `prisma/migrations/` |
+| `ci.yml` → **Integration** | Migrations, seed, the real-database specs and a booted `/api/health` against a `mysql:8` service | `server/tests/integration/`, `prisma/migrations/`; uploads `integration-test-report` |
 | `ci.yml` → **Docker** | Both images build from the repo root | `server/Dockerfile`, `client/Dockerfile` |
 | `codeql.yml` | Static analysis on push, pull request and weekly schedule | source tree |
 | `dependency-review.yml` | Rejects high-severity dependency changes in pull requests | lockfile diff |

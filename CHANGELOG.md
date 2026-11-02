@@ -6,6 +6,14 @@ All notable changes to Aurora Commerce are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.5.2] - 2026-11-02
+
+### Added
+
+- JUnit XML reporters for both unit suites and the integration suite, plus
+  `json-summary` and `lcov` coverage output. CI uploads them as the `unit-test-reports`
+  and `integration-test-report` artifacts.
+
 ### Changed
 
 - Recorded the fresh-clone verification (`npm ci`, `npm run test:unit`, `npm run build`,

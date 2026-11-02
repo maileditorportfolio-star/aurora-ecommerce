@@ -376,6 +376,11 @@ The API is CommonJS, so the unit specs inject a Prisma stand-in into
 and validation fully exercised without touching a real database. The
 integration specs deliberately skip the mock and load the real Prisma client.
 
+Both unit suites emit JUnit XML and coverage in `json-summary` and `lcov` formats;
+the integration suite emits its own JUnit file. CI uploads them as the
+`unit-test-reports` and `integration-test-report` artifacts, so a run can be audited
+without re-executing it.
+
 CI (`.github/workflows/ci.yml`) runs formatting, linting, typechecking, both unit suites
 with coverage gates, a blocking production-dependency audit and lockfile check, both
 production builds, both Docker image builds, and a MySQL-backed job that applies
