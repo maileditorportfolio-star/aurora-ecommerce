@@ -48,14 +48,16 @@ jobs:
       - name: Run unit suites with coverage gates (no database)
         run: npm run test:coverage
 
-      - name: Upload coverage reports
+      - name: Upload test and coverage reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: coverage
+          name: unit-test-reports
           path: |
             server/coverage
             client/coverage
+            server/junit.xml
+            client/junit.xml
           retention-days: 7
 
       # The deepmerge-ts advisory is pinned forward via the root `overrides`
@@ -132,6 +134,14 @@ jobs:
 
       - name: Run the database integration specs
         run: npm run test:integration
+
+      - name: Upload the integration test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-test-report
+          path: server/junit-integration.xml
+          retention-days: 7
 
       - name: Boot the API and wait for health
         run: |
