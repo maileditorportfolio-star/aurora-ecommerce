@@ -5,8 +5,9 @@ run without external services, and the results of the last local verification. I
 to be readable without running anything: every claim points at a committed script, config
 or workflow.
 
-Last verified: **2026-11-02** on tag **`v0.6.0`**. The fresh-clone check below was run
-against `c32ade0` (v0.5.2); the storefront refresh was verified locally at v0.6.0.
+Last verified: **2026-11-02** on tag **`v0.7.0`**. The fresh-clone check below was run
+against `c32ade0` (v0.5.2); the storefront refresh and the super-admin features were verified
+locally at v0.7.0.
 
 ## Toolchain
 
@@ -90,11 +91,11 @@ Both unit suites emit JUnit XML (`server/junit.xml`, `client/junit.xml`) and cov
 
 | Check | Result |
 | ----- | ------ |
-| `npm run test:unit` | 122 API specs (13 files) + 238 storefront specs (29 files) = 360 passing |
+| `npm run test:unit` | 139 API specs (16 files) + 250 storefront specs (32 files) = 389 passing |
 | `npm run test:integration` | 9 passing across 4 per-module files (health, products, auth, orders) against MariaDB 10.4.32 |
-| API coverage | 98.1% statements, 81% branches, 97.53% functions, 98.21% lines (local v0.6.0 run) |
-| Storefront coverage | 92.69% statements, 87.55% branches, 89.05% functions, 94.07% lines (local v0.6.0 run) |
-| `npm run build` | Next.js 16.4.4 production build, 14 routes (13 static, 1 dynamic) |
+| API coverage | 97.77% statements, 79.93% branches, 96.96% functions, 98.14% lines (local v0.7.0 run) |
+| Storefront coverage | 90.28% statements, 83.54% branches, 85.67% functions, 91.61% lines (local v0.7.0 run) |
+| `npm run build` | Next.js 16.4.4 production build, 16 routes (15 static, 1 dynamic) |
 | `npm run format:check` | Clean |
 | `npm run lint` | Clean for both workspaces |
 | `npm run typecheck` | Clean (`tsc --noEmit`) |

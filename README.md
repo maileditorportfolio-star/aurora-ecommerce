@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/maileditorportfolio-star/aurora-ecommerce/actions/workflows/ci.yml/badge.svg)](https://github.com/maileditorportfolio-star/aurora-ecommerce/actions/workflows/ci.yml)
 
-A production-ready, full-stack e-commerce platform: a **Next.js 16** storefront paired with an **Express + Prisma + MySQL** API, complete with JWT auth, role-based admin controls, live chat, and a seeded demo catalogue. The API is covered by **122 Vitest specs** and the storefront by **238 React Testing Library specs**, all runnable without a database, plus **9 integration specs** that exercise the API against a real MySQL instance.
+A production-ready, full-stack e-commerce platform: a **Next.js 16** storefront paired with an **Express + Prisma + MySQL** API, complete with JWT auth, role-based admin controls, live chat, and a seeded demo catalogue. The API is covered by **139 Vitest specs** and the storefront by **250 React Testing Library specs**, all runnable without a database, plus **9 integration specs** that exercise the API against a real MySQL instance.
 
 This repository contains **source code only**. No database, no credentials, and no runtime data are committed — you create your own environment from the provided `.env.example` files.
 
@@ -39,14 +39,15 @@ Installation, build and the unit suites are reproducible from the committed lock
 - **Cart** — persistent drawer + cart page, quantity editing, live totals
 - **Checkout** — shipping details, COD / bKash / Nagad / card options, order placement
 - **Account** (`/account`) — profile, order history, password change
-- **Admin console** (`/admin`) — dashboard, orders board, products CRUD, customers, analytics
+- **Admin console** (`/admin`) — dashboard, orders board, products CRUD with image uploads, customers, analytics, storefront design editor and team permissions
+- **Design control** — the super admin can edit hero copy, the announcement, the featured product and home-section visibility from `/admin/design`
 - **Support chat** — floating widget backed by Socket.IO
 - **Motion** — Framer Motion transitions and scroll reveals throughout
 
 ### API (Express)
 
 - **JWT auth** — register, login, profile, change password
-- **Role-based access control** — `CUSTOMER` and `ADMIN` guards on every privileged route
+- **Super admin RBAC** — `SUPER_ADMIN`, `ADMIN` and `CUSTOMER` roles, with granular permissions (`products.write`, `orders.read/write`, `customers.read`, `analytics.read`, `design.write`) enforced on every staff route
 - **Zod validation** — every request body is schema-validated before it reaches the database
 - **Prisma + MySQL** — typed data layer with migrations and idempotent seed data
 - **Socket.IO** — real-time chat messages
@@ -233,12 +234,27 @@ npm run dev
 
 ### Demo accounts (created by the seed)
 
-| Role     | Email                  | Password    |
-| -------- | ---------------------- | ----------- |
-| Admin    | `admin@aurora.com`     | `aurora123` |
-| Customer | `customer@aurora.com`  | `aurora123` |
+| Role        | Email                  | Password    |
+| ----------- | ---------------------- | ----------- |
+| Super admin | `admin@aurora.com`     | `aurora123` |
+| Customer    | `customer@aurora.com`  | `aurora123` |
 
-> Change or delete these before deploying anywhere public — see [Customizing the project](#customizing-the-project).
+> The seeded super admin can create standard admins from **Admin → Team** and choose their
+> permissions. Change or delete these demo accounts before deploying anywhere public — see
+> [Customizing the project](#customizing-the-project).
+
+### Admin roles & permissions
+
+| Role | Console access |
+| ---- | -------------- |
+| `SUPER_ADMIN` | Everything: dashboard, orders, products, customers, design editor, team management |
+| `ADMIN` | Only the permissions granted by the super admin |
+| `CUSTOMER` | Storefront only |
+
+Granular permissions: `products.write`, `orders.read`, `orders.write`, `customers.read`,
+`analytics.read`, `design.write`. Super admins bypass the checks; standard admins receive
+`403` on any route outside their set. The API is the source of truth, and the sidebar hides
+sections the signed-in admin cannot use.
 
 ---
 
@@ -256,7 +272,7 @@ aurora-ecommerce/
 │   │   ├── products/           # Catalogue + product detail
 │   │   ├── cart/  checkout/  account/
 │   │   ├── login/  register/
-│   │   ├── admin/              # Admin console (layout, orders, products, customers, analytics)
+│   │   ├── admin/              # Admin console (dashboard, orders, products, customers, design, team)
 │   │   ├── layout.tsx          # Root layout, fonts, metadata, viewport
 │   │   └── globals.css         # Tailwind layers + custom utilities
 │   ├── components/
@@ -346,8 +362,8 @@ integration suite. `npm test` works on a clean checkout without MySQL.
 
 ```bash
 npm test                  # API + storefront unit suites
-npm run test:server       # 122 API specs
-npm run test:client       # 238 storefront specs
+npm run test:server       # 139 API specs
+npm run test:client       # 250 storefront specs
 npm run test:coverage     # + coverage reports, gated by thresholds
 npm run test:integration  # 9 API specs against a live MySQL instance
 ```
@@ -398,7 +414,7 @@ mapping.
 
 ```bash
 npm ci
-npm run test:unit   # 122 + 235 specs, no database
+npm run test:unit   # 139 + 250 specs, no database
 npm run build       # Prisma generate + Next production build
 npm run verify      # format, lint, typecheck, env docs, coverage
 ```
@@ -484,7 +500,7 @@ Defaults live in `server/src/config/env.js` if you prefer to hard-code them.
 
 ### Add or change products
 
-**Through the admin UI** (easiest): sign in as `admin@aurora.com` → **Admin → Products** → create, edit, feature, or archive (archive = soft delete, `active = false`).
+**Through the admin UI** (easiest): sign in as `admin@aurora.com` → **Admin → Products** → create, edit, feature, or archive (archive = soft delete, `active = false`). The product form accepts an image URL or a direct JPG/PNG/WebP/GIF upload (max 5MB).
 
 **Through the seed file**: edit `server/prisma/seed.js` — the `categories` and `products` arrays — then run `npm run seed`. The seed is idempotent (upserts by slug), so it is safe to re-run.
 
@@ -569,14 +585,27 @@ Query parameters for `GET /products`: `search`, `category` (slug), `featured` (`
 
 Statuses: `PENDING`, `CONFIRMED`, `PROCESSING`, `SHIPPED`, `DELIVERED`, `CANCELLED`.
 
-### Admin & chat
+### Admin, design & uploads
 
-| Method | Endpoint             | Auth  | Description                        |
-| ------ | -------------------- | ----- | ---------------------------------- |
-| GET    | `/admin/stats`       | admin | Revenue, pipeline, top products, low stock |
-| GET    | `/admin/customers`   | admin | Customers with order count and lifetime value |
-| GET    | `/chat/:conversationId` | —  | Chat history                        |
-| POST   | `/chat`              | optional | Send a message                 |
+| Method | Endpoint                          | Auth              | Description                                      |
+| ------ | --------------------------------- | ----------------- | ------------------------------------------------ |
+| GET    | `/admin/stats`                    | `analytics.read`  | Revenue, pipeline, top products, low stock       |
+| GET    | `/admin/customers`                | `customers.read`  | Customers with order count and lifetime value    |
+| GET    | `/admin/users`                    | super admin       | Staff accounts and their permissions             |
+| GET    | `/admin/users/permissions`        | super admin       | Available permission keys                        |
+| POST   | `/admin/users`                    | super admin       | Create an admin with a custom permission set     |
+| PATCH  | `/admin/users/:id`                | super admin       | Update an admin's name or permissions            |
+| GET    | `/admin/storefront`               | `design.write`    | Read the live storefront settings                |
+| PATCH  | `/admin/storefront`               | `design.write`    | Update hero copy, announcement, product, sections |
+| POST   | `/admin/uploads/product-image`    | `products.write`  | Upload a product image (max 5MB)                 |
+| GET    | `/settings/storefront`            | —                 | Public storefront copy used by the shop          |
+
+### Chat
+
+| Method | Endpoint                 | Auth     | Description          |
+| ------ | ------------------------ | -------- | -------------------- |
+| GET    | `/chat/:conversationId`  | —        | Chat history         |
+| POST   | `/chat`                  | optional | Send a message       |
 
 ### Observability
 

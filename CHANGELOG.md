@@ -6,6 +6,37 @@ All notable changes to Aurora Commerce are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-11-02
+
+### Added
+
+- A `SUPER_ADMIN` role with granular admin permissions (`products.write`, `orders.read/write`,
+  `customers.read`, `analytics.read`, `design.write`) enforced on every staff route.
+- A `/admin/team` console for the super admin to create admins with a custom permission set
+  and edit existing admins' access.
+- A `/admin/design` editor that controls the announcement, hero eyebrow/headline/highlight/
+  description, featured hero product and home-section visibility, with a live preview.
+- A public `GET /api/settings/storefront` endpoint and a client settings provider so the
+  header and home page render the saved design.
+- Product image uploads through `POST /api/admin/uploads/product-image` (JPG/PNG/WebP/GIF,
+  5MB max), served from `/uploads` and wired into the product form with a preview.
+- A dashboard access state for admins without `analytics.read`, with links to the sections
+  they can use.
+- Local SVG product illustrations remain the seeded catalogue imagery; uploaded images are
+  persisted in a Docker volume in the Compose stack.
+
+### Changed
+
+- The seeded `admin@aurora.com` account is now the super admin.
+- Admin routes, the admin sidebar and the console entry points respect the signed-in
+  admin's permissions.
+- Chat treats both `ADMIN` and `SUPER_ADMIN` as staff senders.
+
+### Fixed
+
+- Limited admins no longer land on a zeroed dashboard; they see an access state instead.
+- Upload errors map to `400` responses instead of generic `500`s.
+
 ## [0.6.0] - 2026-11-02
 
 ### Added
