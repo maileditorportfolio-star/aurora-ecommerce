@@ -6,6 +6,8 @@ All notable changes to Aurora Commerce are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-11-02
+
 ### Added
 
 - `docs/verification.md` with the fresh-clone path, the isolation matrix, the last verified
