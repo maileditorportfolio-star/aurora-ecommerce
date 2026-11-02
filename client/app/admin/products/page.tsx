@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import ProductForm, {
   draftFromProduct,
   emptyProductDraft,
-  payloadFromDraft,
+  saveProduct,
   type ProductDraft,
 } from '@/components/admin/product-form';
 import { api } from '@/lib/api';
@@ -65,14 +65,8 @@ export default function AdminProductsPage() {
     setSaving(true);
     setError(null);
 
-    const payload = payloadFromDraft(draft);
-
     try {
-      if (editing) {
-        await api.products.update(editing.id, payload);
-      } else {
-        await api.products.create(payload);
-      }
+      await saveProduct({ editingId: editing?.id, draft });
       close();
       load();
     } catch (caught) {

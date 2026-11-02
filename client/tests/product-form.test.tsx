@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { useState } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -6,8 +6,19 @@ import ProductForm, {
   draftFromProduct,
   emptyProductDraft,
   payloadFromDraft,
+  saveProduct,
 } from '@/components/admin/product-form';
+import { api } from '@/lib/api';
 import { productFixture } from './fixtures';
+
+vi.mock('@/lib/api', () => ({
+  api: {
+    products: {
+      create: vi.fn(),
+      update: vi.fn(),
+    },
+  },
+}));
 
 interface HarnessProps {
   onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -120,5 +131,46 @@ describe('ProductForm', () => {
       imageUrl: null,
       featured: false,
     });
+  });
+});
+
+describe('saveProduct', () => {
+  const create = vi.mocked(api.products.create);
+  const update = vi.mocked(api.products.update);
+
+  beforeEach(() => {
+    create.mockReset();
+    update.mockReset();
+  });
+
+  it('creates a product when there is no editing id', async () => {
+    const draft = draftFromProduct(productFixture());
+    const created = productFixture({ id: 'product-new', slug: 'new-product' });
+    create.mockResolvedValue({ product: created });
+
+    const result = await saveProduct({ draft });
+
+    expect(create).toHaveBeenCalledWith(payloadFromDraft(draft));
+    expect(update).not.toHaveBeenCalled();
+    expect(result).toEqual(created);
+  });
+
+  it('updates the selected product when an editing id is present', async () => {
+    const draft = draftFromProduct(productFixture({ name: 'Updated name' }));
+    const updated = productFixture({ id: 'product-9', name: 'Updated name' });
+    update.mockResolvedValue({ product: updated });
+
+    const result = await saveProduct({ editingId: 'product-9', draft });
+
+    expect(update).toHaveBeenCalledWith('product-9', payloadFromDraft(draft));
+    expect(create).not.toHaveBeenCalled();
+    expect(result).toEqual(updated);
+  });
+
+  it('propagates API failures to the caller', async () => {
+    const draft = draftFromProduct(productFixture());
+    create.mockRejectedValue(new Error('The catalogue rejected that product'));
+
+    await expect(saveProduct({ draft })).rejects.toThrow('The catalogue rejected that product');
   });
 });

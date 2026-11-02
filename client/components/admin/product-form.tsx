@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Input, Textarea } from '@/components/ui/input';
+import { api } from '@/lib/api';
 import { cn } from '@/lib/utils';
 import type { Product } from '@/types';
 
@@ -45,6 +46,24 @@ export const payloadFromDraft = (draft: ProductDraft) => ({
   featured: draft.featured,
   active: true,
 });
+
+export interface SaveProductOptions {
+  editingId?: string | null;
+  draft: ProductDraft;
+}
+
+/** Creates or updates a product from the current draft. */
+export const saveProduct = async ({ editingId, draft }: SaveProductOptions) => {
+  const payload = payloadFromDraft(draft);
+
+  if (editingId) {
+    const { product } = await api.products.update(editingId, payload);
+    return product;
+  }
+
+  const { product } = await api.products.create(payload);
+  return product;
+};
 
 export interface ProductFormProps {
   draft: ProductDraft;
