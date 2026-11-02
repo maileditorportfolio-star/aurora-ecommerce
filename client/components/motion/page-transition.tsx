@@ -4,18 +4,16 @@ import { motion, type Variants } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 const pageVariants: Variants = {
-  initial: { opacity: 0, y: 12, filter: 'blur(6px)' },
+  initial: { opacity: 0, y: 18 },
   animate: {
     opacity: 1,
     y: 0,
-    filter: 'blur(0px)',
-    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
   },
   exit: {
     opacity: 0,
-    y: -8,
-    filter: 'blur(6px)',
-    transition: { duration: 0.25, ease: 'easeIn' },
+    y: -10,
+    transition: { duration: 0.22, ease: [0.4, 0, 1, 1] },
   },
 };
 

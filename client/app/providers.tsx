@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { MotionConfig } from 'framer-motion';
 import { useAuthStore } from '@/store/auth';
 
 /**
@@ -14,7 +15,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     hydrate();
   }, [hydrate]);
 
-  return <>{children}</>;
+  return <MotionConfig reducedMotion="user">{children}</MotionConfig>;
 }
 
 export default Providers;

@@ -35,21 +35,46 @@ module.exports = {
           900: '#0f172a',
           950: '#020617',
         },
+        signal: {
+          50: '#f8ffe6',
+          100: '#efffc4',
+          200: '#e0ff8f',
+          300: '#ccff4d',
+          400: '#b8f22e',
+          500: '#9bd615',
+          600: '#78a90d',
+          700: '#5b800f',
+          800: '#496512',
+          900: '#3d5414',
+          950: '#1f2e06',
+        },
+        plasma: {
+          300: '#d8b4fe',
+          400: '#c084fc',
+          500: '#a855f7',
+          600: '#9333ea',
+        },
+        frost: '#f5f6fa',
       },
       fontFamily: {
-        sans: ['Outfit', 'Inter', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
-        display: ['Outfit', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+        display: ['Sora', 'Inter', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
         soft: '0 1px 2px rgb(15 23 42 / 0.04), 0 8px 24px -12px rgb(79 70 229 / 0.18)',
         glow: '0 0 0 1px rgb(99 102 241 / 0.16), 0 12px 40px -12px rgb(79 70 229 / 0.45)',
         card: '0 24px 60px -30px rgb(15 23 42 / 0.45)',
+        lift: '0 30px 80px -40px rgb(2 6 23 / 0.55)',
       },
       backgroundImage: {
         'grid-indigo':
           'linear-gradient(to right, rgb(99 102 241 / 0.08) 1px, transparent 1px), linear-gradient(to bottom, rgb(99 102 241 / 0.08) 1px, transparent 1px)',
+        'grid-fine':
+          'linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px)',
         aurora:
           'radial-gradient(60% 60% at 15% 10%, rgb(99 102 241 / 0.35) 0%, transparent 60%), radial-gradient(50% 50% at 85% 0%, rgb(56 189 248 / 0.28) 0%, transparent 60%), radial-gradient(60% 60% at 50% 100%, rgb(168 85 247 / 0.22) 0%, transparent 60%)',
+        'aurora-deep':
+          'radial-gradient(55% 55% at 12% 8%, rgb(99 102 241 / 0.5) 0%, transparent 62%), radial-gradient(45% 45% at 88% 2%, rgb(34 211 238 / 0.35) 0%, transparent 64%), radial-gradient(60% 60% at 55% 105%, rgb(168 85 247 / 0.34) 0%, transparent 62%), radial-gradient(40% 40% at 70% 45%, rgb(204 255 77 / 0.08) 0%, transparent 60%)',
       },
       keyframes: {
         float: {
@@ -78,6 +103,7 @@ module.exports = {
         'gradient-pan': 'gradient-pan 8s ease infinite',
         'pulse-ring': 'pulse-ring 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         marquee: 'marquee 28s linear infinite',
+        'marquee-slow': 'marquee 44s linear infinite',
         shimmer: 'shimmer 2.2s linear infinite',
       },
     },

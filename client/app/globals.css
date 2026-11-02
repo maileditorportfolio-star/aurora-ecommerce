@@ -32,8 +32,29 @@
   }
 
   body {
-    @apply bg-white text-ink-900 antialiased;
+    @apply bg-frost text-ink-900 antialiased;
     font-feature-settings: 'cv11', 'ss01';
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 
   ::selection {
@@ -65,12 +86,21 @@
   }
 
   .text-gradient {
-    @apply bg-gradient-to-r from-indigo-600 via-indigo-500 to-sky-500 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-indigo-500 via-cyan-400 to-plasma-500 bg-clip-text text-transparent;
+    background-size: 200% auto;
+  }
+
+  .text-gradient-light {
+    @apply bg-gradient-to-r from-indigo-300 via-cyan-200 to-signal-300 bg-clip-text text-transparent;
     background-size: 200% auto;
   }
 
   .glass {
     @apply border border-white/60 bg-white/70 backdrop-blur-xl;
+  }
+
+  .glass-dark {
+    @apply border border-white/10 bg-white/[0.055] backdrop-blur-xl;
   }
 
   .focus-ring {

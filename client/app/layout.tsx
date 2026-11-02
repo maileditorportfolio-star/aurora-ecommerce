@@ -1,13 +1,13 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, Outfit } from 'next/font/google';
+import { Inter, Sora } from 'next/font/google';
 import './globals.css';
 
 import { Providers } from './providers';
 import { SiteChrome } from '@/components/layout/site-chrome';
 
-const outfit = Outfit({
+const sora = Sora({
   subsets: ['latin'],
-  variable: '--font-outfit',
+  variable: '--font-sora',
   display: 'swap',
 });
 
@@ -39,15 +39,15 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#4f46e5',
+  themeColor: '#020617',
   width: 'device-width',
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${outfit.variable} ${inter.variable}`}>
-      <body className="min-h-screen bg-white font-sans text-ink-900">
+    <html lang="en" className={`${sora.variable} ${inter.variable}`}>
+      <body className="min-h-screen bg-frost font-sans text-ink-900">
         <Providers>
           <SiteChrome>{children}</SiteChrome>
         </Providers>

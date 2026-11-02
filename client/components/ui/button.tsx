@@ -4,7 +4,16 @@ import { forwardRef } from 'react';
 import { motion, type HTMLMotionProps } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
-type Variant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'glass';
+type Variant =
+  | 'primary'
+  | 'secondary'
+  | 'outline'
+  | 'ghost'
+  | 'danger'
+  | 'glass'
+  | 'signal'
+  | 'ink'
+  | 'outlineLight';
 type Size = 'sm' | 'md' | 'lg' | 'icon';
 
 const variants: Record<Variant, string> = {
@@ -17,6 +26,10 @@ const variants: Record<Variant, string> = {
   ghost: 'text-ink-600 hover:bg-indigo-50 hover:text-indigo-700',
   danger: 'bg-rose-600 text-white hover:bg-rose-500 hover:shadow-glow',
   glass: 'glass text-indigo-700 hover:bg-white/90',
+  signal:
+    'bg-signal-300 text-ink-950 shadow-soft hover:bg-signal-200 hover:shadow-glow disabled:hover:bg-signal-300',
+  ink: 'bg-ink-950 text-white hover:bg-indigo-700 disabled:hover:bg-ink-950',
+  outlineLight: 'border border-white/15 bg-white/5 text-white hover:bg-white/10',
 };
 
 const sizes: Record<Size, string> = {
