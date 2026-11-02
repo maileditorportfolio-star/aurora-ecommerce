@@ -4,6 +4,7 @@ const env = require('../config/env');
 const ApiError = require('../utils/ApiError');
 const asyncHandler = require('../utils/asyncHandler');
 const { signToken } = require('../services/token.service');
+const { normalizePermissions } = require('../permissions');
 const { registerSchema, loginSchema, parse } = require('../validation/schemas');
 
 const publicUser = (user) => ({
@@ -12,6 +13,7 @@ const publicUser = (user) => ({
   email: user.email,
   phone: user.phone ?? null,
   role: user.role,
+  permissions: normalizePermissions(user.permissions),
   avatarUrl: user.avatarUrl ?? null,
 });
 

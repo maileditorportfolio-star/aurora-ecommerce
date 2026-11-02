@@ -1,6 +1,6 @@
 {
   "name": "@aurora/server",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "private": true,
   "description": "Aurora Commerce API — Express + Socket.io + Prisma (MySQL)",
   "main": "src/index.js",
@@ -34,6 +34,7 @@
     "express-rate-limit": "^7.5.0",
     "helmet": "^8.0.0",
     "jsonwebtoken": "^9.0.2",
+    "multer": "^2.5.0",
     "pino": "^10.4.0",
     "pino-http": "^11.0.0",
     "socket.io": "^4.8.1",

@@ -1,5 +1,6 @@
 const prisma = require('../config/prisma');
 const ApiError = require('../utils/ApiError');
+const { normalizePermissions } = require('../permissions');
 const { readToken, verifyToken } = require('../services/token.service');
 
 const loadUser = async (req) => {
@@ -9,7 +10,14 @@ const loadUser = async (req) => {
   const payload = verifyToken(token);
   return prisma.user.findUnique({
     where: { id: payload.sub },
-    select: { id: true, email: true, name: true, role: true, avatarUrl: true },
+    select: {
+      id: true,
+      email: true,
+      name: true,
+      role: true,
+      permissions: true,
+      avatarUrl: true,
+    },
   });
 };
 
@@ -35,12 +43,43 @@ const requireAuth = async (req, _res, next) => {
   }
 };
 
-/** Restricts a route to admin accounts. Must run after `requireAuth`. */
+const isStaff = (user) => user && (user.role === 'ADMIN' || user.role === 'SUPER_ADMIN');
+
+/** Restricts a route to staff accounts. Must run after `requireAuth`. */
 const requireAdmin = (req, _res, next) => {
-  if (!req.user || req.user.role !== 'ADMIN') {
+  if (!isStaff(req.user)) {
     return next(ApiError.forbidden('Administrator access required'));
   }
   next();
 };
 
-module.exports = { optionalAuth, requireAuth, requireAdmin };
+/** Restricts a route to the super administrator. */
+const requireSuperAdmin = (req, _res, next) => {
+  if (!req.user || req.user.role !== 'SUPER_ADMIN') {
+    return next(ApiError.forbidden('Super administrator access required'));
+  }
+  next();
+};
+
+/** Restricts a staff route to one granular permission. Super admins bypass it. */
+const requirePermission = (permission) => (req, _res, next) => {
+  if (!isStaff(req.user)) {
+    return next(ApiError.forbidden('Administrator access required'));
+  }
+  if (req.user.role === 'SUPER_ADMIN') return next();
+
+  const granted = normalizePermissions(req.user.permissions);
+  if (!granted.includes(permission)) {
+    return next(ApiError.forbidden(`Missing permission: ${permission}`));
+  }
+  next();
+};
+
+module.exports = {
+  optionalAuth,
+  requireAuth,
+  requireAdmin,
+  requireSuperAdmin,
+  requirePermission,
+  isStaff,
+};

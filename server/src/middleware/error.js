@@ -10,7 +10,10 @@ const notFound = (req, _res, next) => {
 // eslint-disable-next-line no-unused-vars
 const errorHandler = (error, req, res, _next) => {
   const isKnown = error instanceof ApiError;
-  const statusCode = isKnown ? error.statusCode : error.status || 500;
+  const isUploadError = error.name === 'MulterError';
+  const statusCode = isKnown ? error.statusCode : isUploadError ? 400 : error.status || 500;
+  const uploadMessage =
+    error.code === 'LIMIT_FILE_SIZE' ? 'Image must be 5MB or smaller' : 'Image upload failed';
 
   if (!isKnown || statusCode >= 500) {
     logger.error(
@@ -23,18 +26,21 @@ const errorHandler = (error, req, res, _next) => {
       'request failed',
     );
 
-    captureException(error, {
-      method: req.method,
-      url: req.originalUrl,
-      userId: req.user?.id,
-      statusCode,
-    });
+    if (!isUploadError) {
+      captureException(error, {
+        method: req.method,
+        url: req.originalUrl,
+        userId: req.user?.id,
+        statusCode,
+      });
+    }
   }
 
   res.status(statusCode).json({
     success: false,
-    message:
-      statusCode >= 500 && !env.isProduction
+    message: isUploadError
+      ? uploadMessage
+      : statusCode >= 500 && !env.isProduction
         ? error.message
         : isKnown
           ? error.message

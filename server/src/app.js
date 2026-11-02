@@ -1,4 +1,6 @@
 const express = require('express');
+const fs = require('node:fs');
+const path = require('node:path');
 const cors = require('cors');
 const helmet = require('helmet');
 const pinoHttp = require('pino-http');
@@ -30,6 +32,11 @@ app.use(
 
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true }));
+
+const uploadDirectory = path.resolve(__dirname, '../uploads');
+fs.mkdirSync(uploadDirectory, { recursive: true });
+app.use('/uploads', express.static(uploadDirectory, { maxAge: '7d' }));
+
 app.use(
   pinoHttp({
     logger,

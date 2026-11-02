@@ -16,7 +16,7 @@ describe('signToken', () => {
 
     expect(payload.sub).toBe(admin.id);
     expect(payload.email).toBe(admin.email);
-    expect(payload.role).toBe('ADMIN');
+    expect(payload.role).toBe(admin.role);
     expect(payload.exp).toBeGreaterThan(payload.iat);
   });
 

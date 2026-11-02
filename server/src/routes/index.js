@@ -6,6 +6,10 @@ const productRoutes = require('./product.routes');
 const orderRoutes = require('./order.routes');
 const chatRoutes = require('./chat.routes');
 const adminRoutes = require('./admin.routes');
+const teamRoutes = require('./team.routes');
+const storefrontRoutes = require('./storefront.routes');
+const uploadRoutes = require('./upload.routes');
+const settingsRoutes = require('./settings.routes');
 const metricsRoutes = require('./metrics.routes');
 
 const router = express.Router();
@@ -38,6 +42,10 @@ router.use('/auth', authRoutes);
 router.use('/products', productRoutes);
 router.use('/orders', orderRoutes);
 router.use('/chat', chatRoutes);
+router.use('/settings', settingsRoutes);
+router.use('/admin/users', teamRoutes);
+router.use('/admin/storefront', storefrontRoutes);
+router.use('/admin/uploads', uploadRoutes);
 router.use('/admin', adminRoutes);
 router.use('/metrics', metricsRoutes);
 

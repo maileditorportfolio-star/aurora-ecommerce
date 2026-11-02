@@ -26,6 +26,7 @@ COPY --from=build /app/server/prisma ./server/prisma
 COPY package.json ./package.json
 COPY server/package.json ./server/package.json
 COPY server/src ./server/src
+RUN mkdir -p /app/server/uploads && chown -R node:node /app/server/uploads
 
 USER node
 EXPOSE 4000

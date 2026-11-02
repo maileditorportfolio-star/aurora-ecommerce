@@ -1,6 +1,7 @@
 const express = require('express');
 const productController = require('../controllers/product.controller');
-const { requireAuth, requireAdmin } = require('../middleware/auth');
+const { PERMISSIONS } = require('../permissions');
+const { requireAuth, requirePermission } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -8,8 +9,23 @@ router.get('/categories', productController.listCategories);
 router.get('/', productController.list);
 router.get('/:slug', productController.detail);
 
-router.post('/', requireAuth, requireAdmin, productController.create);
-router.patch('/:id', requireAuth, requireAdmin, productController.update);
-router.delete('/:id', requireAuth, requireAdmin, productController.remove);
+router.post(
+  '/',
+  requireAuth,
+  requirePermission(PERMISSIONS.PRODUCTS_WRITE),
+  productController.create,
+);
+router.patch(
+  '/:id',
+  requireAuth,
+  requirePermission(PERMISSIONS.PRODUCTS_WRITE),
+  productController.update,
+);
+router.delete(
+  '/:id',
+  requireAuth,
+  requirePermission(PERMISSIONS.PRODUCTS_WRITE),
+  productController.remove,
+);
 
 module.exports = router;

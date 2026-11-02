@@ -13,6 +13,7 @@ datasource db {
 enum Role {
   CUSTOMER
   ADMIN
+  SUPER_ADMIN
 }
 
 enum OrderStatus {
@@ -37,6 +38,7 @@ model User {
   name         String
   phone        String?
   role         Role     @default(CUSTOMER)
+  permissions  Json?
   avatarUrl    String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -46,6 +48,22 @@ model User {
 
   @@index([role])
   @@map("users")
+}
+
+model StorefrontSetting {
+  id              String   @id @default("default")
+  announcement    String   @default("Free delivery over ৳5,000")
+  heroEyebrow     String   @default("Aurora Cyber / 2026 collection")
+  heroTitle       String   @default("Tech that feels")
+  heroHighlight   String   @default("effortless")
+  heroDescription String   @default("A tightly curated shelf of laptops, audio, displays and desk gear. Honest pricing, live stock and delivery you can track from checkout to doorstep.")
+  heroProductSlug String?
+  showMarquee     Boolean  @default(true)
+  showCategories  Boolean  @default(true)
+  showFeatures    Boolean  @default(true)
+  updatedAt       DateTime @updatedAt
+
+  @@map("storefront_settings")
 }
 
 model Category {

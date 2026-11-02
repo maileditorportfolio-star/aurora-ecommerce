@@ -45,6 +45,12 @@ export const createPrismaMock = () => ({
     create: vi.fn(),
     count: vi.fn(),
   },
+  storefrontSetting: {
+    findUnique: vi.fn(),
+    upsert: vi.fn(),
+    update: vi.fn(),
+    create: vi.fn(),
+  },
   $transaction: vi.fn(),
   $queryRaw: vi.fn(),
   $connect: vi.fn(),

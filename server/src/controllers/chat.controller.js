@@ -1,5 +1,6 @@
 const prisma = require('../config/prisma');
 const asyncHandler = require('../utils/asyncHandler');
+const { isStaff } = require('../middleware/auth');
 const { messageSchema, parse } = require('../validation/schemas');
 
 /** GET /api/chat/:conversationId — message history. */
@@ -26,7 +27,7 @@ const create = asyncHandler(async (req, res) => {
       conversationId,
       content,
       userId: req.user?.id || null,
-      sender: req.user?.role === 'ADMIN' ? 'ADMIN' : 'USER',
+      sender: isStaff(req.user) ? 'ADMIN' : 'USER',
     },
     include: { user: { select: { id: true, name: true, avatarUrl: true, role: true } } },
   });

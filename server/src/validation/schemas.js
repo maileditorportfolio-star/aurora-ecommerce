@@ -1,4 +1,5 @@
 const { z } = require('zod');
+const { ALL_PERMISSIONS } = require('../permissions');
 
 const registerSchema = z.object({
   name: z.string().trim().min(2, 'Name must be at least 2 characters').max(80),
@@ -10,6 +11,32 @@ const registerSchema = z.object({
 const loginSchema = z.object({
   email: z.string().trim().email('Enter a valid email address').toLowerCase(),
   password: z.string().min(1, 'Password is required'),
+});
+
+const permissionList = z.array(z.enum(ALL_PERMISSIONS)).default([]);
+
+const adminUserSchema = z.object({
+  name: z.string().trim().min(2, 'Name must be at least 2 characters').max(80),
+  email: z.string().trim().email('Enter a valid email address').toLowerCase(),
+  password: z.string().min(8, 'Password must be at least 8 characters').max(128),
+  permissions: permissionList,
+});
+
+const adminUserUpdateSchema = z.object({
+  name: z.string().trim().min(2).max(80).optional(),
+  permissions: z.array(z.enum(ALL_PERMISSIONS)).optional(),
+});
+
+const storefrontSchema = z.object({
+  announcement: z.string().trim().min(1).max(120).optional(),
+  heroEyebrow: z.string().trim().min(1).max(80).optional(),
+  heroTitle: z.string().trim().min(1).max(100).optional(),
+  heroHighlight: z.string().trim().min(1).max(60).optional(),
+  heroDescription: z.string().trim().min(1).max(500).optional(),
+  heroProductSlug: z.string().trim().max(160).nullable().optional(),
+  showMarquee: z.boolean().optional(),
+  showCategories: z.boolean().optional(),
+  showFeatures: z.boolean().optional(),
 });
 
 const productSchema = z.object({
@@ -70,6 +97,9 @@ const parse = (schema, payload) => {
 module.exports = {
   registerSchema,
   loginSchema,
+  adminUserSchema,
+  adminUserUpdateSchema,
+  storefrontSchema,
   productSchema,
   orderItemSchema,
   checkoutSchema,

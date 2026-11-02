@@ -48,6 +48,8 @@ services:
       SENTRY_TRACES_SAMPLE_RATE: ${SENTRY_TRACES_SAMPLE_RATE:-0}
     ports:
       - '${API_PORT:-4000}:4000'
+    volumes:
+      - uploads:/app/server/uploads
     depends_on:
       mysql:
         condition: service_healthy
@@ -73,3 +75,4 @@ services:
 
 volumes:
   mysql-data:
+  uploads:

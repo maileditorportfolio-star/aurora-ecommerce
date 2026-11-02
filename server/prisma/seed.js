@@ -148,14 +148,20 @@ const main = async () => {
 
   const admin = await prisma.user.upsert({
     where: { email: 'admin@aurora.com' },
-    update: {},
+    update: { role: 'SUPER_ADMIN' },
     create: {
       name: 'Aurora Admin',
       email: 'admin@aurora.com',
       passwordHash,
       phone: '+8801700000000',
-      role: 'ADMIN',
+      role: 'SUPER_ADMIN',
     },
+  });
+
+  await prisma.storefrontSetting.upsert({
+    where: { id: 'default' },
+    update: {},
+    create: { id: 'default' },
   });
 
   await prisma.user.upsert({
@@ -194,7 +200,7 @@ const main = async () => {
     });
   }
 
-  console.log(`Seeded admin: ${admin.email} / aurora123`);
+  console.log(`Seeded super admin: ${admin.email} / aurora123`);
   console.log('Seeded customer: customer@aurora.com / aurora123');
   console.log(`Seeded ${categories.length} categories and ${products.length} products.`);
 };

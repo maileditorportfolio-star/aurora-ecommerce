@@ -37,6 +37,7 @@ server/prisma/*.db-journal
 *.dump
 dump*.sql
 uploads/
+server/uploads/
 
 # os
 .DS_Store

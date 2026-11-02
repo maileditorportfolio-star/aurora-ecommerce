@@ -42,7 +42,18 @@ export const admin = {
   name: 'Aurora Admin',
   email: 'admin@aurora.com',
   phone: '+8801700000000',
+  role: 'SUPER_ADMIN',
+  permissions: [],
+  avatarUrl: null,
+};
+
+export const operator = {
+  id: 'user-operator',
+  name: 'Store Operator',
+  email: 'operator@aurora.com',
+  phone: null,
   role: 'ADMIN',
+  permissions: ['products.write', 'orders.read'],
   avatarUrl: null,
 };
 
