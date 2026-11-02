@@ -15,9 +15,10 @@ export default defineConfig({
     include: ['tests/**/*.test.{ts,tsx}'],
     setupFiles: ['./tests/setup.ts'],
     css: false,
+    reporters: ['default', ['junit', { outputFile: './junit.xml' }]],
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'html'],
+      reporter: ['text', 'html', 'json-summary', 'lcov'],
       include: ['app/**/*.{ts,tsx}', 'components/**/*.{ts,tsx}', 'lib/**/*.ts', 'store/**/*.ts'],
       thresholds: {
         statements: 78,

@@ -24,6 +24,7 @@ pnpm-debug.log*
 
 # testing
 coverage/
+junit*.xml
 
 # prisma
 server/prisma/*.db

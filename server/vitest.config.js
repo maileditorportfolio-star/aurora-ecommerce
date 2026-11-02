@@ -7,9 +7,10 @@ module.exports = defineConfig({
     exclude: ['tests/integration/**'],
     clearMocks: true,
     restoreMocks: false,
+    reporters: ['default', ['junit', { outputFile: './junit.xml' }]],
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'html'],
+      reporter: ['text', 'html', 'json-summary', 'lcov'],
       include: ['src/**/*.js'],
       exclude: ['src/index.js', 'src/socket/**'],
       thresholds: {

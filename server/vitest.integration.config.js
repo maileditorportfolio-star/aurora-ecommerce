@@ -8,6 +8,7 @@ module.exports = defineConfig({
   test: {
     environment: 'node',
     include: ['tests/integration/**/*.test.js'],
+    reporters: ['default', ['junit', { outputFile: './junit-integration.xml' }]],
     fileParallelism: false,
     testTimeout: 30000,
     hookTimeout: 30000,
