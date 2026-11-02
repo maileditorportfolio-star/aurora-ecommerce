@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: ['**']
   pull_request:
     branches: [main]
 
@@ -13,6 +13,9 @@ concurrency:
 permissions:
   contents: read
 
+# Every job starts from a fresh checkout and `npm ci`. The quality job proves
+# install + unit tests + coverage; the build job proves the production build.
+# Together they are the fresh-clone verification, and they run on every push.
 jobs:
   quality:
     name: Unit gates — format, lint, typecheck, coverage (no database)
