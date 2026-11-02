@@ -8,6 +8,9 @@ All notable changes to Aurora Commerce are documented here. The format follows
 
 ### Changed
 
+- Split the real-database integration suite into per-module specs (health, products, auth
+  and orders) with shared live-DB helpers. The suite now covers 9 specs across 4 files
+  instead of one combined file.
 - CI now runs on every branch push (`branches: ['**']`) instead of only `main`, and the
   workflow states that each job is a fresh-checkout + `npm ci` check.
 - Refreshed the fresh-clone verification for `v0.5.2`: `npm ci`, `npm run test:unit`,

@@ -72,7 +72,7 @@ Coverage in the clean clone: API 97.47% statements / 83.33% branches / 96.29% fu
 | Storefront unit specs | `npm run test:client` | No | No | `jsdom` + Testing Library fixtures in `client/tests/`; no API calls leave the process |
 | Both unit suites | `npm run test:unit` | No | No | `server/vitest.config.js` excludes `tests/integration/**` |
 | Coverage gates | `npm run test:coverage` | No | No | Thresholds in `server/vitest.config.js` and `client/vitest.config.ts` |
-| Database integration | `npm run test:integration` | Yes (migrated + seeded) | localhost only | `server/vitest.integration.config.js`, `server/tests/integration/api.integration.test.js` |
+| Database integration | `npm run test:integration` | Yes (migrated + seeded) | localhost only | `server/vitest.integration.config.js`; `tests/integration/{health,products,auth,orders}.integration.test.js` |
 | Production build | `npm run build` | No | No after install | `prisma generate` + `next build` |
 | Docker stack | `npm run docker:up` | Containerised | Image pulls | `docker-compose.yml`, `server/Dockerfile`, `client/Dockerfile` |
 
@@ -92,7 +92,7 @@ Both unit suites emit JUnit XML (`server/junit.xml`, `client/junit.xml`) and cov
 | Check | Result |
 | ----- | ------ |
 | `npm run test:unit` | 122 API specs (13 files) + 235 storefront specs (29 files) = 357 passing |
-| `npm run test:integration` | 8 passing against MariaDB 10.4.32 |
+| `npm run test:integration` | 9 passing across 4 per-module files (health, products, auth, orders) against MariaDB 10.4.32 |
 | API coverage | 97.47% statements, 83.33% branches, 96.29% functions, 97.54% lines (clean clone v0.5.2) |
 | Storefront coverage | 92.95% statements, 87.08% branches, 89.29% functions, 94.42% lines |
 | `npm run build` | Next.js 16.4.4 production build, 14 routes (13 static, 1 dynamic) |
