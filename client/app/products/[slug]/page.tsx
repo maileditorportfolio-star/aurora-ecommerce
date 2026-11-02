@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { Check, Minus, Plus, ShoppingBag, Star, Truck } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { ProductCard } from '@/components/product/product-card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useCartStore } from '@/store/cart';
 import { api } from '@/lib/api';
@@ -108,26 +109,31 @@ export default function ProductDetailPage() {
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="relative aspect-square overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-indigo-100 via-white to-sky-100 shadow-soft"
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="group relative aspect-square overflow-hidden rounded-[2.5rem] border border-ink-200/70 bg-ink-950 shadow-card"
         >
           {product.imageUrl ? (
             <motion.img
               src={product.imageUrl}
               alt={product.name}
-              className="h-full w-full object-cover"
-              initial={{ scale: 1.05 }}
+              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+              initial={{ scale: 1.04 }}
               animate={{ scale: 1 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.9 }}
             />
           ) : (
-            <div className="h-full w-full bg-gradient-to-br from-indigo-200 via-indigo-300 to-sky-300" />
+            <div className="h-full w-full bg-gradient-to-br from-indigo-600 via-indigo-800 to-ink-950" />
           )}
 
           <div className="absolute left-5 top-5 flex flex-col gap-2">
             {product.featured && <Badge variant="indigo">Featured</Badge>}
             {discount > 0 && <Badge variant="danger">-{discount}% off</Badge>}
             {soldOut && <Badge variant="outline">Sold out</Badge>}
+          </div>
+
+          <div className="absolute bottom-5 left-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-ink-950/60 px-3 py-1.5 text-[11px] font-semibold text-white backdrop-blur">
+            <span className="h-1.5 w-1.5 rounded-full bg-signal-300" />
+            {soldOut ? 'Restocking soon' : 'Ready to ship'}
           </div>
         </motion.div>
 
@@ -206,6 +212,7 @@ export default function ProductDetailPage() {
 
             <Button
               size="lg"
+              variant="signal"
               disabled={soldOut}
               onClick={() => {
                 addItem(product, quantity);
@@ -244,40 +251,20 @@ export default function ProductDetailPage() {
 
       {related.length > 0 && (
         <section className="mt-24">
-          <h2 className="text-2xl font-bold tracking-tight text-ink-900">You may also like</h2>
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="flex items-end justify-between gap-4">
+            <h2 className="text-2xl font-bold tracking-[-0.03em] text-ink-900">
+              You may also like
+            </h2>
+            <Link
+              href="/products"
+              className="text-sm font-semibold text-ink-500 transition-colors hover:text-indigo-700"
+            >
+              View all
+            </Link>
+          </div>
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {related.map((item, index) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.08 }}
-              >
-                <Link
-                  href={`/products/${item.slug}`}
-                  className="group block overflow-hidden rounded-2xl border border-ink-100 bg-white shadow-soft transition-shadow hover:shadow-card"
-                >
-                  <div className="aspect-[4/3] overflow-hidden bg-ink-100">
-                    {item.imageUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={item.imageUrl}
-                        alt={item.name}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    ) : (
-                      <div className="h-full w-full bg-gradient-to-br from-indigo-200 to-sky-300" />
-                    )}
-                  </div>
-                  <div className="p-4">
-                    <p className="line-clamp-1 text-sm font-semibold text-ink-900">{item.name}</p>
-                    <p className="mt-1 text-sm font-bold text-indigo-700">
-                      {formatCurrency(item.price)}
-                    </p>
-                  </div>
-                </Link>
-              </motion.div>
+              <ProductCard key={item.id} product={item} index={index} />
             ))}
           </div>
         </section>

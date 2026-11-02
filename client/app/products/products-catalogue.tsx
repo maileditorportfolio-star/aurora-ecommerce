@@ -56,15 +56,24 @@ export function ProductsCatalogue() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="max-w-2xl"
+        className="flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-end"
       >
-        <h1 className="text-4xl font-bold tracking-tight text-ink-900 sm:text-5xl">
-          The catalogue
-        </h1>
-        <p className="mt-3 text-base text-ink-500">
-          {loading ? 'Loading products…' : `${products.length} products ready to ship`}
-          {activeCategory ? ` in ${activeCategory}` : ''}.
-        </p>
+        <div className="max-w-2xl">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-indigo-600">
+            Curated shelf
+          </p>
+          <h1 className="mt-2 text-4xl font-bold tracking-[-0.035em] text-ink-900 sm:text-5xl">
+            The catalogue
+          </h1>
+          <p className="mt-3 text-base text-ink-500">
+            {loading ? 'Loading products…' : `${products.length} products ready to ship`}
+            {activeCategory ? ` in ${activeCategory}` : ''}.
+          </p>
+        </div>
+        <span className="inline-flex items-center gap-2 rounded-full border border-ink-200 bg-white px-4 py-2 text-xs font-semibold text-ink-600 shadow-soft">
+          <span className="h-1.5 w-1.5 rounded-full bg-signal-500" />
+          {loading ? 'Syncing stock' : 'Live inventory'}
+        </span>
       </motion.header>
 
       <div className="mt-10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
@@ -74,7 +83,7 @@ export function ProductsCatalogue() {
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Search products…"
-            className="h-12 w-full rounded-full border border-ink-200 bg-white pl-11 pr-4 text-sm outline-none transition-shadow focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/10"
+            className="h-12 w-full rounded-2xl border border-ink-200 bg-white pl-11 pr-4 text-sm outline-none transition-shadow focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/10"
           />
         </div>
 
@@ -127,9 +136,9 @@ export function ProductsCatalogue() {
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[240px_1fr]">
         <aside className="hidden lg:block">
-          <div className="sticky top-24 rounded-3xl border border-ink-100 bg-white p-5 shadow-soft">
-            <div className="flex items-center gap-2 text-sm font-semibold text-ink-900">
-              <LayoutGrid className="h-4 w-4 text-indigo-500" />
+          <div className="sticky top-24 overflow-hidden rounded-3xl border border-white/10 bg-ink-950 p-5 text-white shadow-card">
+            <div className="flex items-center gap-2 text-sm font-semibold text-white">
+              <LayoutGrid className="h-4 w-4 text-signal-300" />
               Categories
             </div>
 
@@ -138,7 +147,9 @@ export function ProductsCatalogue() {
                 onClick={() => setCategory('')}
                 className={cn(
                   'rounded-xl px-3 py-2 text-left text-sm font-medium transition-colors',
-                  category === '' ? 'bg-indigo-50 text-indigo-700' : 'text-ink-600 hover:bg-ink-50',
+                  category === ''
+                    ? 'bg-signal-300 text-ink-950'
+                    : 'text-ink-300 hover:bg-white/10 hover:text-white',
                 )}
               >
                 All products
@@ -150,8 +161,8 @@ export function ProductsCatalogue() {
                   className={cn(
                     'rounded-xl px-3 py-2 text-left text-sm font-medium transition-colors',
                     category === item.slug
-                      ? 'bg-indigo-50 text-indigo-700'
-                      : 'text-ink-600 hover:bg-ink-50',
+                      ? 'bg-signal-300 text-ink-950'
+                      : 'text-ink-300 hover:bg-white/10 hover:text-white',
                   )}
                 >
                   {item.name}
@@ -162,12 +173,16 @@ export function ProductsCatalogue() {
             {category && (
               <button
                 onClick={() => setCategory('')}
-                className="mt-5 inline-flex items-center gap-1.5 text-xs font-semibold text-ink-500 transition-colors hover:text-rose-600"
+                className="mt-5 inline-flex items-center gap-1.5 text-xs font-semibold text-ink-400 transition-colors hover:text-rose-300"
               >
                 <X className="h-3.5 w-3.5" />
                 Clear filter
               </button>
             )}
+
+            <div className="mt-6 border-t border-white/10 pt-4 text-[11px] leading-relaxed text-ink-400">
+              Free delivery over ৳5,000. Every unit ships with a 12-month warranty.
+            </div>
           </div>
         </aside>
 

@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { AtSign, Lock, LogIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { AuthShell } from '@/components/auth/auth-shell';
 import { useAuthStore } from '@/store/auth';
 
 export default function LoginPage() {
@@ -33,84 +34,80 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="relative overflow-hidden">
-      <div aria-hidden className="pointer-events-none absolute inset-0 bg-aurora opacity-50" />
-
-      <div className="container-page relative flex min-h-[80vh] items-center justify-center py-16">
-        <motion.div
-          initial={{ opacity: 0, y: 24, scale: 0.97 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="w-full max-w-md rounded-[2rem] border border-white/60 bg-white/85 p-8 shadow-card backdrop-blur-xl"
-        >
-          <div className="text-center">
-            <span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-indigo-600 text-white shadow-soft">
-              <LogIn className="h-5 w-5" />
-            </span>
-            <h1 className="mt-5 text-2xl font-bold tracking-tight text-ink-900">Welcome back</h1>
-            <p className="mt-2 text-sm text-ink-500">
-              Sign in to track orders, check out faster and message support.
-            </p>
-          </div>
-
-          <form onSubmit={submit} className="mt-8 flex flex-col gap-5">
-            <Input
-              label="Email"
-              type="email"
-              required
-              autoComplete="email"
-              value={email}
-              onChange={(event) => {
-                clearError();
-                setEmail(event.target.value);
-              }}
-              placeholder="you@example.com"
-              icon={<AtSign className="h-4 w-4" />}
-            />
-
-            <Input
-              label="Password"
-              type="password"
-              required
-              autoComplete="current-password"
-              value={password}
-              onChange={(event) => {
-                clearError();
-                setPassword(event.target.value);
-              }}
-              placeholder="••••••••"
-              icon={<Lock className="h-4 w-4" />}
-            />
-
-            {error && (
-              <motion.p
-                initial={{ opacity: 0, y: -6 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="rounded-2xl bg-rose-50 px-4 py-3 text-xs font-medium text-rose-700"
-              >
-                {error}
-              </motion.p>
-            )}
-
-            <Button type="submit" size="lg" loading={loading}>
-              Sign in
-            </Button>
-          </form>
-
-          <p className="mt-6 text-center text-sm text-ink-500">
-            New to Aurora?{' '}
-            <Link href="/register" className="font-semibold text-indigo-600 hover:text-indigo-700">
-              Create an account
-            </Link>
+    <AuthShell>
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full max-w-md"
+      >
+        <div className="text-center">
+          <span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-indigo-600 text-white shadow-soft">
+            <LogIn className="h-5 w-5" />
+          </span>
+          <h1 className="mt-5 text-2xl font-bold tracking-tight text-ink-900">Welcome back</h1>
+          <p className="mt-2 text-sm text-ink-500">
+            Sign in to track orders, check out faster and message support.
           </p>
+        </div>
 
-          <div className="mt-6 rounded-2xl bg-ink-50 p-4 text-xs text-ink-500">
-            <p className="font-semibold text-ink-700">Demo accounts</p>
-            <p className="mt-1">Customer: customer@aurora.com / aurora123</p>
-            <p>Admin: admin@aurora.com / aurora123</p>
-          </div>
-        </motion.div>
-      </div>
-    </div>
+        <form onSubmit={submit} className="mt-8 flex flex-col gap-5">
+          <Input
+            label="Email"
+            type="email"
+            required
+            autoComplete="email"
+            value={email}
+            onChange={(event) => {
+              clearError();
+              setEmail(event.target.value);
+            }}
+            placeholder="you@example.com"
+            icon={<AtSign className="h-4 w-4" />}
+          />
+
+          <Input
+            label="Password"
+            type="password"
+            required
+            autoComplete="current-password"
+            value={password}
+            onChange={(event) => {
+              clearError();
+              setPassword(event.target.value);
+            }}
+            placeholder="••••••••"
+            icon={<Lock className="h-4 w-4" />}
+          />
+
+          {error && (
+            <motion.p
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="rounded-2xl bg-rose-50 px-4 py-3 text-xs font-medium text-rose-700"
+            >
+              {error}
+            </motion.p>
+          )}
+
+          <Button type="submit" size="lg" loading={loading}>
+            Sign in
+          </Button>
+        </form>
+
+        <p className="mt-6 text-center text-sm text-ink-500">
+          New to Aurora?{' '}
+          <Link href="/register" className="font-semibold text-indigo-600 hover:text-indigo-700">
+            Create an account
+          </Link>
+        </p>
+
+        <div className="mt-6 rounded-2xl bg-ink-50 p-4 text-xs text-ink-500">
+          <p className="font-semibold text-ink-700">Demo accounts</p>
+          <p className="mt-1">Customer: customer@aurora.com / aurora123</p>
+          <p>Admin: admin@aurora.com / aurora123</p>
+        </div>
+      </motion.div>
+    </AuthShell>
   );
 }

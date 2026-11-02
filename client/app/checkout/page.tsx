@@ -287,7 +287,13 @@ export default function CheckoutPage() {
               </motion.p>
             )}
 
-            <Button type="submit" size="lg" className="mt-6 w-full" loading={loading}>
+            <Button
+              type="submit"
+              size="lg"
+              variant="signal"
+              className="mt-6 w-full"
+              loading={loading}
+            >
               Place order
             </Button>
 

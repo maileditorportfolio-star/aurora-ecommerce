@@ -34,7 +34,7 @@ describe('ProductDetailPage', () => {
     render(<ProductDetailPage />);
 
     expect(
-      await screen.findByRole('heading', { name: 'Aurora Pro 14 Ultrabook' }),
+      await screen.findByRole('heading', { level: 1, name: 'Aurora Pro 14 Ultrabook' }),
     ).toBeInTheDocument();
     expect(detail).toHaveBeenCalledWith('aurora-pro-14-ultrabook');
     expect(screen.getAllByText('Laptops').length).toBeGreaterThan(0);

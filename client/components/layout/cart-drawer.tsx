@@ -158,7 +158,13 @@ export function CartDrawer() {
                     {formatCurrency(subtotal + shipping)}
                   </span>
                 </div>
-                <Button href="/checkout" onClick={close} className="mt-4 w-full" size="lg">
+                <Button
+                  href="/checkout"
+                  onClick={close}
+                  className="mt-4 w-full"
+                  size="lg"
+                  variant="signal"
+                >
                   Checkout
                 </Button>
                 <button
