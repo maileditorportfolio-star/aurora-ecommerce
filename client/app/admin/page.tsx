@@ -2,41 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import {
-  Area,
-  AreaChart,
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Cell,
-  Legend,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts';
 import { AlertTriangle, Boxes, DollarSign, ShoppingCart, Users } from 'lucide-react';
-import { api } from '@/lib/api';
+import {
+  OrdersByStatusChart,
+  RevenueTrendChart,
+  TopProductsChart,
+} from '@/components/admin/dashboard-charts';
+import { api, type AdminStats } from '@/lib/api';
 import { formatCurrency } from '@/lib/utils';
-interface Stats {
-  totals: {
-    revenue: number;
-    pipeline: number;
-    orders: number;
-    products: number;
-    customers: number;
-    categories: number;
-    averageOrder: number;
-  };
-  revenueByMonth: Array<{ month: string; revenue: number; orders: number }>;
-  statusCounts: Array<{ status: string; count: number }>;
-  topProducts: Array<{ name: string; units: number }>;
-  lowStock: Array<{ id: string; name: string; stock: number }>;
-}
-
-const PIE_COLORS = ['#6366f1', '#38bdf8', '#a855f7', '#10b981', '#f59e0b', '#f43f5e'];
 
 const cards = [
   {
@@ -64,7 +37,7 @@ const cards = [
 ] as const;
 
 export default function AdminDashboardPage() {
-  const [stats, setStats] = useState<Stats | null>(null);
+  const [stats, setStats] = useState<AdminStats | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -140,47 +113,7 @@ export default function AdminDashboardPage() {
           <h2 className="text-lg font-semibold tracking-tight text-ink-900">Revenue trend</h2>
           <p className="mt-1 text-sm text-ink-500">Delivered order value per month.</p>
 
-          <div className="mt-6 h-72">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart
-                data={stats?.revenueByMonth ?? []}
-                margin={{ top: 8, right: 8, left: -18, bottom: 0 }}
-              >
-                <defs>
-                  <linearGradient id="revenueFill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#6366f1" stopOpacity={0.4} />
-                    <stop offset="100%" stopColor="#6366f1" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="4 4" stroke="#e2e8f0" vertical={false} />
-                <XAxis
-                  dataKey="month"
-                  stroke="#94a3b8"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                <Tooltip
-                  contentStyle={{
-                    borderRadius: 16,
-                    border: '1px solid #e2e8f0',
-                    boxShadow: '0 12px 30px -18px rgb(15 23 42 / 0.5)',
-                    fontSize: 12,
-                  }}
-                  formatter={(value: number) => formatCurrency(value)}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="revenue"
-                  stroke="#4f46e5"
-                  strokeWidth={2.5}
-                  fill="url(#revenueFill)"
-                  animationDuration={900}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
+          <RevenueTrendChart data={stats?.revenueByMonth ?? []} />
         </motion.section>
 
         <motion.section
@@ -192,33 +125,7 @@ export default function AdminDashboardPage() {
           <h2 className="text-lg font-semibold tracking-tight text-ink-900">Orders by status</h2>
           <p className="mt-1 text-sm text-ink-500">Where the pipeline stands right now.</p>
 
-          <div className="mt-6 h-56">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={stats?.statusCounts ?? []}
-                  dataKey="count"
-                  nameKey="status"
-                  innerRadius="58%"
-                  outerRadius="86%"
-                  paddingAngle={3}
-                  animationDuration={900}
-                >
-                  {(stats?.statusCounts ?? []).map((entry, index) => (
-                    <Cell key={entry.status} fill={PIE_COLORS[index % PIE_COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip
-                  contentStyle={{
-                    borderRadius: 16,
-                    border: '1px solid #e2e8f0',
-                    fontSize: 12,
-                  }}
-                />
-                <Legend iconType="circle" wrapperStyle={{ fontSize: 11 }} />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+          <OrdersByStatusChart data={stats?.statusCounts ?? []} />
         </motion.section>
       </div>
 
@@ -230,39 +137,7 @@ export default function AdminDashboardPage() {
           className="rounded-3xl border border-ink-100 bg-white p-6 shadow-soft"
         >
           <h2 className="text-lg font-semibold tracking-tight text-ink-900">Top products</h2>
-          <div className="mt-6 h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={stats?.topProducts ?? []}
-                layout="vertical"
-                margin={{ top: 0, right: 16, left: 8, bottom: 0 }}
-              >
-                <CartesianGrid strokeDasharray="4 4" stroke="#e2e8f0" horizontal={false} />
-                <XAxis
-                  type="number"
-                  stroke="#94a3b8"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                  allowDecimals={false}
-                />
-                <YAxis
-                  type="category"
-                  dataKey="name"
-                  stroke="#64748b"
-                  fontSize={11}
-                  tickLine={false}
-                  axisLine={false}
-                  width={120}
-                />
-                <Tooltip
-                  cursor={{ fill: 'rgb(99 102 241 / 0.06)' }}
-                  contentStyle={{ borderRadius: 16, border: '1px solid #e2e8f0', fontSize: 12 }}
-                />
-                <Bar dataKey="units" fill="#4f46e5" radius={[0, 8, 8, 0]} animationDuration={900} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+          <TopProductsChart data={stats?.topProducts ?? []} />
         </motion.section>
 
         <motion.section

@@ -5,30 +5,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Boxes, Pencil, Plus, Search, X } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Input, Textarea } from '@/components/ui/input';
+import ProductForm, {
+  draftFromProduct,
+  emptyProductDraft,
+  payloadFromDraft,
+  type ProductDraft,
+} from '@/components/admin/product-form';
 import { api } from '@/lib/api';
-import { cn, formatCurrency } from '@/lib/utils';
+import { formatCurrency } from '@/lib/utils';
 import type { Product } from '@/types';
-
-interface Draft {
-  name: string;
-  description: string;
-  price: string;
-  compareAtPrice: string;
-  stock: string;
-  imageUrl: string;
-  featured: boolean;
-}
-
-const emptyDraft: Draft = {
-  name: '',
-  description: '',
-  price: '',
-  compareAtPrice: '',
-  stock: '0',
-  imageUrl: '',
-  featured: false,
-};
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -36,7 +21,7 @@ export default function AdminProductsPage() {
   const [search, setSearch] = useState('');
   const [editing, setEditing] = useState<Product | null>(null);
   const [creating, setCreating] = useState(false);
-  const [draft, setDraft] = useState<Draft>(emptyDraft);
+  const [draft, setDraft] = useState<ProductDraft>(emptyProductDraft);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -56,22 +41,14 @@ export default function AdminProductsPage() {
   }, [search]);
 
   const openCreate = () => {
-    setDraft(emptyDraft);
+    setDraft(emptyProductDraft);
     setEditing(null);
     setCreating(true);
     setError(null);
   };
 
   const openEdit = (product: Product) => {
-    setDraft({
-      name: product.name,
-      description: product.description,
-      price: String(product.price),
-      compareAtPrice: product.compareAtPrice ? String(product.compareAtPrice) : '',
-      stock: String(product.stock),
-      imageUrl: product.imageUrl ?? '',
-      featured: product.featured,
-    });
+    setDraft(draftFromProduct(product));
     setCreating(false);
     setEditing(product);
     setError(null);
@@ -88,16 +65,7 @@ export default function AdminProductsPage() {
     setSaving(true);
     setError(null);
 
-    const payload = {
-      name: draft.name,
-      description: draft.description,
-      price: Number(draft.price) || 0,
-      compareAtPrice: draft.compareAtPrice ? Number(draft.compareAtPrice) : null,
-      stock: Number(draft.stock) || 0,
-      imageUrl: draft.imageUrl || null,
-      featured: draft.featured,
-      active: true,
-    };
+    const payload = payloadFromDraft(draft);
 
     try {
       if (editing) {
@@ -245,77 +213,15 @@ export default function AdminProductsPage() {
                 </button>
               </div>
 
-              <form onSubmit={save} className="mt-6 flex flex-col gap-4">
-                <Input
-                  label="Name"
-                  required
-                  value={draft.name}
-                  onChange={(event) => setDraft({ ...draft, name: event.target.value })}
-                />
-                <Textarea
-                  label="Description"
-                  required
-                  value={draft.description}
-                  onChange={(event) => setDraft({ ...draft, description: event.target.value })}
-                />
-                <div className="grid gap-4 sm:grid-cols-3">
-                  <Input
-                    label="Price"
-                    type="number"
-                    min={0}
-                    required
-                    value={draft.price}
-                    onChange={(event) => setDraft({ ...draft, price: event.target.value })}
-                  />
-                  <Input
-                    label="Compare at"
-                    type="number"
-                    min={0}
-                    value={draft.compareAtPrice}
-                    onChange={(event) => setDraft({ ...draft, compareAtPrice: event.target.value })}
-                  />
-                  <Input
-                    label="Stock"
-                    type="number"
-                    min={0}
-                    value={draft.stock}
-                    onChange={(event) => setDraft({ ...draft, stock: event.target.value })}
-                  />
-                </div>
-                <Input
-                  label="Image URL"
-                  value={draft.imageUrl}
-                  onChange={(event) => setDraft({ ...draft, imageUrl: event.target.value })}
-                  placeholder="https://…"
-                />
-
-                <label className="flex items-center gap-2.5 text-sm font-medium text-ink-700">
-                  <input
-                    type="checkbox"
-                    checked={draft.featured}
-                    onChange={(event) => setDraft({ ...draft, featured: event.target.checked })}
-                    className={cn(
-                      'h-4 w-4 rounded border-ink-300 text-indigo-600 focus:ring-indigo-500',
-                    )}
-                  />
-                  Feature on the storefront
-                </label>
-
-                {error && (
-                  <p className="rounded-2xl bg-rose-50 px-4 py-3 text-xs font-medium text-rose-700">
-                    {error}
-                  </p>
-                )}
-
-                <div className="mt-2 flex gap-3">
-                  <Button type="submit" loading={saving} className="flex-1">
-                    {creating ? 'Create product' : 'Save changes'}
-                  </Button>
-                  <Button type="button" variant="ghost" onClick={close}>
-                    Cancel
-                  </Button>
-                </div>
-              </form>
+              <ProductForm
+                draft={draft}
+                onChange={setDraft}
+                onSubmit={save}
+                onCancel={close}
+                saving={saving}
+                creating={creating}
+                error={error}
+              />
             </motion.div>
           </>
         )}
