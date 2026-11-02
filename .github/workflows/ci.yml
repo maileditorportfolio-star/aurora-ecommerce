@@ -45,6 +45,16 @@ jobs:
       - name: Test with coverage gates
         run: npm run test:coverage
 
+      - name: Upload coverage reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: |
+            server/coverage
+            client/coverage
+          retention-days: 7
+
       # The deepmerge-ts advisory is pinned forward via the root `overrides`
       # block, so production dependencies must stay clean. This step is blocking.
       - name: Dependency audit
