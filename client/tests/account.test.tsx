@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import AccountPage from '@/app/account/page';
 import { useAuthStore } from '@/store/auth';
@@ -96,7 +96,7 @@ describe('AccountPage', () => {
 
     await screen.findByText('No orders yet');
 
-    expect(replace).toHaveBeenCalledWith('/login');
+    await waitFor(() => expect(replace).toHaveBeenCalledWith('/login'));
   });
 
   it('links to the admin console', async () => {

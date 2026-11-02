@@ -80,21 +80,34 @@ describe('CartDrawer', () => {
     expect(useCartStore.getState().items).toHaveLength(0);
   });
 
-  it('closes from the close button, backdrop and continue link', async () => {
+  it('closes from the close button', async () => {
+    openWith([cartItemFixture()]);
+    const user = userEvent.setup();
+    render(<CartDrawer />);
+
+    await user.click(screen.getByRole('button', { name: 'Close cart' }));
+
+    expect(useCartStore.getState().isOpen).toBe(false);
+  });
+
+  it('closes from the backdrop', async () => {
     openWith([cartItemFixture()]);
     const user = userEvent.setup();
     const { container } = render(<CartDrawer />);
 
-    await user.click(screen.getByRole('button', { name: 'Close cart' }));
-    expect(useCartStore.getState().isOpen).toBe(false);
-
-    useCartStore.setState({ isOpen: true });
     const backdrop = container.querySelector('.fixed.inset-0') as HTMLElement;
     await user.click(backdrop);
-    expect(useCartStore.getState().isOpen).toBe(false);
 
-    useCartStore.setState({ isOpen: true });
+    expect(useCartStore.getState().isOpen).toBe(false);
+  });
+
+  it('closes from the continue shopping link', async () => {
+    openWith([cartItemFixture()]);
+    const user = userEvent.setup();
+    render(<CartDrawer />);
+
     await user.click(screen.getByRole('button', { name: 'Continue shopping' }));
+
     expect(useCartStore.getState().isOpen).toBe(false);
   });
 
