@@ -6,6 +6,35 @@ All notable changes to Aurora Commerce are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- `npm run check:env`, a dependency-free script that fails when a `process.env` variable
+  used by either workspace is missing from its `.env.example`, plus specs for it and a
+  blocking CI step.
+- A tag-driven release workflow that publishes the API and storefront images to GitHub
+  Container Registry.
+- A CodeQL workflow that scans the JavaScript/TypeScript source on pushes, pull requests
+  and a weekly schedule.
+- Coverage reports are uploaded as a CI artifact so regressions can be inspected without
+  re-running the suite.
+- `SECURITY.md` with the supported versions, the private reporting flow and the scope worth
+  testing.
+
+### Changed
+
+- Documented where per-workspace runtime dependencies live (`server/package.json` and
+  `client/package.json`); the root manifest only contains workspace tooling.
+- Moved `concurrently` to the root `dependencies` block because the production `npm start`
+  script invokes it.
+
+### Fixed
+
+- Corrected the API spec count in the README to the current 122 specs.
+- Split the cart-drawer close-path spec into three isolated cases so it no longer
+  re-opens the drawer mid exit-animation and can flake.
+- Waited for the account redirect with `waitFor` instead of asserting immediately after
+  the loading state settles, removing a timing race.
+
 ## [0.4.1] - 2026-10-24
 
 ### Added

@@ -27,6 +27,7 @@ npm run lint
 npm run typecheck
 npm run test:coverage
 npm run audit
+npm run check:env
 ```
 
 Or fix formatting in place with `npm run format`.

@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/maileditorportfolio-star/aurora-ecommerce/actions/workflows/ci.yml/badge.svg)](https://github.com/maileditorportfolio-star/aurora-ecommerce/actions/workflows/ci.yml)
 
-A production-ready, full-stack e-commerce platform: a **Next.js 16** storefront paired with an **Express + Prisma + MySQL** API, complete with JWT auth, role-based admin controls, live chat, and a seeded demo catalogue. The API is covered by **112 Vitest specs** and the storefront by **224 React Testing Library specs**, all runnable without a database.
+A production-ready, full-stack e-commerce platform: a **Next.js 16** storefront paired with an **Express + Prisma + MySQL** API, complete with JWT auth, role-based admin controls, live chat, and a seeded demo catalogue. The API is covered by **122 Vitest specs** and the storefront by **226 React Testing Library specs**, all runnable without a database.
 
 This repository contains **source code only**. No database, no credentials, and no runtime data are committed — you create your own environment from the provided `.env.example` files.
 
@@ -65,6 +65,17 @@ This repository contains **source code only**. No database, no credentials, and 
 | Auth      | `jsonwebtoken` (JWT) + `bcryptjs`                       |
 | Validation| Zod                                                     |
 | Security  | Helmet, `express-rate-limit`, CORS                      |
+
+### Dependencies
+
+Runtime dependencies live with the workspace that uses them:
+
+- **API** — `server/package.json` (`express`, `@prisma/client`, `zod`, `pino`, …)
+- **Storefront** — `client/package.json` (`next`, `react`, `zustand`, `framer-motion`, …)
+
+The root `package.json` only holds workspace tooling (`concurrently`, `prettier`) and the
+shared scripts that fan out to both workspaces. A single `package-lock.json` at the root
+pins the whole tree, so `npm ci` installs both apps reproducibly.
 
 ---
 
@@ -302,6 +313,7 @@ Run from the repository root unless noted.
 | `npm run test:client`    | Storefront specs only (Vitest + Testing Library)             |
 | `npm run test:coverage`  | Both suites with an HTML coverage report                     |
 | `npm run audit`          | `npm audit --audit-level=high --omit=dev`                    |
+| `npm run check:env`      | Fails if a `process.env` variable is missing from an example |
 | `npm run prisma:migrate` | Create/apply a development migration                         |
 | `npm run prisma:deploy`  | Apply migrations in production (no prompts)                  |
 | `npm run prisma:studio`  | Browse your database in a GUI                                |
@@ -318,8 +330,8 @@ so `npm test` works on a clean checkout.
 
 ```bash
 npm test                # everything
-npm run test:server     # 112 API specs
-npm run test:client     # 224 storefront specs
+npm run test:server     # 122 API specs
+npm run test:client     # 226 storefront specs
 npm run test:coverage   # + coverage reports, gated by thresholds
 ```
 
@@ -612,6 +624,15 @@ regressions.
 **`JWT_SECRET must be set to a unique value in production`** — set a real secret before running with `NODE_ENV=production`.
 
 **Stale build after editing the client** — stop the dev server and delete `client/.next`, then rebuild.
+
+---
+
+## Security
+
+Please report vulnerabilities privately — see [`SECURITY.md`](SECURITY.md). The API refuses
+to boot in production with the default `JWT_SECRET`, secrets are read from the environment,
+`.env` files are git-ignored, and `npm run audit` blocks high-severity production advisories
+in CI.
 
 ---
 
