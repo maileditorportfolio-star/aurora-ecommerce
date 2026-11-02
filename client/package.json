@@ -1,6 +1,6 @@
 {
   "name": "@aurora/client",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "private": true,
   "description": "Aurora Commerce storefront — Next.js 16 App Router",
   "scripts": {
