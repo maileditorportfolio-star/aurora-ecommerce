@@ -5,7 +5,8 @@ run without external services, and the results of the last local verification. I
 to be readable without running anything: every claim points at a committed script, config
 or workflow.
 
-Last verified: **2026-11-02** on tag **`v0.5.0`**.
+Last verified: **2026-11-02** on tag **`v0.5.1`**. The fresh-clone check below was run
+against commit `cc3621d` in an empty directory with no reused `node_modules`.
 
 ## Toolchain
 
@@ -44,6 +45,21 @@ npm run seed
 npm run test:integration
 ```
 
+### Fresh-clone check (2026-11-02)
+
+Cloned `cc3621d` into an empty directory and ran the documented commands with no reused
+`node_modules`, no `server/.env` and no `client/.env.local`:
+
+| Command | Result |
+| ------- | ------ |
+| `npm ci` | 748 packages installed, exit 0 |
+| `npm run test:unit` | 122 API + 235 storefront specs, exit 0 |
+| `npm run build` | Prisma generate + Next.js 16.4.4 build, 14 routes, exit 0 |
+| `npm run verify` | format, lint, typecheck, env docs and coverage, exit 0 |
+
+Coverage in the clean clone: API 97.47% statements / 83.33% branches / 96.29% functions /
+97.54% lines; storefront 92.95% / 87.08% / 89.29% / 94.42%.
+
 ## Isolation matrix
 
 | Target | Command | Needs MySQL | Needs network | Evidence |
@@ -66,7 +82,7 @@ Only the integration suite loads the real Prisma client and requires seeded data
 | ----- | ------ |
 | `npm run test:unit` | 122 API specs (13 files) + 235 storefront specs (29 files) = 357 passing |
 | `npm run test:integration` | 8 passing against MariaDB 10.4.32 |
-| API coverage | 98.1% statements, 81% branches, 97.53% functions, 98.21% lines |
+| API coverage | 97.47% statements, 83.33% branches, 96.29% functions, 97.54% lines (clean clone) |
 | Storefront coverage | 92.95% statements, 87.08% branches, 89.29% functions, 94.42% lines |
 | `npm run build` | Next.js 16.4.4 production build, 14 routes (13 static, 1 dynamic) |
 | `npm run format:check` | Clean |

@@ -6,6 +6,11 @@ All notable changes to Aurora Commerce are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- Recorded the fresh-clone verification (`npm ci`, `npm run test:unit`, `npm run build`,
+  `npm run verify`) and its coverage numbers in `docs/verification.md`.
+
 ## [0.5.1] - 2026-11-02
 
 ### Added
