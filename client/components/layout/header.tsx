@@ -8,6 +8,7 @@ import { ArrowUpRight, Menu, Search, ShoppingBag, Sparkles, User2, X } from 'luc
 import { Button } from '@/components/ui/button';
 import { useCartStore } from '@/store/cart';
 import { useAuthStore } from '@/store/auth';
+import { useStorefrontSettings } from '@/components/providers/storefront-settings';
 import { cn } from '@/lib/utils';
 
 const links = [
@@ -27,6 +28,7 @@ export function Header() {
   const items = useCartStore((state) => state.items);
   const openCart = useCartStore((state) => state.open);
   const user = useAuthStore((state) => state.user);
+  const settings = useStorefrontSettings();
 
   const count = items.reduce((total, item) => total + item.quantity, 0);
 
@@ -46,7 +48,7 @@ export function Header() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal-300 opacity-75" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-signal-300" />
             </span>
-            Free delivery over ৳5,000
+            {settings.announcement}
           </p>
           <div className="hidden items-center gap-5 sm:flex">
             {assurances.map((item, index) => (

@@ -1,6 +1,8 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, act } from '@testing-library/react';
 import { Providers } from '@/app/providers';
+import { useStorefrontSettings } from '@/components/providers/storefront-settings';
+import { DEFAULT_STOREFRONT_SETTINGS } from '@/lib/permissions';
 
 const { mockMe, mockSetToken } = vi.hoisted(() => ({
   mockMe: vi.fn().mockResolvedValue({ user: null }),
@@ -11,6 +13,9 @@ vi.mock('@/lib/api', () => ({
   api: {
     auth: {
       me: mockMe,
+    },
+    storefront: {
+      settings: vi.fn().mockResolvedValue({ settings: {} }),
     },
   },
   setToken: mockSetToken,
@@ -50,5 +55,20 @@ describe('Providers', () => {
     );
     expect(screen.getByRole('heading', { name: 'Title' })).toBeInTheDocument();
     expect(screen.getByText('Body')).toBeInTheDocument();
+  });
+
+  it('provides storefront settings to children', () => {
+    function SettingsReader() {
+      const settings = useStorefrontSettings();
+      return <p>{settings.announcement}</p>;
+    }
+
+    render(
+      <Providers>
+        <SettingsReader />
+      </Providers>,
+    );
+
+    expect(screen.getByText(DEFAULT_STOREFRONT_SETTINGS.announcement)).toBeInTheDocument();
   });
 });

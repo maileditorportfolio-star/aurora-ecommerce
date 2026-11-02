@@ -12,6 +12,7 @@ import {
   Truck,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useStorefrontSettings } from '@/components/providers/storefront-settings';
 import { discountPercent, formatCurrency } from '@/lib/utils';
 import type { Product } from '@/types';
 
@@ -35,6 +36,7 @@ const marqueeItems = [
 
 export function Hero({ product }: { product?: Product }) {
   const reduceMotion = useReducedMotion();
+  const settings = useStorefrontSettings();
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 520], [0, reduceMotion ? 0 : 80]);
   const discount = product ? discountPercent(product.price, product.compareAtPrice) : 0;
@@ -67,7 +69,7 @@ export function Hero({ product }: { product?: Product }) {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal-300 opacity-75" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-signal-300" />
             </span>
-            Aurora Cyber / 2026 collection
+            {settings.heroEyebrow}
           </motion.div>
 
           <motion.h1
@@ -76,8 +78,11 @@ export function Hero({ product }: { product?: Product }) {
             transition={{ duration: 0.7, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}
             className="mt-6 max-w-xl text-balance text-5xl font-bold leading-[0.98] tracking-[-0.035em] sm:text-6xl lg:text-7xl"
           >
-            Tech that feels{' '}
-            <span className="text-gradient-light animate-gradient-pan">effortless</span>.
+            {settings.heroTitle}{' '}
+            <span className="text-gradient-light animate-gradient-pan">
+              {settings.heroHighlight}
+            </span>
+            .
           </motion.h1>
 
           <motion.p
@@ -86,8 +91,7 @@ export function Hero({ product }: { product?: Product }) {
             transition={{ duration: 0.65, delay: 0.14, ease: [0.16, 1, 0.3, 1] }}
             className="mt-6 max-w-lg text-base leading-relaxed text-ink-300 sm:text-lg"
           >
-            A tightly curated shelf of laptops, audio, displays and desk gear. Honest pricing, live
-            stock and delivery you can track from checkout to doorstep.
+            {settings.heroDescription}
           </motion.p>
 
           <motion.div
@@ -235,16 +239,18 @@ export function Hero({ product }: { product?: Product }) {
         </motion.div>
       </div>
 
-      <div className="relative border-t border-white/10 py-4">
-        <div className="flex w-max animate-marquee-slow items-center gap-10 whitespace-nowrap pr-10 text-[10px] font-semibold uppercase tracking-[0.3em] text-ink-400">
-          {[...marqueeItems, ...marqueeItems].map((item, index) => (
-            <span key={`${item}-${index}`} className="flex items-center gap-10">
-              {item}
-              <span className="h-1 w-1 rounded-full bg-signal-300/70" />
-            </span>
-          ))}
+      {settings.showMarquee && (
+        <div className="relative border-t border-white/10 py-4">
+          <div className="flex w-max animate-marquee-slow items-center gap-10 whitespace-nowrap pr-10 text-[10px] font-semibold uppercase tracking-[0.3em] text-ink-400">
+            {[...marqueeItems, ...marqueeItems].map((item, index) => (
+              <span key={`${item}-${index}`} className="flex items-center gap-10">
+                {item}
+                <span className="h-1 w-1 rounded-full bg-signal-300/70" />
+              </span>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }

@@ -17,6 +17,9 @@ vi.mock('@/lib/api', () => ({
       create: vi.fn(),
       update: vi.fn(),
     },
+    uploads: {
+      productImage: vi.fn(),
+    },
   },
 }));
 
@@ -172,5 +175,42 @@ describe('saveProduct', () => {
     create.mockRejectedValue(new Error('The catalogue rejected that product'));
 
     await expect(saveProduct({ draft })).rejects.toThrow('The catalogue rejected that product');
+  });
+});
+
+describe('product image upload', () => {
+  const upload = vi.mocked(api.uploads.productImage);
+
+  beforeEach(() => {
+    upload.mockReset();
+  });
+
+  it('uploads the selected file and previews the returned URL', async () => {
+    upload.mockResolvedValue({ url: 'http://localhost:4000/uploads/product.png' });
+    const user = userEvent.setup();
+    render(<Harness />);
+
+    const file = new File(['image-bytes'], 'product.png', { type: 'image/png' });
+    await user.upload(screen.getByLabelText('Upload product image'), file);
+
+    expect(upload).toHaveBeenCalledWith(file);
+    expect(await screen.findByAltText('Product preview')).toHaveAttribute(
+      'src',
+      'http://localhost:4000/uploads/product.png',
+    );
+  });
+
+  it('surfaces an upload failure without changing the image', async () => {
+    upload.mockRejectedValue(new Error('Only JPG, PNG, WebP or GIF images are allowed'));
+    const user = userEvent.setup();
+    render(<Harness />);
+
+    const file = new File(['bad'], 'product.png', { type: 'image/png' });
+    await user.upload(screen.getByLabelText('Upload product image'), file);
+
+    expect(
+      await screen.findByText('Only JPG, PNG, WebP or GIF images are allowed'),
+    ).toBeInTheDocument();
+    expect(screen.queryByAltText('Product preview')).not.toBeInTheDocument();
   });
 });

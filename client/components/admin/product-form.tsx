@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+import { Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input, Textarea } from '@/components/ui/input';
 import { api } from '@/lib/api';
@@ -84,7 +86,28 @@ export function ProductForm({
   creating,
   error,
 }: ProductFormProps) {
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const update = (patch: Partial<ProductDraft>) => onChange({ ...draft, ...patch });
+
+  const uploadImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const input = event.currentTarget;
+    setUploading(true);
+    setUploadError(null);
+
+    try {
+      const { url } = await api.uploads.productImage(file);
+      update({ imageUrl: url });
+    } catch (caught) {
+      setUploadError(caught instanceof Error ? caught.message : 'Could not upload the image');
+    } finally {
+      setUploading(false);
+      input.value = '';
+    }
+  };
 
   return (
     <form onSubmit={onSubmit} className="mt-6 flex flex-col gap-4">
@@ -130,6 +153,31 @@ export function ProductForm({
         onChange={(e) => update({ imageUrl: e.target.value })}
         placeholder="https://…"
       />
+
+      <div className="flex flex-wrap items-center gap-3">
+        <label className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-ink-200 bg-white px-4 py-2 text-xs font-semibold text-ink-700 transition-colors hover:border-indigo-300 hover:text-indigo-700">
+          <Upload className="h-4 w-4 text-indigo-500" />
+          {uploading ? 'Uploading…' : 'Upload image'}
+          <input
+            type="file"
+            accept="image/png,image/jpeg,image/webp,image/gif"
+            aria-label="Upload product image"
+            className="sr-only"
+            disabled={uploading}
+            onChange={uploadImage}
+          />
+        </label>
+        <span className="text-xs text-ink-400">JPG, PNG, WebP or GIF · max 5MB</span>
+        {draft.imageUrl && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={draft.imageUrl}
+            alt="Product preview"
+            className="h-11 w-11 rounded-xl border border-ink-200 bg-white object-cover"
+          />
+        )}
+      </div>
+      {uploadError && <p className="text-xs font-medium text-rose-600">{uploadError}</p>}
 
       <label className="flex items-center gap-2.5 text-sm font-medium text-ink-700">
         <input

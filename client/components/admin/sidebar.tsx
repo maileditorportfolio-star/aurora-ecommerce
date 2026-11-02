@@ -11,6 +11,8 @@ import {
   LogOut,
   Menu,
   Package,
+  Palette,
+  ShieldCheck,
   ShoppingCart,
   Sparkles,
   Users,
@@ -20,11 +22,24 @@ import { useAuthStore } from '@/store/auth';
 import { cn, initials } from '@/lib/utils';
 
 const navigation = [
-  { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
-  { href: '/admin/orders', label: 'Orders', icon: ShoppingCart },
-  { href: '/admin/products', label: 'Products', icon: Boxes },
-  { href: '/admin/customers', label: 'Customers', icon: Users },
-  { href: '/admin/analytics', label: 'Analytics', icon: ChartNoAxesColumn },
+  {
+    href: '/admin',
+    label: 'Dashboard',
+    icon: LayoutDashboard,
+    exact: true,
+    permission: 'analytics.read',
+  },
+  { href: '/admin/orders', label: 'Orders', icon: ShoppingCart, permission: 'orders.read' },
+  { href: '/admin/products', label: 'Products', icon: Boxes, permission: 'products.write' },
+  { href: '/admin/customers', label: 'Customers', icon: Users, permission: 'customers.read' },
+  {
+    href: '/admin/analytics',
+    label: 'Analytics',
+    icon: ChartNoAxesColumn,
+    permission: 'analytics.read',
+  },
+  { href: '/admin/design', label: 'Design', icon: Palette, permission: 'design.write' },
+  { href: '/admin/team', label: 'Team', icon: ShieldCheck, superAdmin: true },
 ];
 
 export function AdminSidebar() {
@@ -32,6 +47,16 @@ export function AdminSidebar() {
   const [open, setOpen] = useState(false);
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
+
+  const isSuperAdmin = user?.role === 'SUPER_ADMIN';
+  const permissions = user?.permissions ?? [];
+  const visibleNavigation = navigation.filter((item) => {
+    if (!user) return true;
+    if (isSuperAdmin) return true;
+    if (item.superAdmin) return false;
+    if (user.role !== 'ADMIN') return false;
+    return !item.permission || permissions.includes(item.permission);
+  });
 
   const isActive = (item: (typeof navigation)[number]) =>
     item.exact ? pathname === item.href : pathname?.startsWith(item.href);
@@ -51,7 +76,7 @@ export function AdminSidebar() {
       </div>
 
       <nav className="flex flex-1 flex-col gap-1 px-4">
-        {navigation.map((item) => {
+        {visibleNavigation.map((item) => {
           const active = isActive(item);
           const Icon = item.icon;
 

@@ -1,14 +1,16 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { AlertTriangle, Boxes, DollarSign, ShoppingCart, Users } from 'lucide-react';
+import { AlertTriangle, Boxes, DollarSign, Lock, ShoppingCart, Users } from 'lucide-react';
 import {
   OrdersByStatusChart,
   RevenueTrendChart,
   TopProductsChart,
 } from '@/components/admin/dashboard-charts';
 import { api, type AdminStats } from '@/lib/api';
+import { useAuthStore } from '@/store/auth';
 import { formatCurrency } from '@/lib/utils';
 
 const cards = [
@@ -37,16 +39,58 @@ const cards = [
 ] as const;
 
 export default function AdminDashboardPage() {
+  const user = useAuthStore((state) => state.user);
+  const permissions = user?.permissions ?? [];
+  const isSuperAdmin = user?.role === 'SUPER_ADMIN';
+  const canViewDashboard = !user || isSuperAdmin || permissions.includes('analytics.read');
+  const canViewProducts = isSuperAdmin || permissions.includes('products.write');
+  const canViewOrders = isSuperAdmin || permissions.includes('orders.read');
+
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!canViewDashboard) return;
+
     api.admin
       .stats()
       .then((data) => setStats(data))
       .catch(() => undefined)
       .finally(() => setLoading(false));
-  }, []);
+  }, [canViewDashboard]);
+
+  if (!canViewDashboard) {
+    return (
+      <div className="rounded-3xl border border-ink-200 bg-white p-10 text-center">
+        <Lock className="mx-auto h-8 w-8 text-ink-300" />
+        <h1 className="mt-4 text-2xl font-bold tracking-tight text-ink-900">
+          Dashboard access required
+        </h1>
+        <p className="mx-auto mt-2 max-w-md text-sm text-ink-500">
+          Your account can use the console, but the analytics dashboard was not included in your
+          permissions. Open a section you have access to.
+        </p>
+        <div className="mt-6 flex flex-wrap justify-center gap-2">
+          {canViewProducts && (
+            <Link
+              href="/admin/products"
+              className="inline-flex h-10 items-center rounded-full bg-ink-950 px-5 text-sm font-semibold text-white transition-colors hover:bg-indigo-700"
+            >
+              Open products
+            </Link>
+          )}
+          {canViewOrders && (
+            <Link
+              href="/admin/orders"
+              className="inline-flex h-10 items-center rounded-full border border-ink-200 px-5 text-sm font-semibold text-ink-700 transition-colors hover:border-indigo-300 hover:text-indigo-700"
+            >
+              Open orders
+            </Link>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-8">

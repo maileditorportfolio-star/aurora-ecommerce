@@ -41,13 +41,37 @@ export interface ProductListResponse {
   pagination: Pagination;
 }
 
+export type Role = 'CUSTOMER' | 'ADMIN' | 'SUPER_ADMIN';
+
 export interface User {
   id: string;
   name: string;
   email: string;
   phone?: string | null;
-  role: 'CUSTOMER' | 'ADMIN';
+  role: Role;
+  permissions?: string[];
   avatarUrl?: string | null;
+}
+
+export interface AdminUser {
+  id: string;
+  name: string;
+  email: string;
+  role: Role;
+  permissions: string[];
+  createdAt?: string;
+}
+
+export interface StorefrontSettings {
+  announcement: string;
+  heroEyebrow: string;
+  heroTitle: string;
+  heroHighlight: string;
+  heroDescription: string;
+  heroProductSlug: string | null;
+  showMarquee: boolean;
+  showCategories: boolean;
+  showFeatures: boolean;
 }
 
 export interface CartItem {

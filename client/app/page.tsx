@@ -18,6 +18,7 @@ import { ProductGrid } from '@/components/product/product-grid';
 import { SkeletonList } from '@/components/ui/skeleton';
 import { Reveal, Stagger, StaggerItem } from '@/components/motion/reveal';
 import { Button } from '@/components/ui/button';
+import { useStorefrontSettings } from '@/components/providers/storefront-settings';
 import { api } from '@/lib/api';
 import type { Product } from '@/types';
 
@@ -75,6 +76,7 @@ const categoryTiles = [
 ];
 
 export default function HomePage() {
+  const settings = useStorefrontSettings();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -100,11 +102,16 @@ export default function HomePage() {
     <>
       <Hero
         product={
-          products.find((product) => product.slug === 'aurora-pro-14-ultrabook') ?? products[0]
+          products.find((product) => product.slug === settings.heroProductSlug) ??
+          products.find((product) => product.slug === 'aurora-pro-14-ultrabook') ??
+          products[0]
         }
       />
 
-      <section id="features" className="relative bg-frost py-20 sm:py-28">
+      <section
+        id="features"
+        className={`relative bg-frost py-20 sm:py-28 ${settings.showFeatures ? '' : 'hidden'}`}
+      >
         <div className="container-page grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
           <Reveal className="lg:sticky lg:top-28 lg:self-start">
             <span className="inline-flex items-center gap-2 rounded-full border border-ink-200 bg-white px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-ink-600">
@@ -151,7 +158,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="categories" className="bg-white py-20 sm:py-24">
+      <section
+        id="categories"
+        className={`bg-white py-20 sm:py-24 ${settings.showCategories ? '' : 'hidden'}`}
+      >
         <div className="container-page">
           <Reveal className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
             <div>

@@ -1,4 +1,13 @@
-import type { ChatMessage, Order, Pagination, Product, ProductListResponse, User } from '@/types';
+import type {
+  AdminUser,
+  ChatMessage,
+  Order,
+  Pagination,
+  Product,
+  ProductListResponse,
+  StorefrontSettings,
+  User,
+} from '@/types';
 
 export interface AdminStats {
   totals: {
@@ -93,6 +102,30 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
   return payload?.data as T;
 }
 
+async function uploadFile<T>(path: string, file: File): Promise<T> {
+  const token = getToken();
+  const form = new FormData();
+  form.append('image', file);
+
+  const response = await fetch(`${API_URL}/api${path}`, {
+    method: 'POST',
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    body: form,
+  });
+
+  const payload = await response.json().catch(() => null);
+
+  if (!response.ok) {
+    throw new ApiError(
+      response.status,
+      payload?.message || `Upload failed with status ${response.status}`,
+      payload?.details,
+    );
+  }
+
+  return payload?.data as T;
+}
+
 const query = (params: Record<string, string | number | boolean | undefined | null>): string => {
   const search = new URLSearchParams();
   Object.entries(params).forEach(([key, value]) => {
@@ -158,6 +191,34 @@ export const api = {
         `/admin/customers${query(params)}`,
         { auth: true },
       ),
+    storefront: {
+      get: () => request<{ settings: StorefrontSettings }>('/admin/storefront', { auth: true }),
+      update: (payload: Partial<StorefrontSettings>) =>
+        request<{ settings: StorefrontSettings }>('/admin/storefront', {
+          method: 'PATCH',
+          body: payload,
+          auth: true,
+        }),
+    },
+    team: {
+      list: () => request<{ users: AdminUser[] }>('/admin/users', { auth: true }),
+      permissions: () =>
+        request<{ permissions: string[] }>('/admin/users/permissions', { auth: true }),
+      create: (payload: { name: string; email: string; password: string; permissions: string[] }) =>
+        request<{ user: AdminUser }>('/admin/users', { method: 'POST', body: payload, auth: true }),
+      update: (id: string, payload: { name?: string; permissions?: string[] }) =>
+        request<{ user: AdminUser }>(`/admin/users/${id}`, {
+          method: 'PATCH',
+          body: payload,
+          auth: true,
+        }),
+    },
+  },
+  storefront: {
+    settings: () => request<{ settings: StorefrontSettings }>('/settings/storefront'),
+  },
+  uploads: {
+    productImage: (file: File) => uploadFile<{ url: string }>('/admin/uploads/product-image', file),
   },
 };
 

@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { MotionConfig } from 'framer-motion';
+import { StorefrontSettingsProvider } from '@/components/providers/storefront-settings';
 import { useAuthStore } from '@/store/auth';
 
 /**
@@ -15,7 +16,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
     hydrate();
   }, [hydrate]);
 
-  return <MotionConfig reducedMotion="user">{children}</MotionConfig>;
+  return (
+    <StorefrontSettingsProvider>
+      <MotionConfig reducedMotion="user">{children}</MotionConfig>
+    </StorefrontSettingsProvider>
+  );
 }
 
 export default Providers;
