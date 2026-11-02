@@ -30,6 +30,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Check environment variable documentation
+        run: npm run check:env
+
       - name: Check formatting
         run: npm run format:check
 

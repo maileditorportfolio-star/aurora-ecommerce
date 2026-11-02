@@ -27,6 +27,7 @@
     "test:client": "npm run test --workspace client",
     "test:coverage": "npm run test:coverage --workspace server && npm run test:coverage --workspace client",
     "audit": "npm audit --audit-level=high --omit=dev",
+    "check:env": "node scripts/check-env-example.js",
     "docker:up": "docker compose up --build",
     "docker:down": "docker compose down",
     "docker:logs": "docker compose logs -f",
