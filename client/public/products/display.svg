@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Aurora 4K display">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#070e20"/>
+      <stop offset="1" stop-color="#10203c"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0e7490"/>
+      <stop offset=".55" stop-color="#4f46e5"/>
+      <stop offset="1" stop-color="#a855f7"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="40%" r="58%">
+      <stop offset="0" stop-color="#22d3ee" stop-opacity=".4"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#ffffff" stroke-opacity=".05"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <rect width="800" height="600" fill="url(#grid)"/>
+  <circle cx="400" cy="290" r="270" fill="url(#glow)"/>
+  <rect x="170" y="140" width="460" height="280" rx="18" fill="#0b1226" stroke="#e2e8f0" stroke-width="8"/>
+  <rect x="196" y="166" width="408" height="228" rx="6" fill="url(#screen)"/>
+  <path d="M400 420v58M310 490h180" fill="none" stroke="#e2e8f0" stroke-width="10" stroke-linecap="round"/>
+  <path d="M236 330l58-58 54 42 62-84 70 62 58-38" fill="none" stroke="#ccff4d" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="400" cy="156" r="5" fill="#ccff4d"/>
+</svg>

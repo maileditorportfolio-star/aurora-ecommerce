@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Aurora USB-C hub">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#08101f"/>
+      <stop offset="1" stop-color="#12213a"/>
+    </linearGradient>
+    <linearGradient id="body" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#16213f"/>
+      <stop offset="1" stop-color="#293657"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="46%" r="55%">
+      <stop offset="0" stop-color="#22d3ee" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#ffffff" stroke-opacity=".05"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <rect width="800" height="600" fill="url(#grid)"/>
+  <circle cx="400" cy="300" r="260" fill="url(#glow)"/>
+  <rect x="180" y="286" width="440" height="98" rx="26" fill="url(#body)" stroke="#e2e8f0" stroke-width="8"/>
+  <g fill="#0b1226" stroke="#94a3b8" stroke-width="4">
+    <rect x="214" y="316" width="46" height="20" rx="8"/>
+    <rect x="276" y="316" width="46" height="20" rx="8"/>
+    <rect x="338" y="316" width="78" height="20" rx="8"/>
+    <rect x="432" y="316" width="46" height="20" rx="8"/>
+  </g>
+  <path d="M620 334h54c30 0 52-22 52-52v-56" fill="none" stroke="#e2e8f0" stroke-width="10" stroke-linecap="round"/>
+  <path d="M726 210h-30" stroke="#e2e8f0" stroke-width="14" stroke-linecap="round"/>
+  <circle cx="400" cy="262" r="5" fill="#ccff4d"/>
+</svg>

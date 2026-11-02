@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Aurora studio headphones">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a0d20"/>
+      <stop offset="1" stop-color="#1c1440"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c084fc"/>
+      <stop offset="1" stop-color="#6366f1"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="40%" r="55%">
+      <stop offset="0" stop-color="#a855f7" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#a855f7" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#ffffff" stroke-opacity=".05"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <rect width="800" height="600" fill="url(#grid)"/>
+  <circle cx="400" cy="290" r="270" fill="url(#glow)"/>
+  <path d="M240 340v-38a160 160 0 0 1 320 0v38" fill="none" stroke="#e2e8f0" stroke-width="26" stroke-linecap="round"/>
+  <rect x="202" y="326" width="88" height="146" rx="42" fill="#0b1226" stroke="#e2e8f0" stroke-width="8"/>
+  <rect x="510" y="326" width="88" height="146" rx="42" fill="#0b1226" stroke="#e2e8f0" stroke-width="8"/>
+  <rect x="224" y="350" width="44" height="98" rx="22" fill="url(#accent)"/>
+  <rect x="532" y="350" width="44" height="98" rx="22" fill="url(#accent)"/>
+  <circle cx="400" cy="170" r="5" fill="#ccff4d"/>
+</svg>

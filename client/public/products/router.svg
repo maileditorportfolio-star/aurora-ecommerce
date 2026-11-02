@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Aurora mesh router">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#090e1f"/>
+      <stop offset="1" stop-color="#171334"/>
+    </linearGradient>
+    <linearGradient id="body" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#111a36"/>
+      <stop offset="1" stop-color="#2a2352"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="42%" r="55%">
+      <stop offset="0" stop-color="#a855f7" stop-opacity=".38"/>
+      <stop offset="1" stop-color="#a855f7" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#ffffff" stroke-opacity=".05"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <rect width="800" height="600" fill="url(#grid)"/>
+  <circle cx="400" cy="300" r="270" fill="url(#glow)"/>
+  <rect x="230" y="310" width="340" height="110" rx="26" fill="url(#body)" stroke="#e2e8f0" stroke-width="8"/>
+  <path d="M320 310v-96M480 310v-96" stroke="#e2e8f0" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="320" cy="204" r="9" fill="#ccff4d"/>
+  <circle cx="480" cy="204" r="9" fill="#ccff4d"/>
+  <g fill="none" stroke="#a5b4fc" stroke-width="6" stroke-linecap="round" opacity=".75">
+    <path d="M356 366a54 54 0 0 1 44-58"/>
+    <path d="M336 390a86 86 0 0 1 70-92"/>
+    <path d="M444 366a54 54 0 0 0-44-58"/>
+    <path d="M464 390a86 86 0 0 0-70-92"/>
+  </g>
+  <circle cx="400" cy="330" r="6" fill="#ccff4d"/>
+</svg>

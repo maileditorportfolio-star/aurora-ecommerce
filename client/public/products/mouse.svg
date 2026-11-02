@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Aurora wireless mouse">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#080d20"/>
+      <stop offset="1" stop-color="#101a34"/>
+    </linearGradient>
+    <linearGradient id="body" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#111a36"/>
+      <stop offset="1" stop-color="#26355c"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="44%" r="55%">
+      <stop offset="0" stop-color="#6366f1" stop-opacity=".4"/>
+      <stop offset="1" stop-color="#6366f1" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#ffffff" stroke-opacity=".05"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <rect width="800" height="600" fill="url(#grid)"/>
+  <circle cx="400" cy="300" r="260" fill="url(#glow)"/>
+  <path d="M400 150c96 0 150 72 150 172 0 112-64 170-150 170s-150-58-150-170c0-100 54-172 150-172z" fill="url(#body)" stroke="#e2e8f0" stroke-width="8"/>
+  <path d="M400 164v128" stroke="#94a3b8" stroke-width="6"/>
+  <rect x="386" y="196" width="28" height="58" rx="14" fill="#0b1226" stroke="#ccff4d" stroke-width="5"/>
+  <circle cx="400" cy="438" r="6" fill="#ccff4d"/>
+</svg>

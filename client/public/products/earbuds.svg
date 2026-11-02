@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Aurora wireless earbuds">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07101f"/>
+      <stop offset="1" stop-color="#0e1f3a"/>
+    </linearGradient>
+    <linearGradient id="case" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#111a36"/>
+      <stop offset="1" stop-color="#1e2a4a"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="45%" r="55%">
+      <stop offset="0" stop-color="#22d3ee" stop-opacity=".42"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#ffffff" stroke-opacity=".05"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <rect width="800" height="600" fill="url(#grid)"/>
+  <circle cx="400" cy="300" r="270" fill="url(#glow)"/>
+  <rect x="292" y="330" width="216" height="146" rx="52" fill="url(#case)" stroke="#e2e8f0" stroke-width="8"/>
+  <path d="M300 386h200" stroke="#94a3b8" stroke-width="6"/>
+  <circle cx="400" cy="416" r="6" fill="#ccff4d"/>
+  <g fill="#0b1226" stroke="#e2e8f0" stroke-width="8">
+    <path d="M342 258c18-26 52-22 60 4 6 20-8 34-22 40l-16 28" stroke-linecap="round"/>
+    <path d="M458 258c-18-26-52-22-60 4-6 20 8 34 22 40l16 28" stroke-linecap="round"/>
+  </g>
+  <circle cx="342" cy="244" r="22" fill="#22d3ee" opacity=".75"/>
+  <circle cx="458" cy="244" r="22" fill="#22d3ee" opacity=".75"/>
+</svg>

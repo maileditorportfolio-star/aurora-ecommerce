@@ -20,7 +20,7 @@ const products = [
   {
     name: 'Aurora Pro 14 Ultrabook',
     category: 'laptops',
-    imageUrl: 'https://picsum.photos/seed/aurora-laptop/900/700',
+    imageUrl: '/products/laptop.svg',
     price: 118000,
     compareAtPrice: 135000,
     stock: 18,
@@ -32,7 +32,7 @@ const products = [
   },
   {
     name: 'Vertex Studio Headphones',
-    imageUrl: 'https://picsum.photos/seed/aurora-headphones/900/700',
+    imageUrl: '/products/headphones.svg',
     category: 'audio',
     price: 18500,
     compareAtPrice: 22000,
@@ -45,7 +45,7 @@ const products = [
   },
   {
     name: 'Pulse Wireless Earbuds',
-    imageUrl: 'https://picsum.photos/seed/aurora-earbuds/900/700',
+    imageUrl: '/products/earbuds.svg',
     category: 'audio',
     price: 4200,
     compareAtPrice: 5500,
@@ -57,7 +57,7 @@ const products = [
   },
   {
     name: 'Lumen 27" 4K Monitor',
-    imageUrl: 'https://picsum.photos/seed/aurora-monitor/900/700',
+    imageUrl: '/products/display.svg',
     category: 'displays',
     price: 46500,
     compareAtPrice: 52000,
@@ -70,7 +70,7 @@ const products = [
   },
   {
     name: 'Lumen 34" Ultrawide',
-    imageUrl: 'https://picsum.photos/seed/aurora-ultrawide/900/700',
+    imageUrl: '/products/ultrawide.svg',
     category: 'displays',
     price: 78000,
     compareAtPrice: 89000,
@@ -82,7 +82,7 @@ const products = [
   },
   {
     name: 'Forge 65W GaN Charger',
-    imageUrl: 'https://picsum.photos/seed/aurora-charger/900/700',
+    imageUrl: '/products/charger.svg',
     category: 'accessories',
     price: 3900,
     compareAtPrice: 4800,
@@ -94,7 +94,7 @@ const products = [
   },
   {
     name: 'Flux Mechanical Keyboard',
-    imageUrl: 'https://picsum.photos/seed/aurora-keyboard/900/700',
+    imageUrl: '/products/keyboard.svg',
     category: 'accessories',
     price: 9800,
     compareAtPrice: 11500,
@@ -106,7 +106,7 @@ const products = [
   },
   {
     name: 'Glide Wireless Mouse',
-    imageUrl: 'https://picsum.photos/seed/aurora-mouse/900/700',
+    imageUrl: '/products/mouse.svg',
     category: 'accessories',
     price: 3200,
     compareAtPrice: 3900,
@@ -118,7 +118,7 @@ const products = [
   },
   {
     name: 'Beacon Mesh Router',
-    imageUrl: 'https://picsum.photos/seed/aurora-router/900/700',
+    imageUrl: '/products/router.svg',
     category: 'networking',
     price: 12500,
     compareAtPrice: 14900,
@@ -131,7 +131,7 @@ const products = [
   },
   {
     name: 'Vault USB-C Hub',
-    imageUrl: 'https://picsum.photos/seed/aurora-hub/900/700',
+    imageUrl: '/products/hub.svg',
     category: 'accessories',
     price: 5400,
     compareAtPrice: 6500,

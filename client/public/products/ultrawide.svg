@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Aurora ultrawide display">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#080d20"/>
+      <stop offset="1" stop-color="#141a36"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#312e81"/>
+      <stop offset=".5" stop-color="#4f46e5"/>
+      <stop offset="1" stop-color="#06b6d4"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="42%" r="58%">
+      <stop offset="0" stop-color="#6366f1" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#6366f1" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#ffffff" stroke-opacity=".05"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <rect width="800" height="600" fill="url(#grid)"/>
+  <circle cx="400" cy="290" r="280" fill="url(#glow)"/>
+  <path d="M130 200q270-62 540 0v200q-270 56-540 0z" fill="#0b1226" stroke="#e2e8f0" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M158 214q242-50 484 0v168q-242 44-484 0z" fill="url(#screen)"/>
+  <path d="M400 420v58M300 490h200" fill="none" stroke="#e2e8f0" stroke-width="10" stroke-linecap="round"/>
+  <path d="M220 270h120M360 270h220M220 310h260M500 310h80" stroke="#e0e7ff" stroke-opacity=".55" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="400" cy="188" r="5" fill="#ccff4d"/>
+</svg>
